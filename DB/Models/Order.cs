@@ -15,16 +15,15 @@ namespace DB.Models
         public long OrderStatusId { get; set; }
         public long UserId { get; set; }
         public long AddressId { get; set; }
-        public long? Total { get; set; }
-        public long? Tax { get; set; }
+        public decimal Total { get; set; }
+        public decimal Tax { get; set; }
         public long ShippingId { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? ModifiedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         public virtual Address Address { get; set; } = null!;
         public virtual OrderStatus OrderStatus { get; set; } = null!;
         public virtual Shipping Shipping { get; set; } = null!;
-        public virtual User User { get; set; } = null!;
         public virtual ICollection<OrderHasProduct> OrderHasProducts { get; set; }
     }
 }

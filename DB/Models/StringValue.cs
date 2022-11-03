@@ -7,7 +7,10 @@ namespace DB.Models
     {
         public long Id { get; set; }
         public string Value { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
+        public long SpecificationId { get; set; }
 
-        public virtual Spec IdNavigation { get; set; } = null!;
+        public virtual Specification Specification { get; set; } = null!;
     }
 }

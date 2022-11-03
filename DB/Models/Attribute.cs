@@ -8,13 +8,15 @@ namespace DB.Models
         public Attribute()
         {
             CategoryHasAttributes = new HashSet<CategoryHasAttribute>();
-            Specs = new HashSet<Spec>();
+            Specifications = new HashSet<Specification>();
         }
 
         public long Id { get; set; }
         public string Name { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         public virtual ICollection<CategoryHasAttribute> CategoryHasAttributes { get; set; }
-        public virtual ICollection<Spec> Specs { get; set; }
+        public virtual ICollection<Specification> Specifications { get; set; }
     }
 }

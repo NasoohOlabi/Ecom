@@ -14,11 +14,11 @@ namespace DB.Models
         public string Name { get; set; } = null!;
         public string City { get; set; } = null!;
         public string Street { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string Details { get; set; } = null!;
         public string Country { get; set; } = null!;
         public long UserId { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? ModifiedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Order> Orders { get; set; }

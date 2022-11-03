@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace DB.Models
 {
-    public partial class BoolValue
+    public partial class FloatValue
     {
         public long Id { get; set; }
-        public bool Value { get; set; }
+        public double Value { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public long SpecificationId { get; set; }

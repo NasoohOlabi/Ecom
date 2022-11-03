@@ -7,11 +7,11 @@ namespace DB.Models
     {
         public Product()
         {
-            AttachmentHasProducts = new HashSet<AttachmentHasProduct>();
-            CouponHasProducts = new HashSet<CouponHasProduct>();
             OrderHasProducts = new HashSet<OrderHasProduct>();
+            ProductHasAttachments = new HashSet<ProductHasAttachment>();
+            ProductHasCoupons = new HashSet<ProductHasCoupon>();
             Ratings = new HashSet<Rating>();
-            Specs = new HashSet<Spec>();
+            Specifications = new HashSet<Specification>();
             WishLists = new HashSet<WishList>();
         }
 
@@ -21,20 +21,20 @@ namespace DB.Models
         public decimal Price { get; set; }
         public long CategoryId { get; set; }
         public long SellerId { get; set; }
-        public long? RatingSum { get; set; }
-        public long? RatingCount { get; set; }
-        public string OrderCount { get; set; } = null!;
+        public long RatingSum { get; set; }
+        public long RatingCount { get; set; }
+        public long OrderCount { get; set; }
         public decimal Discount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
         public virtual Category Category { get; set; } = null!;
         public virtual User Seller { get; set; } = null!;
-        public virtual ICollection<AttachmentHasProduct> AttachmentHasProducts { get; set; }
-        public virtual ICollection<CouponHasProduct> CouponHasProducts { get; set; }
         public virtual ICollection<OrderHasProduct> OrderHasProducts { get; set; }
+        public virtual ICollection<ProductHasAttachment> ProductHasAttachments { get; set; }
+        public virtual ICollection<ProductHasCoupon> ProductHasCoupons { get; set; }
         public virtual ICollection<Rating> Ratings { get; set; }
-        public virtual ICollection<Spec> Specs { get; set; }
+        public virtual ICollection<Specification> Specifications { get; set; }
         public virtual ICollection<WishList> WishLists { get; set; }
     }
 }
