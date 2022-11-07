@@ -14,13 +14,21 @@ namespace Ecom.Services
          * ProductId -> (Count,RatingSum
          */
         private readonly IDictionary<long,(long,long)> _buffer;
+        private DateTime _nextFlush;
         public RatingBuffer()
         {
+            _nextFlush = DateTime.UtcNow.Add(new TimeSpan(1,0,0));
             _buffer = new Dictionary<long, (long, long)>();
         }
+        private bool FlushTime { get { 
+            return DateTime.UtcNow.CompareTo(_nextFlush) > 0; 
+            }  }
+        private DateTime HourFromNow { get {
+                return DateTime.UtcNow.AddHours(1);
+            } }
         public void AddRating(Rating rating,IProductRepo productRepo)
         {
-            if (_buffer.Count > 10000)
+            if (_buffer.Count > 10000|| FlushTime)
             {
                 foreach (var entry in _buffer)
                 {
@@ -28,6 +36,7 @@ namespace Ecom.Services
                     productRepo.UpdateRating(entry.Key, c, s);
                 }
                 _buffer.Clear();
+                _nextFlush = HourFromNow;
             }
             else
             {
