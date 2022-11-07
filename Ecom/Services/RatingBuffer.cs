@@ -25,7 +25,7 @@ namespace Ecom.Services
                 foreach (var entry in _buffer)
                 {
                     var (c, s) = entry.Value;
-                    productRepo.UpdateRating(entry.Key, c, s, message);
+                    productRepo.UpdateRating(entry.Key, c, s);
                 }
                 _buffer.Clear();
             }
