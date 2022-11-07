@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DB.UOW
 {
-    public interface IUOW
+    public interface IUnitOfWork
     {
         //public IUserRepo UserRepo { get; set };
 

@@ -7,12 +7,12 @@ using DB.Models;
 
 namespace DB.UOW
 {
-    public class UOW : IUOW
+    public class UnitOfWork : IUnitOfWork
     {
 
-        protected EComContext _db { get; set; }
+        protected readonly EComContext _db;
 
-        public UOW(EComContext db)
+        public UnitOfWork(EComContext db)
         {
             _db = db;
         }

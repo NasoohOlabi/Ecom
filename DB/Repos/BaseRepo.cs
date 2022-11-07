@@ -12,8 +12,8 @@ namespace DB.Repos
     public class BaseRepo<T> : IBaseRepo<T> where T : class
     {
 
-        private EComContext _db;
-        private DbSet<T> _dbSet;
+        protected EComContext _db;
+        private readonly DbSet<T> _dbSet;
 
         public BaseRepo(EComContext db)
         {
@@ -39,12 +39,12 @@ namespace DB.Repos
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbSet.ToList();
         }
 
         public void Update(T item)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(item);
         }
     }
 }
