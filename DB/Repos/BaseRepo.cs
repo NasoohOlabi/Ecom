@@ -28,13 +28,26 @@ namespace DB.Repos
 
         public void Delete(int id)
         {
-            var entity = _dbSet.Find(id);
+            var entity =  _dbSet.Find(id);
+            if (entity != null)
             _dbSet.Remove(entity);
         }
 
-        public T Get(int id)
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            _dbSet.Remove(entity);
+        }
+
+        public T? Get(int id)
         {
             return _dbSet.Find(id);
+        }
+
+        public ValueTask<T?> GetAsync(int id)
+        {
+            return _dbSet.FindAsync(id);
         }
 
         public IEnumerable<T> GetAll()
