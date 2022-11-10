@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
@@ -10,6 +12,8 @@ namespace DB.Models
             ProductHasAttachments = new HashSet<ProductHasAttachment>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; } = null!;
         public string Path { get; set; } = null!;

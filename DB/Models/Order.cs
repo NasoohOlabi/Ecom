@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
@@ -10,6 +12,8 @@ namespace DB.Models
             OrderHasProducts = new HashSet<OrderHasProduct>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string DeliveredAt { get; set; } = null!;
         public long OrderStatusId { get; set; }

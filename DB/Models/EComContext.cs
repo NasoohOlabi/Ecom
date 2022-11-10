@@ -16,6 +16,51 @@ namespace DB.Models
         {
         }
 
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e =>
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified);
+
+            foreach (var entityEntry in entries)
+            {
+                entityEntry.Property("ModifiedAt").CurrentValue = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    entityEntry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e =>
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified);
+
+            foreach (var entityEntry in entries)
+            {
+                entityEntry.Property("ModifiedAt").CurrentValue = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    entityEntry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        
+            
+        
+
         public virtual DbSet<Address> Addresses { get; set; } = null!;
         public virtual DbSet<Attachment> Attachments { get; set; } = null!;
         public virtual DbSet<AttachmentType> AttachmentTypes { get; set; } = null!;
