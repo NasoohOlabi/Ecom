@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DB.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace DB.Migrations
                 name: "AttachmentType",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -27,7 +28,8 @@ namespace DB.Migrations
                 name: "Attribute",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -41,7 +43,8 @@ namespace DB.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -55,7 +58,8 @@ namespace DB.Migrations
                 name: "Coupon",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Code = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Percentage = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
@@ -71,7 +75,8 @@ namespace DB.Migrations
                 name: "NotificationType",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -85,7 +90,8 @@ namespace DB.Migrations
                 name: "OrderStatus",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -99,7 +105,8 @@ namespace DB.Migrations
                 name: "Permission",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -113,7 +120,8 @@ namespace DB.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -127,7 +135,8 @@ namespace DB.Migrations
                 name: "Shipping",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -141,7 +150,8 @@ namespace DB.Migrations
                 name: "Attachment",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Path = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     AttachmentTypeId = table.Column<long>(type: "bigint", nullable: false),
@@ -162,7 +172,8 @@ namespace DB.Migrations
                 name: "CategoryHasAttribute",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     AttributeId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -187,7 +198,8 @@ namespace DB.Migrations
                 name: "RoleHasPermission",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<long>(type: "bigint", nullable: false),
                     PermissionId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -212,7 +224,8 @@ namespace DB.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     BirthDate = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
@@ -238,7 +251,8 @@ namespace DB.Migrations
                 name: "Address",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Street = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
@@ -262,7 +276,8 @@ namespace DB.Migrations
                 name: "Notification",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ItemId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     NotificationTypeId = table.Column<long>(type: "bigint", nullable: false),
@@ -288,7 +303,8 @@ namespace DB.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
@@ -320,7 +336,8 @@ namespace DB.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DeliveredAt = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     OrderStatusId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
@@ -355,7 +372,8 @@ namespace DB.Migrations
                 name: "ProductHasAttachment",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     AttachmentId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -380,7 +398,8 @@ namespace DB.Migrations
                 name: "ProductHasCoupon",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     CouponId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -405,7 +424,8 @@ namespace DB.Migrations
                 name: "Rating",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Rate = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
@@ -432,7 +452,8 @@ namespace DB.Migrations
                 name: "Specification",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ValueType = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     AttributeId = table.Column<long>(type: "bigint", nullable: false),
@@ -458,7 +479,8 @@ namespace DB.Migrations
                 name: "WishList",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -483,7 +505,8 @@ namespace DB.Migrations
                 name: "OrderHasProduct",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
@@ -509,7 +532,8 @@ namespace DB.Migrations
                 name: "BoolValue",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -529,7 +553,8 @@ namespace DB.Migrations
                 name: "FloatValue",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -549,7 +574,8 @@ namespace DB.Migrations
                 name: "IntValue",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -569,7 +595,8 @@ namespace DB.Migrations
                 name: "StringValue",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime", nullable: false),

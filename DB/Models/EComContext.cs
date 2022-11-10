@@ -199,7 +199,6 @@ namespace DB.Models
             {
                 entity.ToTable("BoolValue");
 
-                //entity.Property(e => e.Id).UseIdentityColumn(1, 1);
                 entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
