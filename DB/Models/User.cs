@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
@@ -14,6 +16,8 @@ namespace DB.Models
             WishLists = new HashSet<WishList>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;

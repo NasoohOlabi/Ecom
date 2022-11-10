@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB.Models
 {
@@ -10,6 +12,8 @@ namespace DB.Models
             Orders = new HashSet<Order>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; } = null!;
         public string City { get; set; } = null!;
@@ -17,6 +21,7 @@ namespace DB.Models
         public string Details { get; set; } = null!;
         public string Country { get; set; } = null!;
         public long UserId { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
