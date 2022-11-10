@@ -89,14 +89,14 @@ namespace DB.Models
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=MOUTAZ-LAPTOP\\SQLEXPRESS;Initial Catalog=ECom;Persist Security Info=True;User ID=sa;Password=MAtaz123.");
-            }
-        }
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                optionsBuilder.UseSqlServer("Data Source=MOUTAZ-LAPTOP\\SQLEXPRESS;Initial Catalog=ECom;Persist Security Info=True;User ID=sa;Password=MAtaz123.");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -104,7 +104,7 @@ namespace DB.Models
             {
                 entity.ToTable("Address");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.City)
                     .HasMaxLength(100)
@@ -141,7 +141,7 @@ namespace DB.Models
             {
                 entity.ToTable("Attachment");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -166,7 +166,7 @@ namespace DB.Models
             {
                 entity.ToTable("AttachmentType");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -184,7 +184,7 @@ namespace DB.Models
                 entity.HasIndex(e => e.Name, "IX_Attribute")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -199,7 +199,8 @@ namespace DB.Models
             {
                 entity.ToTable("BoolValue");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).UseIdentityColumn(1, 1);
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -216,7 +217,7 @@ namespace DB.Models
             {
                 entity.ToTable("Category");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -231,7 +232,7 @@ namespace DB.Models
             {
                 entity.ToTable("CategoryHasAttribute");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -257,7 +258,7 @@ namespace DB.Models
                 entity.HasIndex(e => e.Code, "IX_Coupon")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(100)
@@ -278,7 +279,7 @@ namespace DB.Models
             {
                 entity.ToTable("FloatValue");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -295,7 +296,7 @@ namespace DB.Models
             {
                 entity.ToTable("IntValue");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -312,7 +313,7 @@ namespace DB.Models
             {
                 entity.ToTable("Notification");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -335,7 +336,7 @@ namespace DB.Models
             {
                 entity.ToTable("NotificationType");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -350,7 +351,7 @@ namespace DB.Models
             {
                 entity.ToTable("Order");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -387,7 +388,7 @@ namespace DB.Models
             {
                 entity.ToTable("OrderHasProduct");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -410,7 +411,7 @@ namespace DB.Models
             {
                 entity.ToTable("OrderStatus");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -428,7 +429,7 @@ namespace DB.Models
                 entity.HasIndex(e => e.Name, "IX_Permission")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -446,7 +447,7 @@ namespace DB.Models
                 entity.HasIndex(e => e.Name, "IX_Product")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -481,7 +482,7 @@ namespace DB.Models
             {
                 entity.ToTable("ProductHasAttachment");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -504,7 +505,7 @@ namespace DB.Models
             {
                 entity.ToTable("ProductHasCoupon");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -527,7 +528,7 @@ namespace DB.Models
             {
                 entity.ToTable("Rating");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(450)
@@ -557,7 +558,7 @@ namespace DB.Models
                 entity.HasIndex(e => e.Name, "IX_Role")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -572,7 +573,7 @@ namespace DB.Models
             {
                 entity.ToTable("RoleHasPermission");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -595,7 +596,7 @@ namespace DB.Models
             {
                 entity.ToTable("Shipping");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -610,7 +611,7 @@ namespace DB.Models
             {
                 entity.ToTable("Specification");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -633,7 +634,7 @@ namespace DB.Models
             {
                 entity.ToTable("StringValue");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -654,7 +655,7 @@ namespace DB.Models
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.BirthDate)
                     .HasMaxLength(100)
@@ -695,7 +696,7 @@ namespace DB.Models
             {
                 entity.ToTable("WishList");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
