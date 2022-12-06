@@ -53,6 +53,7 @@ namespace DB.Models
                 {
                     entityEntry.Property("CreatedAt").CurrentValue = DateTime.Now;
                 }
+  
             }
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

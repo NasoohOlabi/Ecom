@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB.Models;
+using Ecom.Models;
+using System.Collections.Specialized;
 
 namespace Ecom.Controllers
 {
@@ -21,7 +23,19 @@ namespace Ecom.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Categories.ToListAsync());
+            IEnumerable<Category> l = await _context.Categories.ToListAsync();
+            var x = new List<CategoryDetailsViewModel>();
+            foreach (Category c in l)
+            {
+                x.Add(new CategoryDetailsViewModel
+                {
+                    Name = c.Name,
+                    Id = c.Id,
+                    ModifiedAt = c.ModifiedAt,
+                    CreatedAt = c.CreatedAt,
+                });
+            }
+            return View(x);
         }
 
         // GET: Category/Details/5
@@ -38,8 +52,8 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-
-            return View(category);
+            var categoryDetailsViewModel = new CategoryDetailsViewModel { Name = category.Name, Id = category.Id , CreatedAt = category.CreatedAt, ModifiedAt= category.ModifiedAt};
+            return View(categoryDetailsViewModel);
         }
 
         // GET: Category/Create
@@ -77,42 +91,34 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            return View(category);
+            var categoryEditViewModel = new CategoryEditViewModel { Name = category.Name ,Id = category.Id};  
+            return View(categoryEditViewModel);
         }
 
         // POST: Category/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,CreatedAt,ModifiedAt")] Category category)
+
+        public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
-            if (id != category.Id)
+            // Update the student
+            var currentCategory = _context.Categories.FirstOrDefault(c => c.Id == model.Id);
+            if (currentCategory == null)
             {
                 return NotFound();
             }
+            currentCategory.Name = model.Name;
 
+
+            // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(currentCategory);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(currentCategory);
+
         }
 
         // GET: Category/Delete/5
@@ -147,14 +153,14 @@ namespace Ecom.Controllers
             {
                 _context.Categories.Remove(category);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(long id)
         {
-          return _context.Categories.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }
