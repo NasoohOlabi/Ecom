@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using DB.Models;
 
 namespace Ecom.Models
 {
-    public partial class CategoryDetailsViewModel
+    public class CategoryDetailsViewModel
     {
+        public CategoryDetailsViewModel(Category category)
+        {
+            this.Id = category.Id;
+            this.Name = category.Name;
+            this.ModifiedAt = category.ModifiedAt;
+            this.CreatedAt = category.CreatedAt;
+        }
         public long Id { get; set; }
         public string Name { get; set; } = null!;
         [Display(Name = "Created At")]
@@ -16,8 +24,13 @@ namespace Ecom.Models
 
     }
 
-    public partial class CategoryEditViewModel
+    public class CategoryEditViewModel
     {
+        public CategoryEditViewModel(Category category)
+        {
+            this.Id = category.Id;
+            this.Name = category.Name;
+        }
         public long Id { get; set; }
         public string Name { get; set; } = null!;
 
