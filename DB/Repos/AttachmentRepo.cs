@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class AddressRepo : BaseRepo<Product>, IAddressRepo
+    public class AttachmentRepo : BaseRepo<Attachment>, IAttachmentRepo
     {
 
-        private readonly ILogger<AddressRepo> _logger;
+        private readonly ILogger<AttachmentRepo> _logger;
 
 
 
-        public AddressRepo(EComContext db, ILogger<AddressRepo> logger) : base(db)
+        public AttachmentRepo(EComContext db, ILogger<AttachmentRepo> logger) : base(db)
         {
             _logger = logger;
         }
 
-      
+
     }
 }
