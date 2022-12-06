@@ -9,10 +9,7 @@ namespace DB.Models
     {
         public Specification()
         {
-            BoolValues = new HashSet<BoolValue>();
-            FloatValues = new HashSet<FloatValue>();
-            IntValues = new HashSet<IntValue>();
-            StringValues = new HashSet<StringValue>();
+            SpecificationValues = new HashSet<SpecificationValue>();
         }
 
         [Key]
@@ -26,9 +23,6 @@ namespace DB.Models
 
         public virtual Attribute Attribute { get; set; } = null!;
         public virtual Product Product { get; set; } = null!;
-        public virtual ICollection<BoolValue> BoolValues { get; set; }
-        public virtual ICollection<FloatValue> FloatValues { get; set; }
-        public virtual ICollection<IntValue> IntValues { get; set; }
-        public virtual ICollection<StringValue> StringValues { get; set; }
+        public virtual ICollection<SpecificationValue> SpecificationValues { get; set; }
     }
 }

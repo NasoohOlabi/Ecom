@@ -5,9 +5,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
-    public partial class StringValue
+    public enum SpecificationValueTypes
     {
+        Int,
+        String,
+        Bool,
+        Float
+    }
 
+    public partial class SpecificationValue
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }

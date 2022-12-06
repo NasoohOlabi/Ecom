@@ -13,7 +13,7 @@ namespace DB.Models
             ProductHasAttachments = new HashSet<ProductHasAttachment>();
             ProductHasCoupons = new HashSet<ProductHasCoupon>();
             Ratings = new HashSet<Rating>();
-            Specifications = new HashSet<Specification>();
+            Specifications = new HashSet<SpecificationValue>();
             WishLists = new HashSet<WishList>();
         }
 
@@ -38,7 +38,7 @@ namespace DB.Models
         public virtual ICollection<ProductHasAttachment> ProductHasAttachments { get; set; }
         public virtual ICollection<ProductHasCoupon> ProductHasCoupons { get; set; }
         public virtual ICollection<Rating> Ratings { get; set; }
-        public virtual ICollection<Specification> Specifications { get; set; }
+        public virtual ICollection<SpecificationValue> Specifications { get; set; }
         public virtual ICollection<WishList> WishLists { get; set; }
     }
 }

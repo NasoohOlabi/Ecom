@@ -10,7 +10,7 @@ namespace DB.Models
         public Attribute()
         {
             CategoryHasAttributes = new HashSet<CategoryHasAttribute>();
-            Specifications = new HashSet<Specification>();
+            Specifications = new HashSet<SpecificationValue>();
         }
 
         [Key]
@@ -21,6 +21,6 @@ namespace DB.Models
         public DateTime ModifiedAt { get; set; }
 
         public virtual ICollection<CategoryHasAttribute> CategoryHasAttributes { get; set; }
-        public virtual ICollection<Specification> Specifications { get; set; }
+        public virtual ICollection<SpecificationValue> Specifications { get; set; }
     }
 }

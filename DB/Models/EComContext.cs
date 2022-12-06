@@ -66,12 +66,10 @@ namespace DB.Models
         public virtual DbSet<Attachment> Attachments { get; set; } = null!;
         public virtual DbSet<AttachmentType> AttachmentTypes { get; set; } = null!;
         public virtual DbSet<Attribute> Attributes { get; set; } = null!;
-        public virtual DbSet<BoolValue> BoolValues { get; set; } = null!;
+
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<CategoryHasAttribute> CategoryHasAttributes { get; set; } = null!;
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
-        public virtual DbSet<FloatValue> FloatValues { get; set; } = null!;
-        public virtual DbSet<IntValue> IntValues { get; set; } = null!;
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
         public virtual DbSet<NotificationType> NotificationTypes { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
@@ -85,8 +83,8 @@ namespace DB.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<RoleHasPermission> RoleHasPermissions { get; set; } = null!;
         public virtual DbSet<Shipping> Shippings { get; set; } = null!;
-        public virtual DbSet<Specification> Specifications { get; set; } = null!;
-        public virtual DbSet<StringValue> StringValues { get; set; } = null!;
+        public virtual DbSet<SpecificationValue> Specifications { get; set; } = null!;
+        public virtual DbSet<SpecificationValue> StringValues { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
@@ -196,22 +194,6 @@ namespace DB.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<BoolValue>(entity =>
-            {
-                entity.ToTable("BoolValue");
-
-                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Specification)
-                    .WithMany(p => p.BoolValues)
-                    .HasForeignKey(d => d.SpecificationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BoolValue_Specification");
-            });
 
             modelBuilder.Entity<Category>(entity =>
             {
@@ -275,39 +257,7 @@ namespace DB.Models
                 entity.Property(e => e.Percentage).HasColumnType("decimal(12, 2)");
             });
 
-            modelBuilder.Entity<FloatValue>(entity =>
-            {
-                entity.ToTable("FloatValue");
-
-                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Specification)
-                    .WithMany(p => p.FloatValues)
-                    .HasForeignKey(d => d.SpecificationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FloatValue_Specification");
-            });
-
-            modelBuilder.Entity<IntValue>(entity =>
-            {
-                entity.ToTable("IntValue");
-
-                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Specification)
-                    .WithMany(p => p.IntValues)
-                    .HasForeignKey(d => d.SpecificationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_IntValue_Specification");
-            });
+ 
 
             modelBuilder.Entity<Notification>(entity =>
             {
@@ -607,49 +557,9 @@ namespace DB.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Specification>(entity =>
-            {
-                entity.ToTable("Specification");
+          
 
-                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Attribute)
-                    .WithMany(p => p.Specifications)
-                    .HasForeignKey(d => d.AttributeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Specification_Attribute");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Specifications)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Specification_Product");
-            });
-
-            modelBuilder.Entity<StringValue>(entity =>
-            {
-                entity.ToTable("StringValue");
-
-                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.Value)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Specification)
-                    .WithMany(p => p.StringValues)
-                    .HasForeignKey(d => d.SpecificationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StringValue_Specification");
-            });
+      
 
             modelBuilder.Entity<User>(entity =>
             {
