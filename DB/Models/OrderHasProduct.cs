@@ -14,6 +14,7 @@ namespace DB.Models
         public long OrderId { get; set; }
         public long ProductId { get; set; }
         public long Quantity { get; set; }
+        public decimal Price { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
