@@ -13,16 +13,16 @@ namespace DB.Repos
     public class ProductRepo : BaseRepo<Product>, IProductRepo
     {
 
-        private readonly ILogger<ProductRepo> _logger;
+        private readonly ILogger<ProductRepo>? _logger;
 
 
 
-        public ProductRepo(EComContext db, ILogger<ProductRepo> logger) : base(db)
+        public ProductRepo(EComContext db, ILogger<ProductRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }
 
-        public void UpdateRating(long id,long count, long sum)
+        public void UpdateRating(long id, long count, long sum)
         {
             try
             {
@@ -33,7 +33,8 @@ namespace DB.Repos
             catch (InvalidOperationException)
             {
                 string message = $"A Product with id {id} Was Deleted before Rating Was Updated to count {count} and sum {sum}";
-                _logger.LogDebug(message);
+                if (_logger != null)
+                    _logger.LogDebug(message);
             }
         }
     }

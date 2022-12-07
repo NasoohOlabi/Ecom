@@ -54,7 +54,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryDetailsViewModel = new CategoryDetailsViewModel(category);
+            CategoryDetailsViewModel categoryDetailsViewModel = new(category);
             return View(categoryDetailsViewModel);
         }
 
@@ -94,7 +94,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryEditViewModel = new CategoryEditViewModel(category);  
+            var categoryEditViewModel = new CategoryEditViewModel(category);
             return View(categoryEditViewModel);
         }
 
@@ -116,8 +116,19 @@ namespace Ecom.Controllers
             // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
-                _context.Update(currentCategory);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(currentCategory);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CategoryExists(currentCategory.Id)) {
+                        return NotFound();
+                    }
+                    else
+                        throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(currentCategory);

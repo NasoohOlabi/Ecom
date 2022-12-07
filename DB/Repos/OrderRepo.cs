@@ -13,11 +13,11 @@ namespace DB.Repos
     public class OrderRepo : BaseRepo<Order>, IOrderRepo
     {
 
-        private readonly ILogger<ProductRepo> _logger;
+        private readonly ILogger<OrderRepo>? _logger;
 
 
 
-        public OrderRepo(EComContext db, ILogger<ProductRepo> logger) : base(db)
+        public OrderRepo(EComContext db, ILogger<OrderRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }
