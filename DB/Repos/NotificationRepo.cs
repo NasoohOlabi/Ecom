@@ -13,11 +13,11 @@ namespace DB.Repos
     public class NotificationRepo : BaseRepo<Notification>, INotificationRepo
     {
 
-        private readonly ILogger<ProductRepo> _logger;
+        private readonly ILogger<NotificationRepo>? _logger;
 
 
 
-        public NotificationRepo(EComContext db, ILogger<ProductRepo> logger) : base(db)
+        public NotificationRepo(EComContext db, ILogger<NotificationRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }

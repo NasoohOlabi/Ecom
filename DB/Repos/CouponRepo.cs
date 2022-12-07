@@ -13,15 +13,15 @@ namespace DB.Repos
     public class CouponRepo : BaseRepo<Coupon>, ICouponRepo
     {
 
-        private readonly ILogger<ProductRepo> _logger;
+        private readonly ILogger<CouponRepo>? _logger;
 
 
 
-        public CouponRepo(EComContext db, ILogger<ProductRepo> logger) : base(db)
+        public CouponRepo(EComContext db, ILogger<CouponRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }
 
-        
+
     }
 }

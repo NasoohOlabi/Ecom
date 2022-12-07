@@ -13,11 +13,11 @@ namespace DB.Repos
     public class SpecificationRepo : BaseRepo<Specification>, ISpecificationRepo
     {
 
-        private readonly ILogger<ProductRepo> _logger;
+        private readonly ILogger<SpecificationRepo>? _logger;
 
 
 
-        public SpecificationRepo(EComContext db, ILogger<ProductRepo> logger) : base(db)
+        public SpecificationRepo(EComContext db, ILogger<SpecificationRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }

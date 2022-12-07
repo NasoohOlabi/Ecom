@@ -13,11 +13,11 @@ namespace DB.Repos
     public class AttachmentRepo : BaseRepo<Attachment>, IAttachmentRepo
     {
 
-        private readonly ILogger<AttachmentRepo> _logger;
+        private readonly ILogger<AttachmentRepo>? _logger;
 
 
 
-        public AttachmentRepo(EComContext db, ILogger<AttachmentRepo> logger) : base(db)
+        public AttachmentRepo(EComContext db, ILogger<AttachmentRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }

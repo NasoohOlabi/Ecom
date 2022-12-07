@@ -13,11 +13,11 @@ namespace DB.Repos
     public class AddressRepo : BaseRepo<Product>, IAddressRepo
     {
 
-        private readonly ILogger<AddressRepo> _logger;
+        private readonly ILogger<AddressRepo>? _logger;
 
 
 
-        public AddressRepo(EComContext db, ILogger<AddressRepo> logger) : base(db)
+        public AddressRepo(EComContext db, ILogger<AddressRepo>? logger = null) : base(db)
         {
             _logger = logger;
         }
