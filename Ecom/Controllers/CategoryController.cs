@@ -23,19 +23,10 @@ namespace Ecom.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> l = await _context.Categories.ToListAsync();
-            var x = new List<CategoryDetailsViewModel>();
-            foreach (Category c in l)
-            {
-                x.Add(new CategoryDetailsViewModel
-                {
-                    Name = c.Name,
-                    Id = c.Id,
-                    ModifiedAt = c.ModifiedAt,
-                    CreatedAt = c.CreatedAt,
-                });
-            }
-            return View(x);
+            var detailsViewModels =
+                from c in (await _context.Categories.ToListAsync())
+                select new CategoryDetailsViewModel(c);
+            return View(detailsViewModels);
         }
 
         // GET: Category/Details/5
@@ -52,7 +43,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryDetailsViewModel = new CategoryDetailsViewModel { Name = category.Name, Id = category.Id , CreatedAt = category.CreatedAt, ModifiedAt= category.ModifiedAt};
+            CategoryDetailsViewModel categoryDetailsViewModel = new(category);
             return View(categoryDetailsViewModel);
         }
 
@@ -91,7 +82,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryEditViewModel = new CategoryEditViewModel { Name = category.Name ,Id = category.Id};  
+            var categoryEditViewModel = new CategoryEditViewModel(category);
             return View(categoryEditViewModel);
         }
 
@@ -113,8 +104,19 @@ namespace Ecom.Controllers
             // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
-                _context.Update(currentCategory);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(currentCategory);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CategoryExists(currentCategory.Id)) {
+                        return NotFound();
+                    }
+                    else
+                        throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(currentCategory);
