@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DB.IRepos;
 using DB.Models;
+using DB.Repos;
+using Microsoft.Extensions.Logging;
 
 namespace DB.UOW
 {
@@ -12,9 +15,27 @@ namespace DB.UOW
 
         protected readonly EComContext _db;
 
-        public UnitOfWork(EComContext db)
+        private readonly ILogger _logger;
+
+        private ICategoryRepo? _categoryRepositry;
+
+        public ICategoryRepo CategoryRepositry
+        {
+            get
+            {
+
+                if (this._categoryRepositry == null)
+                {
+                    this._categoryRepositry = new CategoryRepo(_db, _logger);
+                }
+                return _categoryRepositry;
+            }
+        }
+
+        public UnitOfWork(EComContext db, ILogger<Category> logger)
         {
             _db = db;
+            _logger = logger;
         }
         public void RollBack()
         {

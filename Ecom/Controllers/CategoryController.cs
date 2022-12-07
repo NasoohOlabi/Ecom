@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DB.Models;
 using Ecom.Models;
 using System.Collections.Specialized;
+using DB.UOW;
 
 namespace Ecom.Controllers
 {
@@ -15,25 +16,25 @@ namespace Ecom.Controllers
     {
         private readonly EComContext _context;
 
-        public CategoryController(EComContext context)
+        private readonly ILogger<Category> _logger;
+
+        private readonly UnitOfWork _uow;
+
+        public CategoryController(EComContext context, ILogger<Category> logger)
         {
             _context = context;
+            _logger = logger;
+            _uow = new UnitOfWork(_context, _logger);
         }
 
         // GET: Category
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            IEnumerable<Category> l = await _context.Categories.ToListAsync();
+            IEnumerable<Category> l = _uow.CategoryRepositry.GetAll();
             var x = new List<CategoryDetailsViewModel>();
             foreach (Category c in l)
             {
-                x.Add(new CategoryDetailsViewModel
-                {
-                    Name = c.Name,
-                    Id = c.Id,
-                    ModifiedAt = c.ModifiedAt,
-                    CreatedAt = c.CreatedAt,
-                });
+                x.Add(new CategoryDetailsViewModel(c));
             }
             return View(x);
         }
@@ -52,7 +53,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryDetailsViewModel = new CategoryDetailsViewModel { Name = category.Name, Id = category.Id , CreatedAt = category.CreatedAt, ModifiedAt= category.ModifiedAt};
+            var categoryDetailsViewModel = new CategoryDetailsViewModel(category);
             return View(categoryDetailsViewModel);
         }
 
@@ -91,7 +92,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var categoryEditViewModel = new CategoryEditViewModel { Name = category.Name ,Id = category.Id};  
+            var categoryEditViewModel = new CategoryEditViewModel(category);  
             return View(categoryEditViewModel);
         }
 
