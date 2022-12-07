@@ -1,4 +1,4 @@
-﻿@model DB.Models.Product
+﻿@model Ecom.Models.ProductDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -27,18 +27,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RatingSum)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RatingSum)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RatingCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RatingCount)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.OrderCount)
