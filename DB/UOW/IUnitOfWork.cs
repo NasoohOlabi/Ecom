@@ -9,10 +9,12 @@ namespace DB.UOW
 {
     public interface IUnitOfWork
     {
-        //public ICategoryRepo categoryRepo;
-
         public void SaveChanges();
 
+        public Task SaveChangesAsync();
+
         public void RollBack();
+
+        public void RollBackAsync();
     }
 }

@@ -15,7 +15,7 @@ namespace DB.UOW
 
         protected readonly EComContext _db;
 
-        private readonly ILogger _logger;
+        private readonly ILogger<Category> _logger;
 
         private ICategoryRepo? _categoryRepositry;
 
@@ -45,6 +45,16 @@ namespace DB.UOW
         public void SaveChanges()
         {
             _db.SaveChanges();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        public void RollBackAsync()
+        {
+            _db.DisposeAsync();
         }
     }
 }

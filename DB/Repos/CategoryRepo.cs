@@ -13,17 +13,11 @@ namespace DB.Repos
     public class CategoryRepo : BaseRepo<Category>, ICategoryRepo
     {
 
-        private readonly ILogger<CategoryRepo> _logger;
-        private ILogger logger;
+        private readonly ILogger<Category> _logger;
 
-        public CategoryRepo(EComContext db, ILogger<CategoryRepo> logger) : base(db)
+        public CategoryRepo(EComContext db, ILogger<Category> logger) : base(db)
         {
             _logger = logger;
-        }
-
-        public CategoryRepo(EComContext db, ILogger logger) : base(db)
-        {
-            this.logger = logger;
         }
     }
 }

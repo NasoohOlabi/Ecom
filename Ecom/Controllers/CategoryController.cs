@@ -28,9 +28,10 @@ namespace Ecom.Controllers
         }
 
         // GET: Category
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> l = _uow.CategoryRepositry.GetAll();
+            _logger.Log(LogLevel.Information, "Hello from log");
+            IEnumerable<Category> l = await _uow.CategoryRepositry.GetAllAsync();
             var x = new List<CategoryDetailsViewModel>();
             foreach (Category c in l)
             {
@@ -42,13 +43,13 @@ namespace Ecom.Controllers
         // GET: Category/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _uow.CategoryRepositry == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _uow.CategoryRepositry
+                .GetAsync((long)id);
             if (category == null)
             {
                 return NotFound();
@@ -73,7 +74,8 @@ namespace Ecom.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(category);
-                await _context.SaveChangesAsync();
+                _uow.CategoryRepositry.Add(category);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -82,12 +84,12 @@ namespace Ecom.Controllers
         // GET: Category/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _uow.CategoryRepositry == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _uow.CategoryRepositry.GetAsync((long)id);
             if (category == null)
             {
                 return NotFound();
@@ -102,8 +104,8 @@ namespace Ecom.Controllers
 
         public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
-            // Update the student
-            var currentCategory = _context.Categories.FirstOrDefault(c => c.Id == model.Id);
+ 
+            var currentCategory = await _uow.CategoryRepositry.GetAsync(model.Id);
             if (currentCategory == null)
             {
                 return NotFound();
@@ -123,15 +125,15 @@ namespace Ecom.Controllers
         }
 
         // GET: Category/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public IActionResult Delete(long? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _uow.CategoryRepositry == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _uow.CategoryRepositry
+                .DeleteAsync((long)id);
             if (category == null)
             {
                 return NotFound();
@@ -145,14 +147,14 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Categories == null)
+            if (_uow.CategoryRepositry == null)
             {
                 return Problem("Entity set 'EComContext.Categories'  is null.");
             }
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _uow.CategoryRepositry.GetAsync(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                _uow.CategoryRepositry.Delete(category.Id);
             }
 
             await _context.SaveChangesAsync();
@@ -161,7 +163,7 @@ namespace Ecom.Controllers
 
         private bool CategoryExists(long id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _uow.CategoryRepositry.Get(id) != null;
         }
     }
 }

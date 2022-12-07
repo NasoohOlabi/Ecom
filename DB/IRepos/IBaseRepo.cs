@@ -8,11 +8,13 @@ namespace DB.IRepos
 {
     public interface IBaseRepo<T> where T : class
     {
-        T? Get(int id);
-        ValueTask<T?> GetAsync(int id);
+        T? Get(long id);
+        ValueTask<T?> GetAsync(long id);
 
-        void Delete(int id);
-        Task DeleteAsync(int id);
+        Task<List<T>> GetAllAsync();
+
+        void Delete(long id);
+        public Task<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T>?> DeleteAsync(long id);
         void Add(T item);
 
         void Update(T item);
