@@ -14,9 +14,9 @@ namespace DB.UOW
     {
 
         protected readonly EComContext _db;
-        protected readonly ILogger<UnitOfWork>? _logger;
+        protected readonly ILogger<Category> _logger;
 
-        private IProductRepo _product;
+        private IProductRepo? _product;
         public IProductRepo Products
         {
             get
@@ -25,7 +25,7 @@ namespace DB.UOW
                 return _product;
             }
         }
-        private IAddressRepo? _address = null;
+        private IAddressRepo? _address;
         public IAddressRepo Adresses
         {
             get
@@ -34,7 +34,7 @@ namespace DB.UOW
                 return _address;
             }
         }
-        private ISpecificationRepo? _specification = null;
+        private ISpecificationRepo? _specification;
         public ISpecificationRepo Specifications
         {
             get
@@ -53,7 +53,7 @@ namespace DB.UOW
                 return _order;
             }
         }
-        private INotificationRepo? _notification = null;
+        private INotificationRepo? _notification;
         public INotificationRepo Notifications
         {
             get
@@ -72,20 +72,13 @@ namespace DB.UOW
             }
         }
 
-
-        private readonly ILogger<Category> _logger;
-
         private ICategoryRepo? _categoryRepositry;
 
         public ICategoryRepo CategoryRepositry
         {
             get
             {
-
-                if (this._categoryRepositry == null)
-                {
-                    this._categoryRepositry = new CategoryRepo(_db, _logger);
-                }
+                this._categoryRepositry ??= new CategoryRepo(_db, _logger);
                 return _categoryRepositry;
             }
         }

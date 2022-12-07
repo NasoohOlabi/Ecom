@@ -144,13 +144,14 @@ namespace Ecom.Controllers
             }
 
             var category = _uow.CategoryRepositry
-                .DeleteAsync((long)id);
+                .Get((long)id);
+
             if (category == null)
             {
                 return NotFound();
             }
-
-            return View(category);
+            
+            return View(new CategoryDetailsViewModel(category));
         }
 
         // POST: Category/Delete/5

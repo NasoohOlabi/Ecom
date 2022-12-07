@@ -8,6 +8,9 @@ namespace Ecom.Models
 {
     public class CategoryDetailsViewModel
     {
+        public CategoryDetailsViewModel()
+        {
+        }
         public CategoryDetailsViewModel(Category category)
         {
             this.Id = category.Id;
@@ -26,6 +29,10 @@ namespace Ecom.Models
 
     public class CategoryEditViewModel
     {
+
+        public CategoryEditViewModel()
+        {
+        }
         public CategoryEditViewModel(Category category)
         {
             this.Id = category.Id;
