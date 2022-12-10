@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DB.IRepos;
 using DB.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DB.Repos
 {
@@ -14,6 +15,8 @@ namespace DB.Repos
 
         protected EComContext _db;
         private readonly DbSet<T> _dbSet;
+        //TODO:
+        //private readonly ILogger<T> _logger;
 
         public BaseRepo(EComContext db)
         {

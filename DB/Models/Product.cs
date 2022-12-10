@@ -32,8 +32,8 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual Category Category { get; set; } = null!;
-        public virtual User Seller { get; set; } = null!;
+        public virtual Category? Category { get; set; } = null!;
+        public virtual User? Seller { get; set; } = null!;
         public virtual ICollection<OrderHasProduct> OrderHasProducts { get; set; }
         public virtual ICollection<ProductHasAttachment> ProductHasAttachments { get; set; }
         public virtual ICollection<ProductHasCoupon> ProductHasCoupons { get; set; }

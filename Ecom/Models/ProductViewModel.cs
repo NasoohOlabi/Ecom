@@ -8,6 +8,10 @@ namespace Ecom.Models
 {
     public class ProductDetailsViewModel
     {
+
+        public ProductDetailsViewModel()
+        {
+        }
         public ProductDetailsViewModel(Product product)
         {
             this.Id = product.Id;
@@ -19,7 +23,7 @@ namespace Ecom.Models
             this.Description = product.Description;
             this.ModifiedAt = product.ModifiedAt;
             this.CreatedAt = product.CreatedAt;
-            this.Rating = product.RatingSum/product.RatingCount;
+            this.Rating = product.RatingCount == 0 ? 0 : product.RatingSum/product.RatingCount;
             this.Category = product.Category;
         }
         
@@ -34,6 +38,8 @@ namespace Ecom.Models
         public Category? Category { get; set; }
         public User? Seller { get; set; }
         public long Rating { get; set; }
+
+        [Display(Name="Number of Orders")]
         public long OrderCount { get; set; }
         public decimal Discount { get; set; }
 
@@ -41,6 +47,9 @@ namespace Ecom.Models
 
     public class ProductEditViewModel
     {
+        public ProductEditViewModel()
+        {
+        }
 
         public ProductEditViewModel(Product product)
         {
@@ -59,7 +68,11 @@ namespace Ecom.Models
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
+
+        [Display(Name = "Category")]
         public long CategoryId { get; set; }
+
+        [Display(Name = "Seller")]
         public long SellerId { get; set; }
         public Category? Category { get; set; }
         public User? Seller { get; set; }

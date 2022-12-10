@@ -16,7 +16,6 @@ namespace DB.Repos
         private readonly ILogger<AddressRepo>? _logger;
 
 
-
         public AddressRepo(EComContext db, ILogger<AddressRepo>? logger = null) : base(db)
         {
             _logger = logger;

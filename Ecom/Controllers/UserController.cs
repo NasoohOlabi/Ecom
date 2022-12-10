@@ -58,12 +58,17 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,BirthDate,Password,PhoneNumber,RoleId,IsVerified,ProfilePicture,CreatedAt,ModifiedAt")] User user)
         {
+            Role? role = _context.Roles.Find(user.RoleId);
+
+            if (role != null) user.Role = role;
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", user.RoleId);
             return View(user);
         }

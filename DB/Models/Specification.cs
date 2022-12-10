@@ -21,8 +21,8 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual Attribute Attribute { get; set; } = null!;
-        public virtual Product Product { get; set; } = null!;
+        public virtual Attribute? Attribute { get; set; } = null!;
+        public virtual Product? Product { get; set; } = null!;
         public virtual ICollection<SpecificationValue> SpecificationValues { get; set; }
     }
 }

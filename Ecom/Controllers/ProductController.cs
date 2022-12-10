@@ -56,7 +56,7 @@ namespace Ecom.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "BirthDate");
+            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName");
             return View();
         }
 
@@ -87,7 +87,7 @@ namespace Ecom.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", currentProduct.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "BirthDate", currentProduct.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", currentProduct.SellerId);
             return View(currentProduct);
         }
 
@@ -105,7 +105,7 @@ namespace Ecom.Controllers
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "BirthDate", product.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
             return View(new ProductEditViewModel(product));
         }
 
@@ -153,7 +153,7 @@ namespace Ecom.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", currentProduct.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "BirthDate", currentProduct.SellerId);
+            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", currentProduct.SellerId);
             return View(currentProduct);
         }
 
