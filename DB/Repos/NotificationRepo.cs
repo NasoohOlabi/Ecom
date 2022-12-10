@@ -2,6 +2,7 @@
 using DB.Models;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,7 @@ namespace DB.Repos
 {
     public class NotificationRepo : BaseRepo<Notification>, INotificationRepo
     {
+        public NotificationRepo(EComContext db, ILogger logger) : base(db, logger) { }
 
-        private readonly ILogger<NotificationRepo>? _logger;
-
-
-
-        public NotificationRepo(EComContext db, ILogger<NotificationRepo>? logger = null) : base(db)
-        {
-            _logger = logger;
-        }
-
-        
     }
 }

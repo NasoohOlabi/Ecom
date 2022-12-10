@@ -8,55 +8,65 @@ using Microsoft.EntityFrameworkCore;
 using DB.Models;
 using Ecom.Models;
 using System.Xml.Linq;
+using AutoMapper;
+using DB.UOW;
+using Microsoft.Extensions.Logging;
 
 namespace Ecom.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController<ProductController>
     {
-        private readonly EComContext _context;
-
-        public ProductController(EComContext context)
+        public ProductController(ILogger<ProductController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
         {
-            _context = context;
         }
 
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var detailsViewModels =
-                from p in (await _context.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Seller).ToListAsync())
-                select new ProductDetailsViewModel(p);
+            IEnumerable<Product> l = await _uow.Products.GetAllAsync();
+            var x = new List<ProductDetailsViewModel>();
+            foreach (Product p in l)
+            {
+                x.Add(_mapper.Map<ProductDetailsViewModel>(p));
+            }
+            return View(x);
 
-            return View(detailsViewModels);
+            //var detailsViewModels =
+            //    from p in (await _context.Products
+            //        .Include(p => p.Category)
+            //        .Include(p => p.Seller).ToListAsync())
+            //    select _mapper.Map<ProductDetailsViewModel>(p);
+
+            //return View(detailsViewModels);
         }
 
         // GET: Product/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _uow.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Seller)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var product = await _context.Products
+            //    .Include(p => p.Category)
+            //    .Include(p => p.Seller)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            var product = await _uow.Products.GetAsync((long)id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            return View(new ProductDetailsViewModel(product));
+            return View(_mapper.Map<ProductDetailsViewModel>(product));
         }
 
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["CategoryId"] = new SelectList(_uow.Categories.GetAll(), "Id", "Name");
+            ViewData["SellerId"] = new SelectList(_uow.Categories.GetAll(), "Id", "FirstName");
             return View();
         }
 
@@ -65,48 +75,49 @@ namespace Ecom.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductEditViewModel model)
+        public async Task<IActionResult> Create(ProductEditViewModel productViewModel)
         {
-            var currentProduct = new Product
-            {
-                Name = model.Name,
-                Description = model.Description,
-                Price = model.Price,
-                CategoryId = model.CategoryId,
-                SellerId = model.SellerId,
-                RatingSum = 0,
-                RatingCount = 0,
-                OrderCount = 0,
-                Discount = model.Discount
-            };
+            //var product = _mapper.Map<Product>(model);
 
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(product);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            //ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            //ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
+            //return View(product);
+
+            var product = _mapper.Map<Product>(productViewModel);
             if (ModelState.IsValid)
             {
-                _context.Add(currentProduct);
-                await _context.SaveChangesAsync();
+                _uow.Products.Add(product);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", currentProduct.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", currentProduct.SellerId);
-            return View(currentProduct);
+            return View(product);
         }
 
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _uow.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _uow.Products.GetAsync((long)id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
-            return View(new ProductEditViewModel(product));
+
+            //ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            //ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
+
+            return View(_mapper.Map<ProductEditViewModel>(product));
         }
 
         // POST: Product/Edit/5
@@ -116,28 +127,20 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
         {
-            var currentProduct = await _context.Products
-                .FirstOrDefaultAsync(p => model.Id == p.Id);
+            var currentProduct = await _uow.Products.GetAsync(model.Id);
             if (currentProduct == null)
             {
                 return NotFound();
             }
-            // editable fields
-            currentProduct.Name = model.Name;
-            currentProduct.Price = model.Price;
-            if (model.Seller?.Id != null)
-                currentProduct.SellerId = model.Seller.Id;
-            currentProduct.Discount = model.Discount;
-            currentProduct.Description = model.Description;
-            if (model.Category?.Id != null)
-                currentProduct.CategoryId = model.Category.Id;
+            _mapper.Map(model, currentProduct);
 
+            // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(currentProduct);
-                    await _context.SaveChangesAsync();
+                    _uow.Products.Update(currentProduct);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -146,29 +149,23 @@ namespace Ecom.Controllers
                         return NotFound();
                     }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", currentProduct.CategoryId);
-            ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", currentProduct.SellerId);
             return View(currentProduct);
         }
 
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _uow.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Seller)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _uow.Products.GetAsync((long)id);
+
             if (product == null)
             {
                 return NotFound();
@@ -182,23 +179,23 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Products == null)
+            if (_uow.Products == null)
             {
                 return Problem("Entity set 'EComContext.Products'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
+            var product = await _uow.Products.GetAsync(id);
             if (product != null)
             {
-                _context.Products.Remove(product);
+                _uow.Products.Delete(product.Id);
             }
 
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(long id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _uow.Products.Get(id) != null;
         }
     }
 }

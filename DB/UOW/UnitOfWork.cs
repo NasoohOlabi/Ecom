@@ -6,87 +6,36 @@ using System.Threading.Tasks;
 using DB.IRepos;
 using DB.Models;
 using DB.Repos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DB.UOW
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
 
-        protected readonly EComContext _db;
-        protected readonly ILogger<Category> _logger;
-
-        private IProductRepo? _product;
-        public IProductRepo Products
-        {
-            get
-            {
-                _product ??= new ProductRepo(_db);
-                return _product;
-            }
-        }
-        private IAddressRepo? _address;
-        public IAddressRepo Adresses
-        {
-            get
-            {
-                _address ??= new AddressRepo(_db);
-                return _address;
-            }
-        }
-        private ISpecificationRepo? _specification;
-        public ISpecificationRepo Specifications
-        {
-            get
-            {
-                _specification ??= new SpecificationRepo(_db);
-                return _specification;
-            }
-        }
-        
-        private IOrderRepo? _order = null;
-        public IOrderRepo Orders
-        {
-            get
-            {
-                _order ??= new OrderRepo(_db);
-                return _order;
-            }
-        }
-        private INotificationRepo? _notification;
-        public INotificationRepo Notifications
-        {
-            get
-            {
-                _notification ??= new NotificationRepo(_db);
-                return _notification;
-            }
-        }
-        private ICouponRepo? _coupon = null;
-        public ICouponRepo Coupons
-        {
-            get
-            {
-                _coupon ??= new CouponRepo(_db);
-                return _coupon;
-            }
-        }
-
-        private ICategoryRepo? _categoryRepositry;
-
-        public ICategoryRepo CategoryRepositry
-        {
-            get
-            {
-                this._categoryRepositry ??= new CategoryRepo(_db, _logger);
-                return _categoryRepositry;
-            }
-        }
-
-        public UnitOfWork(EComContext db, ILogger<Category> logger)
+        private readonly EComContext _db;
+        private readonly ILogger _logger;
+        public IAddressRepo Addresses { get; private set; }
+        public IAttachmentRepo Attachments { get; private set; }
+        public ICategoryRepo Categories { get; private set; }
+        public ICouponRepo Coupons { get; private set; }
+        public INotificationRepo Notifications { get; private set; }
+        public IOrderRepo Orders { get; private set; }
+        public IProductRepo Products { get; private set; }
+        public ISpecificationRepo Specifications { get; private set; }
+        public UnitOfWork(EComContext db, ILoggerFactory loggerFactory)
         {
             _db = db;
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger("logs");
+            Addresses = new AddressRepo(_db, _logger);
+            Attachments = new AttachmentRepo(_db, _logger);
+            Categories = new CategoryRepo(_db, _logger);
+            Coupons = new CouponRepo(_db, _logger);
+            Notifications = new NotificationRepo(_db, _logger);
+            Orders = new OrderRepo(_db, _logger);
+            Products = new ProductRepo(_db, _logger);
+            Specifications = new SpecificationRepo(_db, _logger);
         }
         public void RollBack()
         {
@@ -106,6 +55,11 @@ namespace DB.UOW
         public void RollBackAsync()
         {
             _db.DisposeAsync();
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
         }
     }
 }

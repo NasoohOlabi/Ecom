@@ -2,6 +2,7 @@
 using DB.Models;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,7 @@ namespace DB.Repos
 {
     public class AttachmentRepo : BaseRepo<Attachment>, IAttachmentRepo
     {
-
-        private readonly ILogger<AttachmentRepo>? _logger;
-
-
-
-        public AttachmentRepo(EComContext db, ILogger<AttachmentRepo>? logger = null) : base(db)
-        {
-            _logger = logger;
-        }
-
+        public AttachmentRepo(EComContext db, ILogger logger) : base(db, logger) { }
 
     }
 }

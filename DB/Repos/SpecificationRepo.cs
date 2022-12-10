@@ -2,6 +2,7 @@
 using DB.Models;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,6 @@ namespace DB.Repos
 {
     public class SpecificationRepo : BaseRepo<Specification>, ISpecificationRepo
     {
-
-        private readonly ILogger<SpecificationRepo>? _logger;
-
-
-
-        public SpecificationRepo(EComContext db, ILogger<SpecificationRepo>? logger = null) : base(db)
-        {
-            _logger = logger;
-        }
-
-        
+        public SpecificationRepo(EComContext db, ILogger logger) : base(db, logger) { }
     }
 }

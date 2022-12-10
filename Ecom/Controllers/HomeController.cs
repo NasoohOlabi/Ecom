@@ -1,17 +1,15 @@
-﻿using DB.UOW;
+﻿using AutoMapper;
+using DB.UOW;
 using Ecom.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Ecom.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : BaseController<HomeController>
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(IUnitOfWork uow,ILogger<HomeController> logger): base(uow)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper) 
         {
-            _logger = logger;
         }
 
         public IActionResult Index()

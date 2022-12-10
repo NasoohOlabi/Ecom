@@ -2,6 +2,7 @@
 using DB.Models;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,7 @@ namespace DB.Repos
 {
     public class ProductRepo : BaseRepo<Product>, IProductRepo
     {
-
-        private readonly ILogger<ProductRepo>? _logger;
-
-
-
-        public ProductRepo(EComContext db, ILogger<ProductRepo>? logger = null) : base(db)
-        {
-            _logger = logger;
-        }
+        public ProductRepo(EComContext db, ILogger logger) : base(db, logger) { }
 
         public void UpdateRating(long id, long count, long sum)
         {

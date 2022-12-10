@@ -17,6 +17,7 @@ builder.Services.AddSingleton<ISingletonRnd, SingletonRnd>();
 builder.Services.AddTransient<ITransientRnd, TransientRnd>();
 builder.Services.AddScoped<IScopedRnd, ScopedRnd>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
 

@@ -7,6 +7,7 @@ using DB.IRepos;
 using DB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DB.Repos
 {
@@ -14,14 +15,14 @@ namespace DB.Repos
     {
 
         protected EComContext _db;
-        private readonly DbSet<T> _dbSet;
-        //TODO:
-        //private readonly ILogger<T> _logger;
+        internal DbSet<T> _dbSet;
+        protected readonly ILogger _logger;
 
-        public BaseRepo(EComContext db)
+        public BaseRepo(EComContext db, ILogger logger)
         {
             _db = db;
             _dbSet = db.Set<T>();
+            _logger = logger;
         }
 
         public void Add(T item)
