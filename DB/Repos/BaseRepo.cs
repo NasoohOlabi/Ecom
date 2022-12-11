@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using DB.IRepos;
@@ -25,49 +26,108 @@ namespace DB.Repos
             _logger = logger;
         }
 
-        public void Add(T item)
+        public IEnumerable<T> Get(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeProperties = "")
         {
-            _dbSet.Add(item);
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
         }
 
-        public void Delete(long id)
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeProperties = "")
         {
-            var entity =  _dbSet.Find(id);
-            if (entity != null)
-            _dbSet.Remove(entity);
-        }
+            IQueryable<T> query = _dbSet;
 
-        public async Task<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T>?> DeleteAsync(long id)
-        {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity != null)
-                return _dbSet.Remove(entity);
-            return null;
-        }
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
-        public T? Get(long id)
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            else
+            {
+                return await query.ToListAsync();
+            }
+        }
+        public T? GetByID(long id)
         {
             return _dbSet.Find(id);
         }
 
-        public ValueTask<T?> GetAsync(long id)
+        public async Task<T?> GetByIDAsync(long id)
         {
-            return _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public void Insert(T entity)
         {
-            return _dbSet.ToList();
+            _dbSet.Add(entity);
         }
 
-        public Task<List<T>> GetAllAsync()
+        public async Task InsertAsync(T entity)
         {
-            return _dbSet.ToListAsync();
+            await _dbSet.AddAsync(entity);
         }
 
-        public void Update(T item)
+        public void Delete(long id)
         {
-            _dbSet.Update(item);
+            T? entityToDelete = _dbSet.Find(id);
+            if(entityToDelete != null)
+            {
+                Delete(entityToDelete);
+            }
+               
         }
+        public async Task DeleteAsync(long id)
+        {
+            T? entityToDelete = await _dbSet.FindAsync(id);
+            if (entityToDelete != null)
+            {
+                Delete(entityToDelete);
+            }
+
+        }
+
+        public void Delete(T entityToDelete)
+        {
+            if (_db.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entityToDelete);
+            }
+            _dbSet.Remove(entityToDelete);
+        }
+
+        public void Update(T entityToUpdate)
+        {
+            _dbSet.Attach(entityToUpdate);
+            _db.Entry(entityToUpdate).State = EntityState.Modified;
+        }
+
     }
 }

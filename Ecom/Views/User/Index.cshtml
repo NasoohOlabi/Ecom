@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Models.User>
+﻿@model IEnumerable<Ecom.Models.UserDetailsViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -76,7 +76,7 @@
                 @Html.DisplayFor(modelItem => item.ModifiedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Role.Name)
+                @Html.DisplayFor(modelItem => item.Role!.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

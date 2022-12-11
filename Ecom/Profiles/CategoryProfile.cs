@@ -10,6 +10,7 @@ namespace Ecom.Profiles
         {
             CreateMap<Category, CategoryDetailsViewModel>();
             CreateMap<Category, CategoryEditViewModel>().ReverseMap();
+            CreateMap<CategoryEditViewModel, CategoryDetailsViewModel>().ReverseMap();
         }
     }
 }

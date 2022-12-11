@@ -6,40 +6,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB.Models;
+using AutoMapper;
+using DB.UOW;
+using Ecom.Models;
 
 namespace Ecom.Controllers
 {
-    public class RoleController : Controller
+    public class RoleController : BaseController<RoleController>
     {
-        private readonly EComContext _context;
-
-        public RoleController(EComContext context)
+        public RoleController(ILogger<RoleController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
         {
-            _context = context;
         }
 
         // GET: Role
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Roles.ToListAsync());
+            IEnumerable<Role> roles = await _uow.Roles.GetAsync();
+            var rolesList = new List<RoleDetailsViewModel>();
+            foreach (Role c in roles)
+            {
+                rolesList.Add(_mapper.Map<RoleDetailsViewModel>(c));
+            }
+            return View(rolesList);
         }
 
         // GET: Role/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null || _context.Roles == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var role = await _uow.Roles
+                .GetByIDAsync((long)id);
+
             if (role == null)
             {
                 return NotFound();
             }
 
-            return View(role);
+            RoleDetailsViewModel roleDetailsViewModel = _mapper.Map<RoleDetailsViewModel>(role);
+            return View(roleDetailsViewModel);
         }
 
         // GET: Role/Create
@@ -53,12 +61,13 @@ namespace Ecom.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
+        public async Task<IActionResult> Create(RoleEditViewModel roleViewModel)
         {
+            var role = _mapper.Map<Role>(roleViewModel);
             if (ModelState.IsValid)
             {
-                _context.Add(role);
-                await _context.SaveChangesAsync();
+                _uow.Roles.Insert(role);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(role);
@@ -67,17 +76,18 @@ namespace Ecom.Controllers
         // GET: Role/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _context.Roles == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _uow.Roles.GetByIDAsync((long)id);
             if (role == null)
             {
                 return NotFound();
             }
-            return View(role);
+            var roleEditViewModel = _mapper.Map<RoleEditViewModel>(role);
+            return View(roleEditViewModel);
         }
 
         // POST: Role/Edit/5
@@ -85,9 +95,11 @@ namespace Ecom.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
+        public async Task<IActionResult> Edit(RoleEditViewModel model)
         {
-            if (id != role.Id)
+            var currentRole = await _uow.Roles.GetByIDAsync(model.Id);
+
+            if (currentRole == null)
             {
                 return NotFound();
             }
@@ -96,12 +108,12 @@ namespace Ecom.Controllers
             {
                 try
                 {
-                    _context.Update(role);
-                    await _context.SaveChangesAsync();
+                    _uow.Roles.Update(_mapper.Map(model, currentRole));
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoleExists(role.Id))
+                    if (!RoleExists(currentRole.Id))
                     {
                         return NotFound();
                     }
@@ -112,25 +124,26 @@ namespace Ecom.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(role);
+            return View(currentRole);
         }
 
         // GET: Role/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null || _context.Roles == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var role = await _uow.Roles
+                .GetByIDAsync((long)id);
+
             if (role == null)
             {
                 return NotFound();
             }
 
-            return View(role);
+            return View(_mapper.Map<RoleDetailsViewModel>(role));
         }
 
         // POST: Role/Delete/5
@@ -138,23 +151,24 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Roles == null)
+            if (_uow.Roles == null)
             {
                 return Problem("Entity set 'EComContext.Roles'  is null.");
             }
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _uow.Roles.GetByIDAsync(id);
+
             if (role != null)
             {
-                _context.Roles.Remove(role);
+                _uow.Roles.Delete(role);
             }
             
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RoleExists(long id)
         {
-          return _context.Roles.Any(e => e.Id == id);
+          return _uow.Roles.GetByID(id) != null;
         }
     }
 }

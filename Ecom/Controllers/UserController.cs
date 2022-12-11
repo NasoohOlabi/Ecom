@@ -6,112 +6,112 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB.Models;
+using AutoMapper;
+using DB.UOW;
+using Ecom.Models;
 
 namespace Ecom.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController<UserController>
     {
-        private readonly EComContext _context;
-
-        public UserController(EComContext context)
+        public UserController(ILogger<UserController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
         {
-            _context = context;
         }
 
         // GET: User
         public async Task<IActionResult> Index()
         {
-            var eComContext = _context.Users.Include(u => u.Role);
-            return View(await eComContext.ToListAsync());
+            IEnumerable<User> usersList = await _uow.Users.GetAsync(includeProperties: "Role");
+            var users = new List<UserDetailsViewModel>();
+            foreach (User u in usersList)
+            {
+                users.Add(_mapper.Map<UserDetailsViewModel>(u));
+            }
+            return View(users);
         }
 
         // GET: User/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+
+            if(user.Count() == 0)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(_mapper.Map<UserDetailsViewModel>(user.First()));
         }
 
         // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
+            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name");
             return View();
         }
 
         // POST: User/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,BirthDate,Password,PhoneNumber,RoleId,IsVerified,ProfilePicture,CreatedAt,ModifiedAt")] User user)
+        public async Task<IActionResult> Create(UserEditViewModel userEditViewModel)
         {
-            Role? role = _context.Roles.Find(user.RoleId);
-
-            if (role != null) user.Role = role;
-
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                _uow.Users.Insert(_mapper.Map<User>(userEditViewModel));
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", user.RoleId);
-            return View(user);
+
+            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", userEditViewModel.RoleId);
+            return View(_mapper.Map<UserDetailsViewModel>(userEditViewModel));
         }
 
         // GET: User/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _uow.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _uow.Users.GetByIDAsync((long)id);
+
             if (user == null)
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", user.RoleId);
-            return View(user);
+            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", user.RoleId);
+
+            return View(_mapper.Map<UserEditViewModel>(user));
         }
 
         // POST: User/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,FirstName,LastName,BirthDate,Password,PhoneNumber,RoleId,IsVerified,ProfilePicture,CreatedAt,ModifiedAt")] User user)
+        public async Task<IActionResult> Edit(UserEditViewModel userEditViewModel)
         {
-            if (id != user.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    User? user = _uow.Users.GetByID(userEditViewModel.Id);
+                    if(user == null)
+                    {
+                        return NotFound();
+                    }
+                    _uow.Users.Update(_mapper.Map(userEditViewModel, user));
+
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!UserExists(userEditViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -122,27 +122,26 @@ namespace Ecom.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", user.RoleId);
-            return View(user);
+            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", userEditViewModel.RoleId);
+            return View(_mapper.Map<UserDetailsViewModel>(userEditViewModel));
         }
 
         // GET: User/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _uow.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+
+            if (user.Count() == 0)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(_mapper.Map<UserDetailsViewModel>(user.First()));
         }
 
         // POST: User/Delete/5
@@ -150,23 +149,23 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Users == null)
+            if (_uow.Users == null)
             {
                 return Problem("Entity set 'EComContext.Users'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _uow.Users.GetByIDAsync(id);
             if (user != null)
             {
-                _context.Users.Remove(user);
+                _uow.Users.Delete(user);
             }
             
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(long id)
         {
-          return _context.Users.Any(e => e.Id == id);
+          return _uow.Users.GetByID(id) != null;
         }
     }
 }

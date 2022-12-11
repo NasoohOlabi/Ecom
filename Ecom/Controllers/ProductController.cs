@@ -23,21 +23,13 @@ namespace Ecom.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Product> l = await _uow.Products.GetAllAsync();
-            var x = new List<ProductDetailsViewModel>();
-            foreach (Product p in l)
+            IEnumerable<Product> products = await _uow.Products.GetAsync(includeProperties: "Category,Seller");
+            var productsList = new List<ProductDetailsViewModel>();
+            foreach (Product p in products)
             {
-                x.Add(_mapper.Map<ProductDetailsViewModel>(p));
+                productsList.Add(_mapper.Map<ProductDetailsViewModel>(p));
             }
-            return View(x);
-
-            //var detailsViewModels =
-            //    from p in (await _context.Products
-            //        .Include(p => p.Category)
-            //        .Include(p => p.Seller).ToListAsync())
-            //    select _mapper.Map<ProductDetailsViewModel>(p);
-
-            //return View(detailsViewModels);
+            return View(productsList);
         }
 
         // GET: Product/Details/5
@@ -48,12 +40,8 @@ namespace Ecom.Controllers
                 return NotFound();
             }
 
-            //var product = await _context.Products
-            //    .Include(p => p.Category)
-            //    .Include(p => p.Seller)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _uow.Products.GetByIDAsync((long)id);
 
-            var product = await _uow.Products.GetAsync((long)id);
             if (product == null)
             {
                 return NotFound();
@@ -65,39 +53,24 @@ namespace Ecom.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_uow.Categories.GetAll(), "Id", "Name");
-            ViewData["SellerId"] = new SelectList(_uow.Categories.GetAll(), "Id", "FirstName");
+            ViewData["CategoryId"] = new SelectList(_uow.Categories.Get(), "Id", "Name");
+            ViewData["SellerId"] = new SelectList(_uow.Users.Get(), "Id", "FirstName");
             return View();
         }
 
         // POST: Product/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductEditViewModel productViewModel)
         {
-            //var product = _mapper.Map<Product>(model);
-
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(product);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-
-            //ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            //ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
-            //return View(product);
-
             var product = _mapper.Map<Product>(productViewModel);
             if (ModelState.IsValid)
             {
-                _uow.Products.Add(product);
+                _uow.Products.Insert(product);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(_mapper.Map<ProductEditViewModel>(product));
         }
 
         // GET: Product/Edit/5
@@ -108,33 +81,30 @@ namespace Ecom.Controllers
                 return NotFound();
             }
 
-            var product = await _uow.Products.GetAsync((long)id);
+            var product = await _uow.Products.GetByIDAsync((long)id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            //ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            //ViewData["SellerId"] = new SelectList(_context.Users, "Id", "FirstName", product.SellerId);
+            ViewData["CategoryId"] = new SelectList(_uow.Categories.Get(), "Id", "Name", product.CategoryId);
+            ViewData["SellerId"] = new SelectList(_uow.Users.Get(), "Id", "FirstName", product.SellerId);
 
             return View(_mapper.Map<ProductEditViewModel>(product));
         }
 
         // POST: Product/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
         {
-            var currentProduct = await _uow.Products.GetAsync(model.Id);
+            var currentProduct = await _uow.Products.GetByIDAsync(model.Id);
             if (currentProduct == null)
             {
                 return NotFound();
             }
             _mapper.Map(model, currentProduct);
 
-            // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
                 try
@@ -164,7 +134,7 @@ namespace Ecom.Controllers
                 return NotFound();
             }
 
-            var product = await _uow.Products.GetAsync((long)id);
+            var product = await _uow.Products.GetByIDAsync((long)id);
 
             if (product == null)
             {
@@ -183,7 +153,7 @@ namespace Ecom.Controllers
             {
                 return Problem("Entity set 'EComContext.Products'  is null.");
             }
-            var product = await _uow.Products.GetAsync(id);
+            var product = await _uow.Products.GetByIDAsync(id);
             if (product != null)
             {
                 _uow.Products.Delete(product.Id);
@@ -195,7 +165,7 @@ namespace Ecom.Controllers
 
         private bool ProductExists(long id)
         {
-            return _uow.Products.Get(id) != null;
+            return _uow.Products.GetByID(id) != null;
         }
     }
 }

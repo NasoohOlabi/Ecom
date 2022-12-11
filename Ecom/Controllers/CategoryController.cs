@@ -23,7 +23,7 @@ namespace Ecom.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.Log(LogLevel.Information, "Hello from log");
-            IEnumerable<Category> l = await _uow.Categories.GetAllAsync();
+            IEnumerable<Category> l = await _uow.Categories.GetAsync();
             var x = new List<CategoryDetailsViewModel>();
             foreach (Category c in l)
             {
@@ -35,17 +35,19 @@ namespace Ecom.Controllers
         // GET: Category/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null || _uow.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var category = await _uow.Categories
-                .GetAsync((long)id);
+                .GetByIDAsync((long)id);
+
             if (category == null)
             {
                 return NotFound();
             }
+
             CategoryDetailsViewModel categoryDetailsViewModel = _mapper.Map<CategoryDetailsViewModel>(category);
             return View(categoryDetailsViewModel);
         }
@@ -66,7 +68,7 @@ namespace Ecom.Controllers
             var category = _mapper.Map<Category>(categoryViewModel);
             if (ModelState.IsValid)
             {
-                _uow.Categories.Add(category);
+                _uow.Categories.Insert(category);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -76,12 +78,12 @@ namespace Ecom.Controllers
         // GET: Category/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _uow.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _uow.Categories.GetAsync((long)id);
+            var category = await _uow.Categories.GetByIDAsync((long)id);
             if (category == null)
             {
                 return NotFound();
@@ -97,20 +99,19 @@ namespace Ecom.Controllers
         public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
  
-            var currentCategory = await _uow.Categories.GetAsync(model.Id);
+            var currentCategory = await _uow.Categories.GetByIDAsync(model.Id);
+
             if (currentCategory == null)
             {
                 return NotFound();
             }
-            currentCategory.Name = model.Name;
-
 
             // Call entity framework here to save these changes
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _uow.Categories.Update(currentCategory);
+                    _uow.Categories.Update(_mapper.Map(model, currentCategory));
                     await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -128,15 +129,15 @@ namespace Ecom.Controllers
         }
 
         // GET: Category/Delete/5
-        public IActionResult Delete(long? id)
+        public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null || _uow.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = _uow.Categories
-                .Get((long)id);
+            var category = await _uow.Categories
+                .GetByIDAsync((long)id);
 
             if (category == null)
             {
@@ -155,10 +156,12 @@ namespace Ecom.Controllers
             {
                 return Problem("Entity set 'EComContext.Categories'  is null.");
             }
-            var category = await _uow.Categories.GetAsync(id);
+
+            var category = await _uow.Categories.GetByIDAsync(id);
+
             if (category != null)
             {
-                _uow.Categories.Delete(category.Id);
+                _uow.Categories.Delete(category);
             }
 
             await _uow.SaveChangesAsync();
@@ -167,7 +170,7 @@ namespace Ecom.Controllers
 
         private bool CategoryExists(long id)
         {
-            return _uow.Categories.Get(id) != null;
+            return _uow.Categories.GetByID(id) != null;
         }
     }
 }

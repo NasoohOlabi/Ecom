@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface IAttachmentRepo : IBaseRepo<Attachment>
+    public interface IPermissionRepo : IBaseRepo<Permission>
     {
     }
 }

@@ -6,14 +6,9 @@ using DB.Models;
 
 namespace Ecom.Models
 {
-    public class ProductDetailsViewModel
+    public class ProductDetailsViewModel : BaseDetailsViewModel
     {
-        public long Id { get; set; }
         public string Name { get; set; } = null!;
-        [Display(Name = "Created At")]
-        public DateTime CreatedAt { get; set; }
-        [Display(Name = "Modified At")]
-        public DateTime ModifiedAt { get; set; }
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
         public Category? Category { get; set; }
@@ -26,9 +21,8 @@ namespace Ecom.Models
 
     }
 
-    public class ProductEditViewModel
+    public class ProductEditViewModel : BaseEditViewModel
     {
-        public long Id { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
