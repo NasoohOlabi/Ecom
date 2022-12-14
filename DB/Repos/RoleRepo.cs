@@ -1,6 +1,5 @@
 ﻿using DB.IRepos;
 using DB.Models;
-using DB.UOW;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class OrderRepo : BaseRepo<OrderRepo,Order>, IOrderRepo
+    public class RoleRepo : BaseRepo<RoleRepo, Role>, IRoleRepo
     {
-        public OrderRepo(EComContext db, ILogger<OrderRepo> logger ) : base(db,logger)
+        public RoleRepo(EComContext db, ILogger<RoleRepo> logger) : base(db, logger)
         {
         }
     }
 }
+

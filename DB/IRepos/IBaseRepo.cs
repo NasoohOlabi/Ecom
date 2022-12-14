@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface IBaseRepo<T> where T : class
+    public interface IBaseRepo<U, T> where U : class  where T : class
     {
         T? Get(long id);
         ValueTask<T?> GetAsync(long id);

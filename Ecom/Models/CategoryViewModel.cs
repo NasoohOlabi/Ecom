@@ -8,16 +8,6 @@ namespace Ecom.Models
 {
     public class CategoryDetailsViewModel
     {
-        public CategoryDetailsViewModel()
-        {
-        }
-        public CategoryDetailsViewModel(Category category)
-        {
-            this.Id = category.Id;
-            this.Name = category.Name;
-            this.ModifiedAt = category.ModifiedAt;
-            this.CreatedAt = category.CreatedAt;
-        }
         public long Id { get; set; }
         public string Name { get; set; } = null!;
         [Display(Name = "Created At")]
@@ -29,18 +19,8 @@ namespace Ecom.Models
 
     public class CategoryEditViewModel
     {
-
-        public CategoryEditViewModel()
-        {
-        }
-        public CategoryEditViewModel(Category category)
-        {
-            this.Id = category.Id;
-            this.Name = category.Name;
-        }
         public long Id { get; set; }
         public string Name { get; set; } = null!;
-
     }
 
 }

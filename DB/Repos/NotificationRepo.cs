@@ -10,18 +10,10 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class NotificationRepo : BaseRepo<Notification>, INotificationRepo
+    public class NotificationRepo : BaseRepo<NotificationRepo,Notification>, INotificationRepo
     {
-
-        private readonly ILogger<NotificationRepo>? _logger;
-
-
-
-        public NotificationRepo(EComContext db, ILogger<NotificationRepo>? logger = null) : base(db)
+        public NotificationRepo(EComContext db, ILogger<NotificationRepo> logger) : base(db, logger)
         {
-            _logger = logger;
         }
-
-        
     }
 }

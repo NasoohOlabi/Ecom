@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface IAddressRepo : IBaseRepo<Product>
+    public interface IAddressRepo : IBaseRepo<IAddressRepo, Address>
     {
     }
 }

@@ -10,18 +10,10 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class SpecificationRepo : BaseRepo<Specification>, ISpecificationRepo
+    public class SpecificationRepo : BaseRepo<SpecificationRepo, Specification>, ISpecificationRepo
     {
-
-        private readonly ILogger<SpecificationRepo>? _logger;
-
-
-
-        public SpecificationRepo(EComContext db, ILogger<SpecificationRepo>? logger = null) : base(db)
+        public SpecificationRepo(EComContext db, ILogger<SpecificationRepo> logger) : base(db,logger)
         {
-            _logger = logger;
         }
-
-        
     }
 }

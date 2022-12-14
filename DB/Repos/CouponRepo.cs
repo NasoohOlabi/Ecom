@@ -10,18 +10,10 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class CouponRepo : BaseRepo<Coupon>, ICouponRepo
+    public class CouponRepo : BaseRepo<CouponRepo,Coupon>, ICouponRepo
     {
-
-        private readonly ILogger<CouponRepo>? _logger;
-
-
-
-        public CouponRepo(EComContext db, ILogger<CouponRepo>? logger = null) : base(db)
+        public CouponRepo(EComContext db, ILogger<CouponRepo> logger) : base(db,logger)
         {
-            _logger = logger;
         }
-
-
     }
 }

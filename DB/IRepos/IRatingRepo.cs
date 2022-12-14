@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface ICategoryRepo : IBaseRepo<ICategoryRepo,Category>
+    public interface IRatingRepo : IBaseRepo<IRatingRepo,Rating>
     {
     }
 }

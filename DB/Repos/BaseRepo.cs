@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 using DB.IRepos;
 using DB.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DB.Repos
 {
-    public class BaseRepo<T> : IBaseRepo<T> where T : class
+    public class BaseRepo<U,T> : IBaseRepo<U,T> where U : class where T : class
     {
 
-        protected EComContext _db;
-        private readonly DbSet<T> _dbSet;
+        protected readonly ILogger<U> _logger;
+        protected readonly DbSet<T> _dbSet;
 
-        public BaseRepo(EComContext db)
+        public BaseRepo(EComContext db, ILogger<U> logger)
         {
-            _db = db;
+            _logger = logger;
             _dbSet = db.Set<T>();
         }
 

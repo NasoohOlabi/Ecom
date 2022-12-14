@@ -14,79 +14,55 @@ namespace DB.UOW
     {
 
         protected readonly EComContext _db;
-        protected readonly ILogger<Category> _logger;
+        private readonly ILogger<IUnitOfWork> _logger;
+        private readonly ILoggerFactory _loggerFactory;
 
-        private IProductRepo? _product;
-        public IProductRepo Products
-        {
-            get
-            {
-                _product ??= new ProductRepo(_db);
-                return _product;
-            }
-        }
-        private IAddressRepo? _address;
-        public IAddressRepo Adresses
-        {
-            get
-            {
-                _address ??= new AddressRepo(_db);
-                return _address;
-            }
-        }
-        private ISpecificationRepo? _specification;
-        public ISpecificationRepo Specifications
-        {
-            get
-            {
-                _specification ??= new SpecificationRepo(_db);
-                return _specification;
-            }
-        }
-        
-        private IOrderRepo? _order = null;
-        public IOrderRepo Orders
-        {
-            get
-            {
-                _order ??= new OrderRepo(_db);
-                return _order;
-            }
-        }
-        private INotificationRepo? _notification;
-        public INotificationRepo Notifications
-        {
-            get
-            {
-                _notification ??= new NotificationRepo(_db);
-                return _notification;
-            }
-        }
-        private ICouponRepo? _coupon = null;
-        public ICouponRepo Coupons
-        {
-            get
-            {
-                _coupon ??= new CouponRepo(_db);
-                return _coupon;
-            }
-        }
 
-        private ICategoryRepo? _categoryRepositry;
+        public IProductRepo ProductRepositry { get; private set; }
+        public IAddressRepo AddressRepositry { get; private set; }
+        public ISpecificationRepo SpecificationRepositry { get; private set; }
+        public IOrderRepo OrderRepositry { get; private set; }
+        public INotificationRepo NotificationRepositry { get; private set; }
+        public ICouponRepo CouponRepositry { get; private set; }
+        public ICategoryRepo CategoryRepositry { get; private set; }
+        public IRatingRepo RatingRepositry { get; private set; }
+        public IRoleRepo RoleRepositry { get; private set; }
+        public IShippingRepo ShippingRepositry { get; private set; }
+        public IUserRepo UserRepositry { get; private set; }
+        public IWishListRepo WishListRepositry { get; private set; }
 
-        public ICategoryRepo CategoryRepositry
-        {
-            get
-            {
-                this._categoryRepositry ??= new CategoryRepo(_db, _logger);
-                return _categoryRepositry;
-            }
-        }
 
-        public UnitOfWork(EComContext db, ILogger<Category> logger)
+        public UnitOfWork(EComContext db, ILoggerFactory factory
+            , IProductRepo Product
+            , IAddressRepo Address
+            , ISpecificationRepo Specification
+            , IOrderRepo Order
+            , INotificationRepo Notification
+            , ICouponRepo Coupon
+            , ICategoryRepo CategoryRepositry
+            , IRatingRepo RatingRepositry
+            , IRoleRepo RoleRepositry
+            , IShippingRepo ShippingRepositry
+            , IUserRepo UserRepositry
+            , IWishListRepo WishListRepositry
+
+            )
         {
+            this.ProductRepositry = Product;
+            this.AddressRepositry = Address;
+            this.SpecificationRepositry = Specification;
+            this.OrderRepositry = Order;
+            this.NotificationRepositry = Notification;
+            this.CouponRepositry = Coupon;
+            this.CategoryRepositry = CategoryRepositry;
+            this.RatingRepositry = RatingRepositry;
+            this.RoleRepositry = RoleRepositry;
+            this.ShippingRepositry = ShippingRepositry;
+            this.UserRepositry = UserRepositry;
+            this.WishListRepositry = WishListRepositry;
             _db = db;
-            _logger = logger;
+            _loggerFactory = factory;
+            _logger = factory.CreateLogger<IUnitOfWork>();
         }
         public void RollBack()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface ISpecificationRepo : IBaseRepo<Specification>
+    public interface ISpecificationRepo : IBaseRepo<ISpecificationRepo,Specification>
     {
     }
 }

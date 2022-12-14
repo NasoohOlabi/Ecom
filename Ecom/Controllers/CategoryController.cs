@@ -9,52 +9,36 @@ using DB.Models;
 using Ecom.Models;
 using System.Collections.Specialized;
 using DB.UOW;
+using AutoMapper;
 
 namespace Ecom.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : GenericController<CategoryController>
     {
-        private readonly EComContext _context;
-
-        private readonly ILogger<Category> _logger;
-
-        private readonly UnitOfWork _uow;
-
-        public CategoryController(EComContext context, ILogger<Category> logger)
+        public CategoryController(IUnitOfWork uow, ILoggerFactory logger, IMapper mapper) : base(uow, logger, mapper)
         {
-            _context = context;
-            _logger = logger;
-            _uow = new UnitOfWork(_context, _logger);
         }
 
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            _logger.Log(LogLevel.Information, "Hello from log");
-            IEnumerable<Category> l = await _uow.CategoryRepositry.GetAllAsync();
-            var x = new List<CategoryDetailsViewModel>();
-            foreach (Category c in l)
-            {
-                x.Add(new CategoryDetailsViewModel(c));
-            }
-            return View(x);
+            Logger.Log(LogLevel.Information, "Hello from log");
+            var models = from c in await UOW.CategoryRepositry.GetAllAsync()
+                    select Mapper.Map<CategoryDetailsViewModel>(c);
+            return View(models);
         }
 
         // GET: Category/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details(long id)
         {
-            if (id == null || _uow.CategoryRepositry == null)
-            {
-                return NotFound();
-            }
+            var category = await UOW.CategoryRepositry
+                .GetAsync(id);
 
-            var category = await _uow.CategoryRepositry
-                .GetAsync((long)id);
             if (category == null)
             {
                 return NotFound();
             }
-            CategoryDetailsViewModel categoryDetailsViewModel = new(category);
+            var categoryDetailsViewModel = Mapper.Map<CategoryDetailsViewModel>(category);
             return View(categoryDetailsViewModel);
         }
 
@@ -65,17 +49,14 @@ namespace Ecom.Controllers
         }
 
         // POST: Category/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CreatedAt,ModifiedAt")] Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                _uow.CategoryRepositry.Add(category);
-                await _uow.SaveChangesAsync();
+                UOW.CategoryRepositry.Add(category);
+                await UOW.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -84,17 +65,17 @@ namespace Ecom.Controllers
         // GET: Category/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _uow.CategoryRepositry == null)
+            if (id == null || UOW.CategoryRepositry == null)
             {
                 return NotFound();
             }
 
-            var category = await _uow.CategoryRepositry.GetAsync((long)id);
+            var category = await UOW.CategoryRepositry.GetAsync((long)id);
             if (category == null)
             {
                 return NotFound();
             }
-            var categoryEditViewModel = new CategoryEditViewModel(category);
+            var categoryEditViewModel = Mapper.Map<CategoryEditViewModel>(category);
             return View(categoryEditViewModel);
         }
 
@@ -105,7 +86,7 @@ namespace Ecom.Controllers
         public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
  
-            var currentCategory = await _uow.CategoryRepositry.GetAsync(model.Id);
+            var currentCategory = await UOW.CategoryRepositry.GetAsync(model.Id);
             if (currentCategory == null)
             {
                 return NotFound();
@@ -118,8 +99,8 @@ namespace Ecom.Controllers
             {
                 try
                 {
-                    _context.Update(currentCategory);
-                    await _context.SaveChangesAsync();
+                    UOW.CategoryRepositry.Update(currentCategory);
+                    await UOW.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -138,12 +119,12 @@ namespace Ecom.Controllers
         // GET: Category/Delete/5
         public IActionResult Delete(long? id)
         {
-            if (id == null || _uow.CategoryRepositry == null)
+            if (id == null || UOW.CategoryRepositry == null)
             {
                 return NotFound();
             }
 
-            var category = _uow.CategoryRepositry
+            var category = UOW.CategoryRepositry
                 .Get((long)id);
 
             if (category == null)
@@ -151,7 +132,7 @@ namespace Ecom.Controllers
                 return NotFound();
             }
             
-            return View(new CategoryDetailsViewModel(category));
+            return View(Mapper.Map<CategoryDetailsViewModel>(category));
         }
 
         // POST: Category/Delete/5
@@ -159,23 +140,23 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_uow.CategoryRepositry == null)
+            if (UOW.CategoryRepositry == null)
             {
                 return Problem("Entity set 'EComContext.Categories'  is null.");
             }
-            var category = await _uow.CategoryRepositry.GetAsync(id);
+            var category = await UOW.CategoryRepositry.GetAsync(id);
             if (category != null)
             {
-                _uow.CategoryRepositry.Delete(category.Id);
+                UOW.CategoryRepositry.Delete(category.Id);
             }
 
-            await _context.SaveChangesAsync();
+            await UOW.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(long id)
         {
-            return _uow.CategoryRepositry.Get(id) != null;
+            return UOW.CategoryRepositry.Get(id) != null;
         }
     }
 }

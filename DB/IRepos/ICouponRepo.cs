@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface ICouponRepo : IBaseRepo<Coupon>
+    public interface ICouponRepo : IBaseRepo<ICouponRepo,Coupon>
     {
     }
 }

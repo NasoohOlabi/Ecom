@@ -6,155 +6,158 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB.Models;
+using DB.UOW;
+using AutoMapper;
 
 namespace Ecom.Controllers
 {
-    public class RoleController : Controller
-    {
-        private readonly EComContext _context;
+    //public class RoleController : GenericController<RoleController>
+    //{
 
-        public RoleController(EComContext context)
-        {
-            _context = context;
-        }
+    //    public RoleController(IUnitOfWork uow, ILoggerFactory logger, IMapper mapper) : base(uow, logger, mapper)
+    //    {
+    //    }
 
-        // GET: Role
-        public async Task<IActionResult> Index()
-        {
-              return View(await _context.Roles.ToListAsync());
-        }
 
-        // GET: Role/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null || _context.Roles == null)
-            {
-                return NotFound();
-            }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (role == null)
-            {
-                return NotFound();
-            }
+    //    // GET: Role
+    //    public async Task<IActionResult> Index()
+    //    {
+    //          return View(await UOW.Roles.ToListAsync());
+    //    }
 
-            return View(role);
-        }
+    //    // GET: Role/Details/5
+    //    public async Task<IActionResult> Details(long? id)
+    //    {
+    //        if (id == null || UOW.Roles == null)
+    //        {
+    //            return NotFound();
+    //        }
 
-        // GET: Role/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+    //        var role = await UOW.Roles
+    //            .FirstOrDefaultAsync(m => m.Id == id);
+    //        if (role == null)
+    //        {
+    //            return NotFound();
+    //        }
 
-        // POST: Role/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(role);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(role);
-        }
+    //        return View(role);
+    //    }
 
-        // GET: Role/Edit/5
-        public async Task<IActionResult> Edit(long? id)
-        {
-            if (id == null || _context.Roles == null)
-            {
-                return NotFound();
-            }
+    //    // GET: Role/Create
+    //    public IActionResult Create()
+    //    {
+    //        return View();
+    //    }
 
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-            return View(role);
-        }
+    //    // POST: Role/Create
+    //    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    //    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //    [HttpPost]
+    //    [ValidateAntiForgeryToken]
+    //    public async Task<IActionResult> Create([Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
+    //    {
+    //        if (ModelState.IsValid)
+    //        {
+    //            UOW.Add(role);
+    //            await UOW.SaveChangesAsync();
+    //            return RedirectToAction(nameof(Index));
+    //        }
+    //        return View(role);
+    //    }
 
-        // POST: Role/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
-        {
-            if (id != role.Id)
-            {
-                return NotFound();
-            }
+    //    // GET: Role/Edit/5
+    //    public async Task<IActionResult> Edit(long? id)
+    //    {
+    //        if (id == null || UOW.Roles == null)
+    //        {
+    //            return NotFound();
+    //        }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(role);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoleExists(role.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(role);
-        }
+    //        var role = await UOW.Roles.FindAsync(id);
+    //        if (role == null)
+    //        {
+    //            return NotFound();
+    //        }
+    //        return View(role);
+    //    }
 
-        // GET: Role/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null || _context.Roles == null)
-            {
-                return NotFound();
-            }
+    //    // POST: Role/Edit/5
+    //    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    //    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //    [HttpPost]
+    //    [ValidateAntiForgeryToken]
+    //    public async Task<IActionResult> Edit(long id, [Bind("Id,Name,CreatedAt,ModifiedAt")] Role role)
+    //    {
+    //        if (id != role.Id)
+    //        {
+    //            return NotFound();
+    //        }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (role == null)
-            {
-                return NotFound();
-            }
+    //        if (ModelState.IsValid)
+    //        {
+    //            try
+    //            {
+    //                UOW.Update(role);
+    //                await UOW.SaveChangesAsync();
+    //            }
+    //            catch (DbUpdateConcurrencyException)
+    //            {
+    //                if (!RoleExists(role.Id))
+    //                {
+    //                    return NotFound();
+    //                }
+    //                else
+    //                {
+    //                    throw;
+    //                }
+    //            }
+    //            return RedirectToAction(nameof(Index));
+    //        }
+    //        return View(role);
+    //    }
 
-            return View(role);
-        }
+    //    // GET: Role/Delete/5
+    //    public async Task<IActionResult> Delete(long? id)
+    //    {
+    //        if (id == null || UOW.Roles == null)
+    //        {
+    //            return NotFound();
+    //        }
 
-        // POST: Role/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            if (_context.Roles == null)
-            {
-                return Problem("Entity set 'EComContext.Roles'  is null.");
-            }
-            var role = await _context.Roles.FindAsync(id);
-            if (role != null)
-            {
-                _context.Roles.Remove(role);
-            }
+    //        var role = await UOW.Roles
+    //            .FirstOrDefaultAsync(m => m.Id == id);
+    //        if (role == null)
+    //        {
+    //            return NotFound();
+    //        }
+
+    //        return View(role);
+    //    }
+
+    //    // POST: Role/Delete/5
+    //    [HttpPost, ActionName("Delete")]
+    //    [ValidateAntiForgeryToken]
+    //    public async Task<IActionResult> DeleteConfirmed(long id)
+    //    {
+    //        if (UOW.Roles == null)
+    //        {
+    //            return Problem("Entity set 'EComContext.Roles'  is null.");
+    //        }
+    //        var role = await UOW.Roles.FindAsync(id);
+    //        if (role != null)
+    //        {
+    //            UOW.Roles.Remove(role);
+    //        }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+    //        await UOW.SaveChangesAsync();
+    //        return RedirectToAction(nameof(Index));
+    //    }
 
-        private bool RoleExists(long id)
-        {
-          return _context.Roles.Any(e => e.Id == id);
-        }
-    }
+    //    private bool RoleExists(long id)
+    //    {
+    //      return UOW.Roles.Any(e => e.Id == id);
+    //    }
+    //}
+
 }

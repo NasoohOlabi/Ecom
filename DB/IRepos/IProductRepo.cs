@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface IProductRepo : IBaseRepo<Product>
+    public interface IProductRepo : IBaseRepo<IProductRepo,Product>
     {
         public void UpdateRating(long id,long count, long sum);
     }

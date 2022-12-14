@@ -10,23 +10,17 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class ProductRepo : BaseRepo<Product>, IProductRepo
+    public class ProductRepo : BaseRepo<ProductRepo,Product>, IProductRepo
     {
-
-        private readonly ILogger<ProductRepo>? _logger;
-
-
-
-        public ProductRepo(EComContext db, ILogger<ProductRepo>? logger = null) : base(db)
+        public ProductRepo(EComContext db, ILogger<ProductRepo> logger) : base(db,logger)
         {
-            _logger = logger;
         }
 
         public void UpdateRating(long id, long count, long sum)
         {
             try
             {
-                var prod = _db.Products.Single(x => x.Id == id);
+                var prod = _dbSet.First(x => x.Id == id);
                 prod.RatingSum = sum;
                 prod.RatingCount = count;
             }

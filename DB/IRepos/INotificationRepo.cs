@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface INotificationRepo: IBaseRepo<Notification>
+    public interface INotificationRepo: IBaseRepo<INotificationRepo,Notification>
     {
     }
 }

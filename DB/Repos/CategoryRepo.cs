@@ -10,14 +10,10 @@ using System.Threading.Tasks;
 
 namespace DB.Repos
 {
-    public class CategoryRepo : BaseRepo<Category>, ICategoryRepo
+    public class CategoryRepo : BaseRepo<CategoryRepo,Category>, ICategoryRepo
     {
-
-        private readonly ILogger<Category> _logger;
-
-        public CategoryRepo(EComContext db, ILogger<Category> logger) : base(db)
+        public CategoryRepo(EComContext db, ILogger<CategoryRepo> logger) : base(db,logger)
         {
-            _logger = logger;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB.IRepos
 {
-    public interface IOrderRepo : IBaseRepo<Order>
+    public interface IOrderRepo : IBaseRepo<IOrderRepo,Order>
     {
     }
 }

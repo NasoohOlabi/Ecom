@@ -15,7 +15,12 @@ namespace Ecom.Services
         {
             if (list.Any())
             {
-                var filename = $@"Archive\{list.First().GetType().Name}";
+                var first = list.First();
+                if (first == null)
+                {
+                    return Task.CompletedTask;
+                }
+                var filename = $@"Archive\{first.GetType().Name}";
                 bool append = true;
                 if(random.NextDouble() < 0.0000001)
                 {
