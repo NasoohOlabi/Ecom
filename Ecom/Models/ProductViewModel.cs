@@ -38,6 +38,15 @@ namespace Ecom.Models
 
     }
 
+    public class ProductSpecificationEditViewModel : BaseEditViewModel
+    {
+        public int Name { get; set; }
+
+        public IEnumerable<SpecificationValue> Specifications { get; set; }
+        public IEnumerable<SpecificationValue> AllSpecifications { get; set; }
+
+    }
+
 }
 
 

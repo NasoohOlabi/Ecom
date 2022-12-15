@@ -41,18 +41,14 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            var attrs = from cate_attr in category.CategoryHasAttributes
-                        select _mapper.Map<SelectAttributeViewModel>(cate_attr.Attribute);
+
             var AllAttributes = from attr in await _uow.Attributes.GetAsync()
                                 select _mapper.Map<SelectAttributeViewModel>(attr);
 
-            return View(new EditCategoryAttributesViewModel
-            {
-                Id = category.Id,
-                Name = category.Name,
-                CategoryAttributes = attrs,
-                SelectAttributes = AllAttributes
-            });
+            var editCategoryAttributesViewModel = _mapper.Map<EditCategoryAttributesViewModel>(category);
+            editCategoryAttributesViewModel.SelectAttributes = AllAttributes;
+
+            return View(editCategoryAttributesViewModel);
         }
         // GET: Category/Details/5
         public async Task<IActionResult> Details(long? id)
@@ -216,9 +212,14 @@ namespace Ecom.Controllers
             {
                 NotFound();
             }
+            var x11 = editCategoryAttributeViewModel.CategoryAttributes;
 
-            category.CategoryHasAttributes = (from elem in editCategoryAttributeViewModel.CategoryAttributes
-                                             select _mapper.Map<CategoryHasAttribute>(elem)).ToList();
+            var oldList = category.CategoryHasAttributes;
+
+            var newList = (from elem in editCategoryAttributeViewModel.CategoryAttributes
+                           select _mapper.Map<CategoryHasAttribute>(elem)).ToList();
+
+            category.CategoryHasAttributes = newList;
             _uow.SaveChanges();
 
             try

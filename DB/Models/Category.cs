@@ -20,7 +20,7 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual ICollection<CategoryHasAttribute> CategoryHasAttributes { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<CategoryHasAttribute>? CategoryHasAttributes { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }

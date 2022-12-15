@@ -13,8 +13,8 @@ namespace Ecom.Models
     {
         public long Id { get; set; }
         public string Name { get; set; } = null!;
-        public IEnumerable<SelectAttributeViewModel> SelectAttributes { get; set; } = null!;
-        public IEnumerable<SelectAttributeViewModel> CategoryAttributes { get; set; } = null!;
+        public IEnumerable<SelectAttributeViewModel>? SelectAttributes { get; set; } = null!;
+        public IEnumerable<SelectAttributeViewModel>? CategoryAttributes { get; set; } = null!;
         
     }
     public class CreateAttributeViewModel

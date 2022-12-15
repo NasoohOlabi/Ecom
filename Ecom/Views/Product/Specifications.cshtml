@@ -1,4 +1,4 @@
-﻿@model EditCategoryAttributesViewModel
+﻿@model ProductSpecificationEditViewModel
 @using System.Text.Json;
 @using System.Text.Json.Serialization;
 @using System.Text.Encodings.Web
@@ -28,36 +28,29 @@
         margin:5px;
     }
     .selected-item{
-        margin: 1rem;
-        display: inline-block;
-        padding: 1rem;
-        border: 1px solid black;
-        border-radius: 15px;
-        background: var(--bs-white);
-    }
-    .form-group{
-        display: flex;
-        flex-direction: row-reverse;
+
+    margin: 1rem;
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 15px;
+    background: var(--bs-white);
+
     }
     .close{
             border-radius: 50%;
     margin-left: 0.5rem;
     }
     #editorRows{
-        width:fit-content;
-        margin-bottom: 4rem;
+        width:fit-content
     }
     #root{
-        min-height: 4rem;
-        background: var(--bs-gray-100);
-        box-shadow: 0 0 4px 2px #0009 inset;
-    }
-    .width-fit-content{
-        width: fit-content;
+            background: var(--bs-gray-300);
+    box-shadow: 0 0 4px 2px #0009 inset;
     }
 </style>
 <div class="row">
-    <div class="col-md-4 width-fit-content">
+    <div class="col-md-4">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <div id="editorRows">
@@ -108,7 +101,7 @@
                 }
 
         function render() {
-                const rows = d3.select("#root").selectAll('div').data(Model.CategoryAttributes, x => x.Name);
+                const rows = d3.select("#root").selectAll('div').data(Model.Specifications, x => x.Name);
             rows
                 .enter()
                 .append(CreateRow)
@@ -117,7 +110,7 @@
                 })
             rows
                 .exit().remove()
-            var options = d3.select("#attributes").selectAll('option').data(Model.SelectAttributes, x => x.Name)
+            var options = d3.select("#attributes").selectAll('option').data(Model.AllSpecifications, x => x.Name)
             options
                 .enter()
                 .append('option')

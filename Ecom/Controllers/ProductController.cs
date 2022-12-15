@@ -126,6 +126,56 @@ namespace Ecom.Controllers
             return View(currentProduct);
         }
 
+        // GET: Product/Edit/5
+        public async Task<IActionResult> Specifications(long? id)
+        {
+            if (id == null || _uow.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _uow.Products.GetByIDAsync((long)id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(_mapper.Map<ProductSpecificationEditViewModel>(product));
+        }
+
+        // POST: Product/Edit/5
+        [HttpPost]
+        public async Task<IActionResult> Specifications(ProductEditViewModel model)
+        {
+            var currentProduct = await _uow.Products.GetByIDAsync(model.Id);
+            if (currentProduct == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(model, currentProduct);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _uow.Products.Update(currentProduct);
+                    await _uow.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductExists(currentProduct.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                        throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(currentProduct);
+        }
+
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
