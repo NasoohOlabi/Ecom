@@ -27,6 +27,7 @@ namespace Ecom.Controllers
             return View(x);
         }
         // GET: Category/
+
         public async Task<IActionResult> Attributes(long id)
         {
             if (id == null)
@@ -35,7 +36,8 @@ namespace Ecom.Controllers
             }
 
             var category = await _uow.Categories
-                .GetByIDAsync((long)id);
+                .Get(filter:x=>x.Id == id ,includeProperties:"CategoryHasAttribute");
+
 
             if (category == null)
             {
@@ -212,20 +214,51 @@ namespace Ecom.Controllers
             {
                 NotFound();
             }
-            var x11 = editCategoryAttributeViewModel.CategoryAttributes;
 
-            var oldList = category.CategoryHasAttributes;
 
-            var newList = (from elem in editCategoryAttributeViewModel.CategoryAttributes
-                           select _mapper.Map<CategoryHasAttribute>(elem)).ToList();
+            var l1 = category.CategoryHasAttributes;
 
-            category.CategoryHasAttributes = newList;
-            _uow.SaveChanges();
+            var l2 = editCategoryAttributeViewModel.CategoryAttributes;
+
+            //foreach (var cha in l1)
+            //{
+            //    if (!l2.Any(x => x.Id == cha.Id))
+            //    {
+            //        var xx = l1.FirstOrDefault(x => x.Id == cha.Id);
+            //        l1.Remove(xx);
+            //    }
+            //}
+            //foreach (var cha in l2)
+            //{
+            //    if (!l1.Any(x => x.Id != cha.Id))
+            //    {
+            //        var xx = l2.FirstOrDefault(x => x.Id == cha.Id);
+            //        l2.Append(xx);
+            //    }
+            //}
+
+            //category.CategoryHasAttributes.Append();
+
+            _uow.CategoryHasAttributes.Insert(new CategoryHasAttribute
+            {
+                AttributeId = 1,
+                CategoryId = 1
+            });
+
+            //var x11 = editCategoryAttributeViewModel.CategoryAttributes;
+
+            //var oldList = category.CategoryHasAttributes;
+
+            //var newList = (from elem in editCategoryAttributeViewModel.CategoryAttributes
+            //               select _mapper.Map<CategoryHasAttribute>(elem)).ToList();
+
+            //category.CategoryHasAttributes = newList;
+            //_uow.SaveChanges();
 
             try
             {
                 //_uow.Categories.Update(_mapper.Map(category, editCategoryAttributeViewModel));
-                await _uow.SaveChangesAsync();
+                _uow.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -236,8 +269,8 @@ namespace Ecom.Controllers
                 else
                     throw;
             }
-            return RedirectToAction(nameof(Index));
 
+            return RedirectToAction(nameof(Index));
 
         }
     }
