@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using DB.Models;
-using Ecom.Models;
-using System.Collections.Specialized;
 using DB.UOW;
-using AutoMapper;
+using Ecom.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecom.Controllers
 {
     public class CategoryController : BaseController<CategoryController>
     {
+        //private readonly Specs specs;
         public CategoryController(ILogger<CategoryController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
         {
         }
@@ -31,7 +26,34 @@ namespace Ecom.Controllers
             }
             return View(x);
         }
+        // GET: Category/
+        public async Task<IActionResult> Attributes(long id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var category = await _uow.Categories
+                .GetByIDAsync((long)id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            var attrs = from cate_attr in category.CategoryHasAttributes
+                        select _mapper.Map<SelectAttributeViewModel>(cate_attr.Attribute);
+            var AllAttributes = from attr in await _uow.Attributes.GetAsync()
+                                select _mapper.Map<SelectAttributeViewModel>(attr);
+
+            return View(new EditCategoryAttributesViewModel
+            {
+                Id = category.Id,
+                Name = category.Name,
+                CategoryAttributes = attrs,
+                SelectAttributes = AllAttributes
+            });
+        }
         // GET: Category/Details/5
         public async Task<IActionResult> Details(long? id)
         {
@@ -98,7 +120,7 @@ namespace Ecom.Controllers
 
         public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
- 
+
             var currentCategory = await _uow.Categories.GetByIDAsync(model.Id);
 
             if (currentCategory == null)
@@ -116,7 +138,8 @@ namespace Ecom.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(currentCategory.Id)) {
+                    if (!CategoryExists(currentCategory.Id))
+                    {
                         return NotFound();
                     }
                     else
@@ -143,7 +166,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(_mapper.Map<CategoryDetailsViewModel>(category));
         }
 
@@ -172,5 +195,50 @@ namespace Ecom.Controllers
         {
             return _uow.Categories.GetByID(id) != null;
         }
+        private bool Duplicates(IEnumerable<string> lst)
+        {
+            return lst.Count() != lst.Distinct().Count();
+        }
+        [HttpPatch]
+        public async Task<IActionResult> SaveList([FromBody] EditCategoryAttributesViewModel editCategoryAttributeViewModel)
+        {
+            if (
+                string.IsNullOrEmpty(editCategoryAttributeViewModel.Name)
+                || Duplicates(from attr in editCategoryAttributeViewModel.CategoryAttributes
+                               select attr.Name)
+
+            )
+            {
+                return ValidationProblem();
+            }
+            var category = await _uow.Categories.GetByIDAsync(editCategoryAttributeViewModel.Id);
+            if (category == null)
+            {
+                NotFound();
+            }
+
+            category.CategoryHasAttributes = (from elem in editCategoryAttributeViewModel.CategoryAttributes
+                                             select _mapper.Map<CategoryHasAttribute>(elem)).ToList();
+            _uow.SaveChanges();
+
+            try
+            {
+                //_uow.Categories.Update(_mapper.Map(category, editCategoryAttributeViewModel));
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CategoryExists(category.Id))
+                {
+                    return NotFound();
+                }
+                else
+                    throw;
+            }
+            return RedirectToAction(nameof(Index));
+
+
+        }
     }
+
 }
