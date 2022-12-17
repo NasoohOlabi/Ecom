@@ -18,35 +18,30 @@ namespace Ecom.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.Log(LogLevel.Information, "Hello from log");
-            IEnumerable<Category> l = await _uow.Categories.GetAsync();
-            var x = new List<CategoryDetailsViewModel>();
-            foreach (Category c in l)
-            {
-                x.Add(_mapper.Map<CategoryDetailsViewModel>(c));
-            }
-            return View(x);
+            var Model = from c in await _uow.Categories.GetAsync() 
+                        select _mapper.Map<CategoryDetailsViewModel>(c);
+            return View(Model);
         }
-        // GET: Category/
 
         public async Task<IActionResult> Attributes(long id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = _uow.Categories.Get(x => x.Id == id,
-                includeProperties: "CategoryHasAttributes,CategoryHasAttributes.Attribute").First();
+            var category = _uow.Categories.Get(
+                x => x.Id == id,
+                includeProperties: 
+                "CategoryHasAttributes,CategoryHasAttributes.Attribute")
+                .First();
 
             if (category == null)
             {
                 return NotFound();
             }
 
+            // Get all Attributes for the select list
             var AllAttributes = from attr in await _uow.Attributes.GetAsync()
                                 select _mapper.Map<SelectAttributeViewModel>(attr);
 
-            var editCategoryAttributesViewModel = _mapper.Map<EditCategoryAttributesViewModel>(category);
+            var editCategoryAttributesViewModel = 
+                _mapper.Map<EditCategoryAttributesViewModel>(category);
             editCategoryAttributesViewModel.SelectAttributes = AllAttributes;
 
             return View(editCategoryAttributesViewModel);
@@ -203,7 +198,6 @@ namespace Ecom.Controllers
                 string.IsNullOrEmpty(editCategoryAttributeViewModel.Name)
                 || Duplicates(from attr in editCategoryAttributeViewModel.CategoryAttributes
                               select attr.Name)
-
             )
             {
                 return ValidationProblem();
