@@ -5,11 +5,11 @@
 
 
 @{
-    string ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
-    ViewData["Title"] = "Edit";
+  string ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
+      {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+      });
+  ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
@@ -17,168 +17,177 @@
 <h4>Category</h4>
 <hr />
 <style>
-    .form-row {
-               display: flex;
-        height: 3em;
-        margin: 1rem;
-        align-content: center;
-        align-items: center;
-    }
-    #new-item-input{
-        margin:5px;
-    }
-    .selected-item{
-        margin: 1rem;
-        display: inline-block;
-        padding: 1rem;
-        border: 1px solid black;
-        border-radius: 15px;
-        background: var(--bs-white);
-    }
-    .form-group{
-        display: flex;
-        flex-direction: row-reverse;
-    }
-    .close{
-            border-radius: 50%;
-    margin-left: 0.5rem;
-    }
-    #editorRows{
-        width:fit-content;
-        margin-bottom: 4rem;
-    }
-    #root{
-        min-height: 4rem;
-        background: var(--bs-gray-100);
-        box-shadow: 0 0 4px 2px #0009 inset;
-    }
-    .width-fit-content{
-        width: fit-content;
-    }
+  .form-row {
+      display: flex;
+      height: 3em;
+      margin: 1rem;
+      align-content: center;
+      align-items: center;
+  }
+
+  #new-item-input {
+      margin: 5px;
+  }
+
+  .selected-item {
+      margin: 1rem;
+      display: inline-block;
+      padding: 1rem;
+      border: 1px solid black;
+      border-radius: 15px;
+      background: var(--bs-white);
+  }
+
+  .form-group {
+      display: flex;
+      flex-direction: row-reverse;
+  }
+
+  .close {
+      border-radius: 50%;
+      margin-left: 0.5rem;
+  }
+
+  #editorRows {
+      width: fit-content;
+      margin-bottom: 4rem;
+  }
+
+  #root {
+      min-height: 4rem;
+      background: var(--bs-gray-100);
+      box-shadow: 0 0 4px 2px #0009 inset;
+  }
+
+  .width-fit-content {
+      width: fit-content;
+  }
 </style>
 <div class="row">
-    <div class="col-md-4 width-fit-content">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
-        <div id="editorRows">
-            <div id="root"></div>
-            <div class="form-row">
-                <div>
-                    <label>
-                        Choose an attribute from this list:
-                        <input id="new-item-input" list="attributes" name="myAttributeName" />
-                    </label>
-                    <datalist id="attributes">
-                    </datalist>
-                </div>
-                <button id="addParam" class="btn btn-primary"> + </button>
-            </div>
-
+  <div class="col-md-4 width-fit-content">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div id="editorRows">
+      <div id="root"></div>
+      <div class="form-row">
+        <div>
+          <label>
+            Choose an attribute from this list:
+            <input id="new-item-input" list="attributes" name="myAttributeName" />
+          </label>
+          <datalist id="attributes">
+          </datalist>
         </div>
+        <button id="addParam" class="btn btn-primary"> + </button>
+      </div>
 
-        <div class="form-group">
-            <button id="save-btn" type="submit" class="btn btn-primary" >Save</button>
-        </div>
     </div>
+
+    <div class="form-group">
+      <button id="save-btn" type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+  <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    <script>
-        function htmlDecode(input) {
-            var doc = new DOMParser().parseFromString(input, "text/html");
-            return doc.documentElement.textContent;
-        }
-
-        function getElementFromString(string) {
-            let div = document.createElement("div");
-            div.innerHTML = string;
-            return div.firstElementChild;
-        }
-        var Model = JSON.parse(htmlDecode(`@ModelString`))
-        window.Model = Model;
-
-        function CreateRow(d) {
-                    return getElementFromString(`<div class="selected-item"><span>${d.Name}</span><button type="button" class="close text-white bg-danger" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button></div>`)
-                }
-
-        function render() {
-                const rows = d3.select("#root").selectAll('div').data(Model.CategoryAttributes, x => x.Name);
-            rows
-                .enter()
-                .append(CreateRow)
-                .select(".close").on('click', (d) => {
-                    RemoveItem(d.Name)
-                })
-            rows
-                .exit().remove()
-            var options = d3.select("#attributes").selectAll('option').data(Model.SelectAttributes, x => x.Name)
-            options
-                .enter()
-                .append('option')
-                .attr('value', function (d) { return d.Name })
-            options
-                .exit().remove()
-        }
-        render()
-
-
-        const inputNode = document.querySelector('#new-item-input')
-        const newItemInfo = d3.select('#new-item-input')
-        const addBtn = d3.select('#addParam')
-
-        function AddItem(Name) {
-            if (Model.SelectAttributes.every(x=>x.Name!==Name))
-            return;
-            Model.CategoryAttributes.push(Model.SelectAttributes.filter(x => x.Name === Name)[0])
-            Model.SelectAttributes = Model.SelectAttributes.filter(x => x.Name !== Name)
-            inputNode.value = ""
-            render()
-        }
-
-        function RemoveItem(Name){
-            if (Model.CategoryAttributes.every(x=>x.Name!==Name))
-            return;
-            Model.SelectAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
-            Model.CategoryAttributes = Model.CategoryAttributes.filter(x => x.Name !== Name)
-            render()
-        }
-
-        addBtn.on('click', () => {
-            AddItem(inputNode.value)
-        })
-        newItemInfo.on('keypress', () => {
-            const x = d3.event
-            x.preventDefault()
-            console.log('event')
-            console.log(x)
-            if (x.key === "Enter") {
-                AddItem(inputNode.value)
-            }
-        })
-        d3.select("#save-btn").on('click',()=>{
-            fetch(`@Url.Action("SaveList","Category")`,{
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(Model)
-            }).then(res=>res.json())
-            .then(answer=>{
-
-                window.history.back()
-            })
-
-        })
-
-    </script>
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  <script>
+    function htmlDecode(input) {
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
     }
+
+    function getElementFromString(string) {
+        let div = document.createElement("div");
+        div.innerHTML = string;
+        return div.firstElementChild;
+    }
+    var Model = JSON.parse(htmlDecode(`@ModelString`))
+    window.Model = Model;
+    Model.SelectAttributes = Model.SelectAttributes
+        .filter(x => !Model.CategoryAttributes.some(y => x.Id == y.Id))
+
+    function CreateRow(d) {
+        return getElementFromString(`<div class="selected-item"><span>${d.Name}</span><button type="button" class="close text-white bg-danger" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button></div>`)
+    }
+
+    function render() {
+        const rows = d3.select("#root").selectAll('div').data(Model.CategoryAttributes, x => x.Name);
+        rows
+            .enter()
+            .append(CreateRow)
+            .select(".close").on('click', (d) => {
+                RemoveItem(d.Name)
+            })
+        rows
+            .exit().remove()
+        var options = d3.select("#attributes").selectAll('option').data(Model.SelectAttributes, x => x.Name)
+        options
+            .enter()
+            .append('option')
+            .attr('value', function (d) { return d.Name })
+        options
+            .exit().remove()
+    }
+    render()
+
+
+    const inputNode = document.querySelector('#new-item-input')
+    const newItemInfo = d3.select('#new-item-input')
+    const addBtn = d3.select('#addParam')
+
+    function AddItem(Name) {
+        if (Model.SelectAttributes.every(x => x.Name !== Name))
+            return;
+        Model.CategoryAttributes.push(Model.SelectAttributes.filter(x => x.Name === Name)[0])
+        Model.SelectAttributes = Model.SelectAttributes.filter(x => x.Name !== Name)
+        inputNode.value = ""
+        render()
+    }
+
+    function RemoveItem(Name) {
+        if (Model.CategoryAttributes.every(x => x.Name !== Name))
+            return;
+        Model.SelectAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
+        Model.CategoryAttributes = Model.CategoryAttributes.filter(x => x.Name !== Name)
+        render()
+    }
+
+    addBtn.on('click', () => {
+        AddItem(inputNode.value)
+    })
+    newItemInfo.on('keypress', () => {
+        const x = d3.event
+        x.preventDefault()
+        console.log('event')
+        console.log(x)
+        if (x.key === "Enter") {
+            AddItem(inputNode.value)
+        }
+    })
+    d3.select("#save-btn").on('click', () => {
+        fetch(`@Url.Action("SaveList","Category")`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Model)
+        }).then(res => res.text(), console.log)
+            .then(answer => {
+                console.log(answer)
+                window.location.href = `@Url.Action("Index","Category")`
+            }, console.log)
+
+    })
+
+  </script>
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
     }

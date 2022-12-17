@@ -16,7 +16,7 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual Attribute Attribute { get; set; } = null!;
-        public virtual Category Category { get; set; } = null!;
+        public virtual Attribute? Attribute { get; set; } = null!;
+        public virtual Category? Category { get; set; } = null!;
     }
 }

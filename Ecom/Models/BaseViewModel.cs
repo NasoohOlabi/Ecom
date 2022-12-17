@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Ecom.Models
 {
-    public class BaseDetailsViewModel
+    public class BaseDetailsViewModel<T> where T : class
     {
         public long Id { get; set; }
 
@@ -14,9 +14,13 @@ namespace Ecom.Models
         public DateTime ModifiedAt { get; set; }
     }
 
-    public class BaseEditViewModel
+    public class BaseEditViewModel<T> where T : class
     {
         public long Id { get; set; }
     }
 
+    public class BaseCreateViewModel<T> where T : class
+    {
+
+    }
 }

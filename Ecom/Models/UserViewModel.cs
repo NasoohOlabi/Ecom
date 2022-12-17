@@ -6,7 +6,7 @@ using DB.Models;
 
 namespace Ecom.Models
 {
-    public class UserDetailsViewModel : BaseDetailsViewModel
+    public class UserDetailsViewModel : BaseDetailsViewModel<User>
     {
 
         [Display(Name ="First Name")]
@@ -39,7 +39,7 @@ namespace Ecom.Models
 
     }
 
-    public class UserEditViewModel : BaseEditViewModel
+    public class UserEditViewModel : BaseEditViewModel<User>
     {
 
         [Display(Name = "First Name")]

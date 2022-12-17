@@ -33,16 +33,18 @@ namespace Ecom.Profiles
                 opt => opt.MapFrom(src => from cha in src.CategoryHasAttributes
                                           select new SelectAttributeViewModel { Id = cha.AttributeId, Name = cha.Attribute.Name }
                                           ))
+                .ForMember(dest => dest.SelectAttributes,
+                opt => opt.Ignore())
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
-            CreateMap<EditCategoryAttributesViewModel, Category>()
-                .ForMember(dest => dest.CategoryHasAttributes,
-                opt => opt.MapFrom(src => from cha in src.CategoryAttributes
-                                          select new CategoryHasAttribute { AttributeId = cha.Id, CategoryId = src.Id}
-                                          ))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+            //CreateMap<EditCategoryAttributesViewModel, Category>()
+            //    .ForMember(dest => dest.CategoryHasAttributes,
+            //    opt => opt.MapFrom(src => from cha in src.CategoryAttributes
+            //                              select new CategoryHasAttribute { AttributeId = cha.Id, CategoryId = src.Id}
+            //                              ))
+            //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
         }
     }
 }

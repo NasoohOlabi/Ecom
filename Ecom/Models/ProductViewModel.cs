@@ -6,7 +6,7 @@ using DB.Models;
 
 namespace Ecom.Models
 {
-    public class ProductDetailsViewModel : BaseDetailsViewModel
+    public class ProductDetailsViewModel : BaseDetailsViewModel<Product>
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
@@ -21,8 +21,8 @@ namespace Ecom.Models
 
     }
 
-    public class ProductEditViewModel : BaseEditViewModel
-    {
+    public class ProductEditViewModel : BaseEditViewModel<Product>
+  {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
@@ -38,8 +38,8 @@ namespace Ecom.Models
 
     }
 
-    public class ProductSpecificationEditViewModel : BaseEditViewModel
-    {
+    public class ProductSpecificationEditViewModel : BaseEditViewModel<Product>
+  {
         public int Name { get; set; }
 
         public IEnumerable<SpecificationValue> Specifications { get; set; }

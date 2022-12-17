@@ -6,13 +6,13 @@ using DB.Models;
 
 namespace Ecom.Models
 {
-    public class CategoryDetailsViewModel : BaseDetailsViewModel
+    public class CategoryDetailsViewModel : BaseDetailsViewModel<Category>
     {
         public string Name { get; set; } = null!;
 
     }
 
-    public class CategoryEditViewModel : BaseEditViewModel
+    public class CategoryEditViewModel : BaseEditViewModel<Category>
     {
         public string Name { get; set; } = null!;
 
