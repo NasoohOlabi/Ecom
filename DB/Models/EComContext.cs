@@ -83,8 +83,9 @@ namespace DB.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<RoleHasPermission> RoleHasPermissions { get; set; } = null!;
         public virtual DbSet<Shipping> Shippings { get; set; } = null!;
-        public virtual DbSet<SpecificationValue> Specifications { get; set; } = null!;
-        public virtual DbSet<SpecificationValue> StringValues { get; set; } = null!;
+        public virtual DbSet<Specification> Specifications { get; set; } = null!;
+        public virtual DbSet<SpecificationValue> SpecificationValues { get; set; } = null!;
+
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
@@ -557,11 +558,56 @@ namespace DB.Models
                     .IsUnicode(false);
             });
 
-          
 
-      
+            modelBuilder.Entity<Specification>(entity =>
+            {
+                entity.ToTable("Specification");
 
-            modelBuilder.Entity<User>(entity =>
+                entity.Property(s => s.Id).UseIdentityColumn(1, 1);
+
+                entity.Property(s => s.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(s => s.ModifiedAt).HasColumnType("datetime");
+
+                entity.Property(s => s.ValueType);
+
+                entity.HasOne(s => s.Attribute)
+                    .WithMany(a => a.Specifications)
+                    .HasForeignKey(s => s.AttributeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Specification_Attribute");
+
+                entity.HasOne(s => s.SpecificationValue)
+                    .WithMany(a => a.Specifications)
+                    .HasForeignKey(s => s.SpecificationValueId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Specification_SpecificationValue");
+
+                entity.HasOne(s => s.Product)
+                    .WithMany(p => p.Specifications)
+                    .HasForeignKey(s => s.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Specification_Product");
+
+            });
+            modelBuilder.Entity<SpecificationValue>(entity =>
+            {
+                entity.ToTable("SpecificationValue");
+
+                entity.Property(e => e.Id).UseIdentityColumn(1, 1);
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Value)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+
+
+        modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
 

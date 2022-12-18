@@ -25,7 +25,7 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual User User { get; set; } = null!;
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual User? User { get; set; } = null!;
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }

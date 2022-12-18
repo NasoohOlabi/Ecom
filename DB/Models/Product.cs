@@ -13,7 +13,7 @@ namespace DB.Models
             ProductHasAttachments = new HashSet<ProductHasAttachment>();
             ProductHasCoupons = new HashSet<ProductHasCoupon>();
             Ratings = new HashSet<Rating>();
-            Specifications = new HashSet<SpecificationValue>();
+            Specifications = new HashSet<Specification>();
             WishLists = new HashSet<WishList>();
         }
 
@@ -34,11 +34,11 @@ namespace DB.Models
 
         public virtual Category? Category { get; set; } = null!;
         public virtual User? Seller { get; set; } = null!;
-        public virtual ICollection<OrderHasProduct> OrderHasProducts { get; set; }
-        public virtual ICollection<ProductHasAttachment> ProductHasAttachments { get; set; }
-        public virtual ICollection<ProductHasCoupon> ProductHasCoupons { get; set; }
-        public virtual ICollection<Rating> Ratings { get; set; }
-        public virtual ICollection<SpecificationValue> Specifications { get; set; }
-        public virtual ICollection<WishList> WishLists { get; set; }
+        public virtual ICollection<OrderHasProduct>? OrderHasProducts { get; set; }
+        public virtual ICollection<ProductHasAttachment>? ProductHasAttachments { get; set; }
+        public virtual ICollection<ProductHasCoupon>? ProductHasCoupons { get; set; }
+        public virtual ICollection<Rating>? Ratings { get; set; }
+        public virtual ICollection<Specification>? Specifications { get; set; }
+        public virtual ICollection<WishList>? WishLists { get; set; }
     }
 }

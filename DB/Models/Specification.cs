@@ -9,7 +9,6 @@ namespace DB.Models
     {
         public Specification()
         {
-            SpecificationValues = new HashSet<SpecificationValue>();
         }
 
         [Key]
@@ -18,11 +17,12 @@ namespace DB.Models
         public long ValueType { get; set; }
         public long ProductId { get; set; }
         public long AttributeId { get; set; }
+        public long SpecificationValueId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
         public virtual Attribute? Attribute { get; set; } = null!;
         public virtual Product? Product { get; set; } = null!;
-        public virtual ICollection<SpecificationValue>? SpecificationValues { get; set; }
+        public virtual SpecificationValue? SpecificationValue { get; set; }
     }
 }
