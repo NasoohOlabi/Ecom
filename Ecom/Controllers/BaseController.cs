@@ -10,7 +10,7 @@ namespace Ecom.Controllers
     {
         public string? Error { get; private set; }
         public string? Message { get; private set; }
-        public Result(string message, string error)
+        public Result(string? message, string? error)
         {
             this.Error = error;
             this.Message = message;
@@ -40,6 +40,10 @@ namespace Ecom.Controllers
         protected Result RespondWithError(string error)
         {
             return new Result(null, error);
+        }
+        protected bool Duplicates(IEnumerable<string> lst)
+        {
+            return lst.Count() != lst.Distinct().Count();
         }
     }
 }

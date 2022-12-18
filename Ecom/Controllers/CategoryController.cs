@@ -187,12 +187,9 @@ namespace Ecom.Controllers
         {
             return _uow.Categories.GetByID(id) != null;
         }
-        private bool Duplicates(IEnumerable<string> lst)
-        {
-            return lst.Count() != lst.Distinct().Count();
-        }
+        
         [HttpPatch]
-        public async Task<IActionResult> SaveList([FromBody] EditCategoryAttributesViewModel editCategoryAttributeViewModel)
+        public IActionResult SaveList([FromBody] EditCategoryAttributesViewModel editCategoryAttributeViewModel)
         {
             if (
                 string.IsNullOrEmpty(editCategoryAttributeViewModel.Name)

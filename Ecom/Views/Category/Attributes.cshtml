@@ -96,7 +96,7 @@
 @section Scripts {
   <script>
 
-    var Model = parseModel(`@ModelString`)
+    parseModel(`@ModelString`)
 
     Model.SelectAttributes = Model.SelectAttributes
         .filter(x => !Model.CategoryAttributes.some(y => x.Id == y.Id))
@@ -113,19 +113,19 @@
         modelToTargetData: x => x.CategoryAttributes,
         targetDataIdentity: x => x.Name,
         targetElementGenerator: CreateRow,
-        targetSelectionCustomizer: (selection) => {
-            selection.enter()
+        targetEnterSelectionCustomizer: (selection) => {
+            selection
                 .select(".close").on('click', (d) => {
                     RemoveItem(d.Name)
                 })
         },
         sourceSelector: "#attributes",
         sourceElementsSelector: 'option',
-        modelToSourceData: x => x.SelectAttributes
+        modelToSourceData: x => x.SelectAttributes,
                 sourceDataIdentity: x => x.Name,
         sourceElementGenerator: 'option',
-        sourceSelectionCustomizer: (selection) => {
-            selection.enter()
+        sourceEnterSelectionCustomizer: (selection) => {
+            selection
                 .attr('value', function (d) { return d.Name })
         }
     });
@@ -140,7 +140,7 @@
         if (Model.SelectAttributes.every(x => x.Name !== Name))
             return;
         Model.CategoryAttributes.push(Model.SelectAttributes.filter(x => x.Name === Name)[0])
-        Model.SelectAttributes = Model.SelectAttributes.filter(x => x.Name !== Name)
+        Model.SelectAttributes.removeValue(Name,x=>x.Name)
         inputNode.value = ""
         render()
     }
@@ -149,7 +149,7 @@
         if (Model.CategoryAttributes.every(x => x.Name !== Name))
             return;
         Model.SelectAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
-        Model.CategoryAttributes = Model.CategoryAttributes.filter(x => x.Name !== Name)
+        Model.CategoryAttributes.removeValue(Name,x => x.Name)
         render()
     }
 

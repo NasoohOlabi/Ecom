@@ -15,14 +15,14 @@ namespace Ecom.Models
         public User? Seller { get; set; }
         public long Rating { get; set; }
 
-        [Display(Name="Number of Orders")]
+        [Display(Name = "Number of Orders")]
         public long OrderCount { get; set; }
         public decimal Discount { get; set; }
 
     }
 
     public class ProductEditViewModel : BaseEditViewModel<Product>
-  {
+    {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
@@ -39,7 +39,7 @@ namespace Ecom.Models
     }
 
     public class ProductSpecificationEditViewModel : BaseEditViewModel<Product>
-  {
+    {
         public int Name { get; set; }
 
         public IEnumerable<SpecificationValue> Specifications { get; set; }

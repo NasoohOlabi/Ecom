@@ -16,7 +16,17 @@ function getElementFromString(string) {
 
 function parseModel(str) {
   window.Model = JSON.parse(htmlDecode(str))
+  console.log(Model)
 }
+
+Array.prototype.removeValue = function (value,reducer = (x=>x.Id)) {
+  for (let i = 0; i < this.length; i++) {
+    if (reducer(this[i]) == value) {
+      this.splice(i, 1);
+      break;
+    } 
+  }
+};
 
 function getRenderer({
   targetSelector
@@ -25,31 +35,35 @@ function getRenderer({
   , targetDataIdentity
   , targetElementGenerator
   , targetSelectionCustomizer
+  , targetEnterSelectionCustomizer
   , sourceSelector
   , sourceElementsSelector
   , modelToSourceData
   , sourceDataIdentity
   , sourceElementGenerator
   , sourceSelectionCustomizer
+  , sourceEnterSelectionCustomizer
 }) {
   return () => {
     const targetSelection = d3.select(targetSelector)
       .selectAll(targetElementsSelector)
       .data(modelToTargetData(Model), targetDataIdentity);
-    targetSelection
+    const targetEnterSelection = targetSelection
       .enter()
       .append(targetElementGenerator);
+    if (targetEnterSelectionCustomizer) targetEnterSelectionCustomizer(targetEnterSelection)
+    if (targetSelectionCustomizer) targetSelectionCustomizer(targetSelection);
     targetSelection
       .exit().remove();
-    targetSelectionCustomizer(targetSelection);
     const sourceSelection = d3.select(sourceSelector)
       .selectAll(sourceElementsSelector)
       .data(modelToSourceData(Model), sourceDataIdentity);
-    sourceSelection
+    const sourceEnterSelection = sourceSelection
       .enter()
       .append(sourceElementGenerator);
+    if (sourceEnterSelectionCustomizer) sourceEnterSelectionCustomizer(sourceEnterSelection)
+    if (sourceSelectionCustomizer) sourceSelectionCustomizer(sourceSelection);
     sourceSelection
       .exit().remove();
-    sourceSelectionCustomizer(sourceSelection);
   }
 }

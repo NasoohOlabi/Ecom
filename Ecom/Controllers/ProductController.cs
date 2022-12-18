@@ -126,56 +126,6 @@ namespace Ecom.Controllers
             return View(currentProduct);
         }
 
-        // GET: Product/Edit/5
-        public async Task<IActionResult> Specifications(long? id)
-        {
-            if (id == null || _uow.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _uow.Products.GetByIDAsync((long)id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-
-            return View(_mapper.Map<ProductSpecificationEditViewModel>(product));
-        }
-
-        // POST: Product/Edit/5
-        [HttpPost]
-        public async Task<IActionResult> Specifications(ProductEditViewModel model)
-        {
-            var currentProduct = await _uow.Products.GetByIDAsync(model.Id);
-            if (currentProduct == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(model, currentProduct);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _uow.Products.Update(currentProduct);
-                    await _uow.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(currentProduct.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(currentProduct);
-        }
-
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
@@ -217,5 +167,76 @@ namespace Ecom.Controllers
         {
             return _uow.Products.GetByID(id) != null;
         }
+        [HttpGet]
+        public async Task<IActionResult> Specifications(long id)
+        {
+            var product = _uow.Products.Get(
+                x => x.Id == id,
+                includeProperties:
+                "Specifications,Specifications.Attribute,Specifications.SpecificationValue,Category,Category.CategoryHasAttributes,Category.CategoryHasAttributes.Attribute")
+                .First();
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Get all Attributes for the select list
+            var AllAttributes = from attr in await _uow.Attributes.GetAsync()
+                                select _mapper.Map<SelectAttributeViewModel>(attr);
+            var CategoryAttributes = from attr in product.Category.CategoryHasAttributes
+                                     select _mapper.Map<SelectAttributeViewModel>(attr.Attribute);
+
+
+            var editProductAttributesViewModel =
+                _mapper.Map<EditProductSpecificationsViewModel>(product);
+            //FIXME: 
+            editProductAttributesViewModel.ProductSpecifications = from x in product.Specifications
+                                             select new SelectSpecificationViewModel
+                                             {
+                                                 Attribute = new 
+                                                 EditAttributeViewModel
+                                                 {
+                                                     Id = x.Attribute.Id,
+                                                     Name = x.Attribute.Name
+                                                 },
+                                                 Value = new SelectValueViewModel
+                                                 {
+                                                     Id = x.SpecificationValue.Id,
+                                                     Value = x.SpecificationValue.Value
+                                                 },
+                                                Id= x.Id
+                                             };
+            editProductAttributesViewModel.AllAttributes = AllAttributes;
+            editProductAttributesViewModel.CategoryAttributes = CategoryAttributes;
+
+            return View(editProductAttributesViewModel);
+        }
+        public IActionResult SaveList([FromBody] EditProductSpecificationsViewModel editProductSpecificationsViewModel)
+        {
+            _uow.Products
+                 .UpdateSpecificationsList(
+                 _mapper.Map<DB.Repos.EditProductSpecificationsViewModel>(editProductSpecificationsViewModel)
+                 );
+
+            try
+            {
+                //_uow.Categories.Update(_mapper.Map(category, editProductSpecificationsViewModel));
+                _uow.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(editProductSpecificationsViewModel.Id))
+                {
+                    return NotFound();
+                }
+                else
+                    throw;
+            }
+
+            return Json(RespondWithMessage("Attributes Changed"));
+
+        }
+
     }
 }

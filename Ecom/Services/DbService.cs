@@ -13,7 +13,9 @@ namespace Ecom.Services
         {
             services.AddDbContext<EComContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options
+        .UseLazyLoadingProxies()
+                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;

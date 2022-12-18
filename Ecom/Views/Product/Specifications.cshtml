@@ -1,177 +1,219 @@
-﻿@model ProductSpecificationEditViewModel
+﻿@model EditProductSpecificationsViewModel
 @using System.Text.Json;
 @using System.Text.Json.Serialization;
 @using System.Text.Encodings.Web
 
 
 @{
-    string ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
-    ViewData["Title"] = "Edit";
+  string ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
+      {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+      });
+  ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
 
-<h4>Category</h4>
+<h4>Product: @Model.Name</h4>
 <hr />
 <style>
-    .form-row {
-               display: flex;
-        height: 3em;
-        margin: 1rem;
-        align-content: center;
-        align-items: center;
-    }
-    #new-item-input{
-        margin:5px;
-    }
-    .selected-item{
+  .form-row {
+      display: flex;
+      height: 3em;
+      margin: 1rem;
+      align-content: center;
+      align-items: center;
+  }
 
-    margin: 1rem;
-    display: inline-block;
-    padding: 1rem;
-    border: 1px solid black;
-    border-radius: 15px;
-    background: var(--bs-white);
+  #new-item-input {
+      margin: 5px;
+  }
 
-    }
-    .close{
-            border-radius: 50%;
-    margin-left: 0.5rem;
-    }
-    #editorRows{
-        width:fit-content
-    }
-    #root{
-            background: var(--bs-gray-300);
-    box-shadow: 0 0 4px 2px #0009 inset;
-    }
+  .specification-row {
+      margin: 1rem;
+      padding: 1rem;
+      border: 1px solid black;
+      border-radius: 15px;
+      background: var(--bs-white);
+  }
+
+  .form-group {
+      display: flex;
+      flex-direction: row-reverse;
+  }
+
+  .close {
+      border-radius: 50%;
+      margin-left: 0.5rem;
+  }
+
+  #editorRows {
+      width: fit-content;
+      margin-bottom: 4rem;
+  }
+
+  #root {
+      min-height: 4rem;
+      background: var(--bs-gray-100);
+      box-shadow: 0 0 4px 2px #0009 inset;
+  }
+
+  .width-fit-content {
+      width: fit-content;
+  }
 </style>
 <div class="row">
-    <div class="col-md-4">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
-        <div id="editorRows">
-            <div id="root"></div>
-            <div class="form-row">
-                <div>
-                    <label>
-                        Choose an attribute from this list:
-                        <input id="new-item-input" list="attributes" name="myAttributeName" />
-                    </label>
-                    <datalist id="attributes">
-                    </datalist>
-                </div>
-                <button id="addParam" class="btn btn-primary"> + </button>
-            </div>
+  <div class="col-md-4 width-fit-content">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div id="editorRows">
+      <div id="root"></div>
+      <div class="form-row">
+        <div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>
+          </div>
 
-        </div>
+          <label>
+            Choose an attribute from this list:
+            <input id="new-item-input" list="attributes" name="myAttributeName" />
+          </label>
 
-        <div class="form-group">
-            <button id="save-btn" type="submit" class="btn btn-primary" >Save</button>
+          <datalist id="attributes">
+          </datalist>
         </div>
+        <button id="addParam" class="btn btn-primary"> + </button>
+      </div>
+
     </div>
+
+    <div class="form-group">
+      <button id="save-btn" type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+  <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    <script>
-        function htmlDecode(input) {
-            var doc = new DOMParser().parseFromString(input, "text/html");
-            return doc.documentElement.textContent;
-        }
+  <script>
 
-        function getElementFromString(string) {
-            let div = document.createElement("div");
-            div.innerHTML = string;
-            return div.firstElementChild;
-        }
-        var Model = JSON.parse(htmlDecode(`@ModelString`))
-        window.Model = Model;
+    parseModel(`@ModelString`)
 
-        function CreateRow(d) {
-                    return getElementFromString(`<div class="selected-item"><span>${d.Name}</span><button type="button" class="close text-white bg-danger" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button></div>`)
-                }
+    console.log(Model.ProductSpecifications[0])
 
-        function render() {
-                const rows = d3.select("#root").selectAll('div').data(Model.Specifications, x => x.Name);
-            rows
-                .enter()
-                .append(CreateRow)
-                .select(".close").on('click', (d) => {
-                    RemoveItem(d.Name)
+    window.Atoms = {
+        FromCategory: true
+    }
+
+    function CreateRow(d) {
+        return getElementFromString(
+            `<div class="specification-row"><span>${d.Attribute.Name}</span><input value="${d.Value.Value}" /><button type="button" class="close text-white bg-danger" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button></div>`)
+    }
+
+    const render = getRenderer({
+        targetSelector: "#root",
+        targetElementsSelector: '.specification-row',
+        modelToTargetData: x => x.ProductSpecifications,
+        targetDataIdentity: x => x.Attribute.Id,
+        targetElementGenerator: CreateRow,
+        targetEnterSelectionCustomizer: (selection) => {
+            selection
+                .select("input").on('change', (d) => {
+                    const evt = d3.event;
+                    console.log(d)
+                    console.log(evt)
+                    //FIXME: 
+                    d.Value = {} 
+                    d.Value.Value = evt.target.value
                 })
-            rows
-                .exit().remove()
-            var options = d3.select("#attributes").selectAll('option').data(Model.AllSpecifications, x => x.Name)
-            options
-                .enter()
-                .append('option')
-                .attr('value', function (d) { return d.Name })
-            options
-                .exit().remove()
+            selection
+                .select(".close").on('click', (d) => {
+                    RemoveItem(d)
+                })
+        },
+        sourceSelector: "#attributes",
+        sourceElementsSelector: 'option',
+        modelToSourceData: x => (Atoms.FromCategory) ? x.CategoryAttributes : x.AllAttributes,
+        sourceDataIdentity: x => x.Id,
+        sourceElementGenerator: 'option',
+        sourceEnterSelectionCustomizer: (selection) => {
+            selection
+                .attr('value', function (d) { 
+                  console.log(d)
+                  return d.Name })
         }
+    });
+    render();
+
+
+    const inputNode = document.querySelector('#new-item-input')
+    const newItemInfo = d3.select('#new-item-input')
+    const addBtn = d3.select('#addParam')
+
+    function attr_2_spec(obj){
+      return {Attribute: obj,Value:{Value:""}}
+    }
+    function spec_2_attr(obj) {
+      return obj.Attribute
+    }
+
+    function AddItem(Name) {
+        if (Model.AllAttributes.every(x => x.Name !== Name))
+            return;
+        const item = Model.AllAttributes.find(x => x.Name === Name)
+        Model.ProductSpecifications.push(attr_2_spec(item))
+        inputNode.value = ""
         render()
+    }
 
+    function RemoveItem(d) {
+        Model.ProductSpecifications = Model.ProductSpecifications.filter(x=>x !== d)
+        render()
+    }
 
-        const inputNode = document.querySelector('#new-item-input')
-        const newItemInfo = d3.select('#new-item-input')
-        const addBtn = d3.select('#addParam')
-
-        function AddItem(Name) {
-            if (Model.SelectAttributes.every(x=>x.Name!==Name))
-            return;
-            Model.CategoryAttributes.push(Model.SelectAttributes.filter(x => x.Name === Name)[0])
-            Model.SelectAttributes = Model.SelectAttributes.filter(x => x.Name !== Name)
-            inputNode.value = ""
-            render()
-        }
-
-        function RemoveItem(Name){
-            if (Model.CategoryAttributes.every(x=>x.Name!==Name))
-            return;
-            Model.SelectAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
-            Model.CategoryAttributes = Model.CategoryAttributes.filter(x => x.Name !== Name)
-            render()
-        }
-
-        addBtn.on('click', () => {
+    addBtn.on('click', () => {
+        AddItem(inputNode.value)
+    })
+    newItemInfo.on('keypress', () => {
+        const x = d3.event
+        console.log('event')
+        console.log(x)
+        if (x.key === "Enter") {
             AddItem(inputNode.value)
-        })
-        newItemInfo.on('keypress', () => {
-            const x = d3.event
-            x.preventDefault()
-            console.log('event')
-            console.log(x)
-            if (x.key === "Enter") {
-                AddItem(inputNode.value)
-            }
-        })
-        d3.select("#save-btn").on('click',()=>{
-            fetch(`@Url.Action("SaveList","Category")`,{
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(Model)
-            }).then(res=>res.json())
-            .then(answer=>{
+        }
+    })
+    d3.select("#save-btn").on('click', () => {
+        fetch(`@Url.Action("SaveList","Product")`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Model)
+        }).then(
+            res => res.text()
+            , console.log)
+            .then(answer => {
+                console.log(answer)
+                window.location.href = `@Url.Action("Index","Product")`
+            }, console.log)
 
-                window.history.back()
-            })
-
+    })
+    d3.select("#flexSwitchCheckChecked")
+        .on('click', () => {
+            const evt = d3.event;
+            Atoms.FromCategory = evt.target.checked
+            render()
         })
 
-    </script>
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    }
+  </script>
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+  }
