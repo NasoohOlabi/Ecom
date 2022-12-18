@@ -4,6 +4,7 @@ using DB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(EComContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20221218183010_DB Problems Fixes")]
+    partial class DBProblemsFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -736,6 +738,9 @@ namespace DB.Migrations
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<long>("SpecificationId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Value")
                         .IsRequired()

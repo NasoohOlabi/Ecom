@@ -4,6 +4,7 @@ using DB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(EComContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20221218181239_DB Mistakes Fixes")]
+    partial class DBMistakesFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -706,9 +708,6 @@ namespace DB.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("SpecificationValueId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("ValueType")
                         .HasColumnType("bigint");
 
@@ -717,8 +716,6 @@ namespace DB.Migrations
                     b.HasIndex("AttributeId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("SpecificationValueId");
 
                     b.ToTable("Specification", (string)null);
                 });
@@ -737,6 +734,9 @@ namespace DB.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<long>("SpecificationId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -744,6 +744,8 @@ namespace DB.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SpecificationId");
 
                     b.ToTable("SpecificationValue", (string)null);
                 });
@@ -1054,17 +1056,20 @@ namespace DB.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Specification_Product");
 
-                    b.HasOne("DB.Models.SpecificationValue", "SpecificationValue")
-                        .WithMany("Specifications")
-                        .HasForeignKey("SpecificationValueId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Specification_SpecificationValue");
-
                     b.Navigation("Attribute");
 
                     b.Navigation("Product");
+                });
 
-                    b.Navigation("SpecificationValue");
+            modelBuilder.Entity("DB.Models.SpecificationValue", b =>
+                {
+                    b.HasOne("DB.Models.Specification", "Specification")
+                        .WithMany("SpecificationValues")
+                        .HasForeignKey("SpecificationId")
+                        .IsRequired()
+                        .HasConstraintName("FK_SpecificationValue_Specification");
+
+                    b.Navigation("Specification");
                 });
 
             modelBuilder.Entity("DB.Models.User", b =>
@@ -1178,9 +1183,9 @@ namespace DB.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("DB.Models.SpecificationValue", b =>
+            modelBuilder.Entity("DB.Models.Specification", b =>
                 {
-                    b.Navigation("Specifications");
+                    b.Navigation("SpecificationValues");
                 });
 
             modelBuilder.Entity("DB.Models.User", b =>
