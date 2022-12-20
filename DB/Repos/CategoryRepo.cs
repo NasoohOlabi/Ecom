@@ -24,7 +24,7 @@ namespace DB.Repos
                 .Include("CategoryHasAttributes.Attribute")
                 .First(x => x.Id == id);
 
-            foreach (var cha in category.CategoryHasAttributes)
+            foreach (var cha in category.CategoryHasAttributes!)
             {
                 if (!attributesIds.Any(x=> x == cha.Id))
                 {

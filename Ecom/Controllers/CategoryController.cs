@@ -38,11 +38,11 @@ namespace Ecom.Controllers
 
             // Get all Attributes for the select list
             var AllAttributes = from attr in await _uow.Attributes.GetAsync()
-                                select _mapper.Map<SelectAttributeViewModel>(attr);
+                                select _mapper.Map<AttributeDetailsViewModel>(attr);
 
             var editCategoryAttributesViewModel = 
                 _mapper.Map<EditCategoryAttributesViewModel>(category);
-            editCategoryAttributesViewModel.SelectAttributes = AllAttributes;
+            editCategoryAttributesViewModel.AllAttributes = AllAttributes;
 
             return View(editCategoryAttributesViewModel);
         }
@@ -198,7 +198,7 @@ namespace Ecom.Controllers
             )
             {
                 return ValidationProblem();
-            }
+            }            
 
             _uow.Categories.UpdateAttributeList(editCategoryAttributeViewModel.Id,
                 from selectItem in editCategoryAttributeViewModel.CategoryAttributes
@@ -206,7 +206,6 @@ namespace Ecom.Controllers
 
             try
             {
-                //_uow.Categories.Update(_mapper.Map(category, editCategoryAttributeViewModel));
                 _uow.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)

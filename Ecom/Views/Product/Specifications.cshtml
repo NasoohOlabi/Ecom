@@ -111,7 +111,7 @@
 
     function CreateRow(d) {
         return getElementFromString(
-            `<div class="specification-row"><span>${d.Attribute.Name}</span><input value="${d.Value.Value}" /><button type="button" class="close text-white bg-danger" aria-label="Close">
+                `<div class="specification-row"><span>${d.Attribute.Name}</span><input value="${d.SpecificationValue.Value}" /><button type="button" class="close text-white bg-danger" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button></div>`)
     }
@@ -129,8 +129,8 @@
                     console.log(d)
                     console.log(evt)
                     //FIXME: 
-                    d.Value = {} 
-                    d.Value.Value = evt.target.value
+                    d.SpecificationValue = {} 
+                    d.SpecificationValue.Value = evt.target.value
                 })
             selection
                 .select(".close").on('click', (d) => {
@@ -157,7 +157,7 @@
     const addBtn = d3.select('#addParam')
 
     function attr_2_spec(obj){
-      return {Attribute: obj,Value:{Value:""}}
+            return { Attribute: obj, SpecificationValue: { Value: "" } }
     }
     function spec_2_attr(obj) {
       return obj.Attribute

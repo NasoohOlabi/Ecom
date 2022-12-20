@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Ecom.Controllers
 {
+
+    [Area("Admin")]
     public class ProductController : BaseController<ProductController>
     {
         public ProductController(ILogger<ProductController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
@@ -167,7 +169,9 @@ namespace Ecom.Controllers
         {
             return _uow.Products.GetByID(id) != null;
         }
-        [HttpGet]
+
+
+        [Route("Product/{id:int}/Specifications")]
         public async Task<IActionResult> Specifications(long id)
         {
             var product = _uow.Products.Get(
@@ -183,45 +187,57 @@ namespace Ecom.Controllers
 
             // Get all Attributes for the select list
             var AllAttributes = from attr in await _uow.Attributes.GetAsync()
-                                select _mapper.Map<SelectAttributeViewModel>(attr);
-            var CategoryAttributes = from attr in product.Category.CategoryHasAttributes
-                                     select _mapper.Map<SelectAttributeViewModel>(attr.Attribute);
+                                select _mapper.Map<AttributeDetailsViewModel>(attr);
+
+            var CategoryAttributes = from attr in product.Category!.CategoryHasAttributes
+                                     select _mapper.Map<AttributeDetailsViewModel>(attr.Attribute);
 
 
             var editProductAttributesViewModel =
                 _mapper.Map<EditProductSpecificationsViewModel>(product);
-            //FIXME: 
-            editProductAttributesViewModel.ProductSpecifications = from x in product.Specifications
-                                             select new SelectSpecificationViewModel
-                                             {
-                                                 Attribute = new 
-                                                 EditAttributeViewModel
-                                                 {
-                                                     Id = x.Attribute.Id,
-                                                     Name = x.Attribute.Name
-                                                 },
-                                                 Value = new SelectValueViewModel
-                                                 {
-                                                     Id = x.SpecificationValue.Id,
-                                                     Value = x.SpecificationValue.Value
-                                                 },
-                                                Id= x.Id
-                                             };
+
             editProductAttributesViewModel.AllAttributes = AllAttributes;
             editProductAttributesViewModel.CategoryAttributes = CategoryAttributes;
 
             return View(editProductAttributesViewModel);
         }
+
         public IActionResult SaveList([FromBody] EditProductSpecificationsViewModel editProductSpecificationsViewModel)
         {
-            _uow.Products
-                 .UpdateSpecificationsList(
-                 _mapper.Map<DB.Repos.EditProductSpecificationsViewModel>(editProductSpecificationsViewModel)
-                 );
 
+            var product = _uow.Products.Get(
+               x => x.Id == editProductSpecificationsViewModel.Id,
+               includeProperties:
+               "Specifications,Specifications.Attribute,Specifications.SpecificationValue,Category,Category.CategoryHasAttributes,Category.CategoryHasAttributes.Attribute")
+               .First();
+
+            foreach (var specif in product.Specifications!)
+            {
+                if (!editProductSpecificationsViewModel.ProductSpecifications!.Select(x => x.Id).Any(x => x == specif.Id))
+                {
+                    _uow.Specifications.Delete(specif);
+                    _uow.SpecificationValues.Delete(specif.SpecificationValue!);
+                }
+            }
+
+            foreach (var newSpec in editProductSpecificationsViewModel.ProductSpecifications!)
+            {
+                if (!product.Specifications.Select(x => x.Id).Any(x => x == newSpec.Id))
+                {
+                    _uow.Specifications.Insert(new Specification
+                    {
+                        AttributeId = newSpec.Attribute!.Id,
+                        ProductId = editProductSpecificationsViewModel.Id,
+                        ValueType = 0,
+                        SpecificationValue = new SpecificationValue
+                        {
+                            Value = newSpec.SpecificationValue!.Value,
+                        }
+                    });
+                }
+            }
             try
             {
-                //_uow.Categories.Update(_mapper.Map(category, editProductSpecificationsViewModel));
                 _uow.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)

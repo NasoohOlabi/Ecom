@@ -10,6 +10,6 @@ namespace DB.IRepos
     public interface IProductRepo : IBaseRepo<Product>
     {
         public void UpdateRating(long id,long count, long sum);
-    void UpdateSpecificationsList(Repos.EditProductSpecificationsViewModel eProductSpecifications);
+    //void UpdateSpecificationsList(Repos.EditProductSpecificationsViewModel eProductSpecifications);
   }
 }

@@ -8,7 +8,7 @@ namespace Ecom.Profiles
     {
         public RoleProfile()
         {
-            CreateMap<Role, RoleDetailsViewModel>();
+            CreateMap<Role, RoleDetailsViewModel>().ReverseMap();
             CreateMap<Role, RoleEditViewModel>().ReverseMap();
             CreateMap<RoleEditViewModel, RoleDetailsViewModel>().ReverseMap();
         }

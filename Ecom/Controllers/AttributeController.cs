@@ -6,198 +6,170 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DB.Models;
-using Ecom.Models;
-using System.Collections.Specialized;
-using DB.UOW;
 using AutoMapper;
+using DB.UOW;
+using Ecom.Models;
 using Attribute = DB.Models.Attribute;
 
 namespace Ecom.Controllers
 {
     public class AttributeController : BaseController<AttributeController>
     {
-        //private readonly Specs specs;
         public AttributeController(ILogger<AttributeController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
         {
         }
 
-        //// GET: Category
-        //public async Task<IActionResult> Index()
-        //{
-        //    _logger.Log(LogLevel.Information, "Hello from log");
-        //    IEnumerable<Category> l = await _uow.Categories.GetAsync();
-        //    var x = new List<CategoryDetailsViewModel>();
-        //    foreach (Category c in l)
-        //    {
-        //        x.Add(_mapper.Map<CategoryDetailsViewModel>(c));
-        //    }
-        //    return View(x);
-        //}
-        //// GET: Category/
-        //public async Task<IActionResult> Attributes(long id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Attribute
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<Attribute> Attributes = await _uow.Attributes.GetAsync();
+            var AttributesList = new List<AttributeDetailsViewModel>();
+            foreach (Attribute c in Attributes)
+            {
+                AttributesList.Add(_mapper.Map<AttributeDetailsViewModel>(c));
+            }
+            return View(AttributesList);
+        }
 
-        //    var category = await _uow.Categories
-        //        .GetByIDAsync((long)id);
+        // GET: Attribute/Details/5
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var attrs = from cate_attr in category.CategoryHasAttributes
-        //                select _mapper.Map<SelectAttributeViewModel>(cate_attr.Attribute);
-        //    var AllAttributes = from attr in await _uow.Attributes.GetAsync()
-        //                        select _mapper.Map<SelectAttributeViewModel>(attr);
-            
-        //    return View(new EditCategoryAttributesViewModel
-        //    {
-        //        Id = category.Id,
-        //        Name = category.Name,
-        //        CategoryAttributes = attrs,
-        //        SelectAttributes = AllAttributes
-        //    }) ;
-        //}
-        //// GET: Category/Details/5
-        //public async Task<IActionResult> Details(long? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var Attribute = await _uow.Attributes
+                .GetByIDAsync((long)id);
 
-        //    var category = await _uow.Categories
-        //        .GetByIDAsync((long)id);
+            if (Attribute == null)
+            {
+                return NotFound();
+            }
 
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
+            AttributeDetailsViewModel AttributeDetailsViewModel = _mapper.Map<AttributeDetailsViewModel>(Attribute);
+            return View(AttributeDetailsViewModel);
+        }
 
-        //    CategoryDetailsViewModel categoryDetailsViewModel = _mapper.Map<CategoryDetailsViewModel>(category);
-        //    return View(categoryDetailsViewModel);
-        //}
+        // GET: Attribute/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //// GET: Category/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        // POST: Category/Create
+        // POST: Attribute/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateAttributeViewModel attributeViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AttributeEditViewModel AttributeViewModel)
         {
-            var attribute = _mapper.Map<Attribute>(attributeViewModel);
+            var Attribute = _mapper.Map<Attribute>(AttributeViewModel);
             if (ModelState.IsValid)
             {
-                _uow.Attributes.Insert(attribute);
+                _uow.Attributes.Insert(Attribute);
                 await _uow.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            return Json(attribute);
+            return View(Attribute);
         }
 
-        //// GET: Category/Edit/5
-        //public async Task<IActionResult> Edit(long? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Attribute/Edit/5
+        public async Task<IActionResult> Edit(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var category = await _uow.Categories.GetByIDAsync((long)id);
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var categoryEditViewModel = _mapper.Map<CategoryEditViewModel>(category);
-        //    return View(categoryEditViewModel);
-        //}
+            var Attribute = await _uow.Attributes.GetByIDAsync((long)id);
+            if (Attribute == null)
+            {
+                return NotFound();
+            }
+            var AttributeEditViewModel = _mapper.Map<AttributeEditViewModel>(Attribute);
+            return View(AttributeEditViewModel);
+        }
 
-        //// POST: Category/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
+        // POST: Attribute/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AttributeEditViewModel model)
+        {
+            var currentAttribute = await _uow.Attributes.GetByIDAsync(model.Id);
 
-        //public async Task<IActionResult> Edit(CategoryEditViewModel model)
-        //{
- 
-        //    var currentCategory = await _uow.Categories.GetByIDAsync(model.Id);
+            if (currentAttribute == null)
+            {
+                return NotFound();
+            }
 
-        //    if (currentCategory == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _uow.Attributes.Update(_mapper.Map(model, currentAttribute));
+                    await _uow.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AttributeExists(currentAttribute.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(currentAttribute);
+        }
 
-        //    // Call entity framework here to save these changes
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _uow.Categories.Update(_mapper.Map(model, currentCategory));
-        //            await _uow.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!CategoryExists(currentCategory.Id)) {
-        //                return NotFound();
-        //            }
-        //            else
-        //                throw;
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(currentCategory);
+        // GET: Attribute/Delete/5
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //}
+            var Attribute = await _uow.Attributes
+                .GetByIDAsync((long)id);
 
-        //// GET: Category/Delete/5
-        //public async Task<IActionResult> Delete(long? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (Attribute == null)
+            {
+                return NotFound();
+            }
 
-        //    var category = await _uow.Categories
-        //        .GetByIDAsync((long)id);
+            return View(_mapper.Map<AttributeDetailsViewModel>(Attribute));
+        }
 
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // POST: Attribute/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            if (_uow.Attributes == null)
+            {
+                return Problem("Entity set 'EComContext.Attributes'  is null.");
+            }
+            var Attribute = await _uow.Attributes.GetByIDAsync(id);
+
+            if (Attribute != null)
+            {
+                _uow.Attributes.Delete(Attribute);
+            }
             
-        //    return View(_mapper.Map<CategoryDetailsViewModel>(category));
-        //}
+            await _uow.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-        //// POST: Category/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(long id)
-        //{
-        //    if (_uow.Categories == null)
-        //    {
-        //        return Problem("Entity set 'EComContext.Categories'  is null.");
-        //    }
-
-        //    var category = await _uow.Categories.GetByIDAsync(id);
-
-        //    if (category != null)
-        //    {
-        //        _uow.Categories.Delete(category);
-        //    }
-
-        //    await _uow.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool CategoryExists(long id)
-        //{
-        //    return _uow.Categories.GetByID(id) != null;
-        //}
+        private bool AttributeExists(long id)
+        {
+          return _uow.Attributes.GetByID(id) != null;
+        }
     }
 }

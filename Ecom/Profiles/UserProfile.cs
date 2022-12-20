@@ -8,7 +8,7 @@ namespace Ecom.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserDetailsViewModel>();
+            CreateMap<User, UserDetailsViewModel>().ReverseMap();
             CreateMap<User, UserEditViewModel>().ReverseMap();
             CreateMap<UserEditViewModel, UserDetailsViewModel>().ReverseMap();
         }

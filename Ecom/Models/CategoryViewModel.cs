@@ -18,6 +18,14 @@ namespace Ecom.Models
 
     }
 
+    public class EditCategoryAttributesViewModel : BaseEditViewModel<Category>
+    {
+        public string Name { get; set; } = null!;
+        public IEnumerable<AttributeDetailsViewModel>? AllAttributes { get; set; } = null!;
+        public IEnumerable<AttributeDetailsViewModel>? CategoryAttributes { get; set; } = null!;
+
+    }
+
 }
 
 

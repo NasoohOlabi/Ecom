@@ -98,7 +98,7 @@
 
     parseModel(`@ModelString`)
 
-    Model.SelectAttributes = Model.SelectAttributes
+    Model.AllAttributes = Model.AllAttributes
         .filter(x => !Model.CategoryAttributes.some(y => x.Id == y.Id))
 
     function CreateRow(d) {
@@ -121,7 +121,7 @@
         },
         sourceSelector: "#attributes",
         sourceElementsSelector: 'option',
-        modelToSourceData: x => x.SelectAttributes,
+        modelToSourceData: x => x.AllAttributes,
                 sourceDataIdentity: x => x.Name,
         sourceElementGenerator: 'option',
         sourceEnterSelectionCustomizer: (selection) => {
@@ -137,10 +137,10 @@
     const addBtn = d3.select('#addParam')
 
     function AddItem(Name) {
-        if (Model.SelectAttributes.every(x => x.Name !== Name))
+        if (Model.AllAttributes.every(x => x.Name !== Name))
             return;
-        Model.CategoryAttributes.push(Model.SelectAttributes.filter(x => x.Name === Name)[0])
-        Model.SelectAttributes.removeValue(Name,x=>x.Name)
+        Model.CategoryAttributes.push(Model.AllAttributes.filter(x => x.Name === Name)[0])
+        Model.AllAttributes.removeValue(Name,x=>x.Name)
         inputNode.value = ""
         render()
     }
@@ -148,7 +148,7 @@
     function RemoveItem(Name) {
         if (Model.CategoryAttributes.every(x => x.Name !== Name))
             return;
-        Model.SelectAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
+        Model.AllAttributes.push(Model.CategoryAttributes.filter(x => x.Name === Name)[0])
         Model.CategoryAttributes.removeValue(Name,x => x.Name)
         render()
     }
