@@ -176,6 +176,9 @@ namespace Ecom.Controllers
 
             if (category != null)
             {
+
+                _uow.Categories.DeleteAttributeList(id);
+
                 _uow.Categories.Delete(category);
             }
 

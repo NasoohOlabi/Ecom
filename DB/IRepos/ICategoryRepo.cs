@@ -10,5 +10,8 @@ namespace DB.IRepos
     public interface ICategoryRepo : IBaseRepo<Category>
     {
         public void UpdateAttributeList(long id, IEnumerable<long> attributesIds);
+        public void DeleteAttributeList(long id);
+
+
     }
 }

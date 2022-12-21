@@ -47,5 +47,24 @@ namespace DB.Repos
 
         }
 
+
+
+        public void DeleteAttributeList(long id)
+        {
+            var category = _dbSet
+                .Include("CategoryHasAttributes")
+                .Include("CategoryHasAttributes.Attribute")
+                .First(x => x.Id == id);
+
+            foreach (var cha in category.CategoryHasAttributes!)
+            {
+                
+                    category.CategoryHasAttributes.Remove(cha);
+                    _db.CategoryHasAttributes.Remove(cha);
+               
+            }
+
+
+        }
     }
 }

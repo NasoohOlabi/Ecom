@@ -11,9 +11,11 @@ using System.Xml.Linq;
 using AutoMapper;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
-
+//using MVCareas.Areas.Products.Controllers;
 namespace Ecom.Controllers
 {
+   
+
 
     [Area("Admin")]
     public class ProductController : BaseController<ProductController>
