@@ -10,7 +10,7 @@ namespace Ecom.Models
     public class AttributeDetailsViewModel : BaseDetailsViewModel<Attribute>
     {
         public string Name { get; set; } = null!;
-
+        public SpecificationValueTypes ValueType { get; set; }
     }
 
     public class AttributeEditViewModel : BaseEditViewModel<Attribute>
