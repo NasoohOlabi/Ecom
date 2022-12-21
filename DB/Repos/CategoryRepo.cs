@@ -17,12 +17,8 @@ namespace DB.Repos
     {
         public CategoryRepo(EComContext db, ILogger logger) : base(db, logger) { }
 
-        public void UpdateAttributeList(long id, IEnumerable<long> attributesIds)
+        public void UpdateAttributeList(Category category, IEnumerable<long> attributesIds)
         {
-            var category = _dbSet
-                .Include("CategoryHasAttributes")
-                .Include("CategoryHasAttributes.Attribute")
-                .First(x => x.Id == id);
 
             foreach (var cha in category.CategoryHasAttributes!)
             {
@@ -40,7 +36,7 @@ namespace DB.Repos
                     _db.CategoryHasAttributes.Add(new CategoryHasAttribute
                     {
                         AttributeId = attributeId,
-                        CategoryId = id
+                        CategoryId = category.Id
                     });
                 }
             }
