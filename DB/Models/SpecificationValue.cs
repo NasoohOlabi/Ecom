@@ -5,14 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
-    public enum SpecificationValueTypes
-    {
-        Int,
-        String,
-        Bool,
-        Float
-    }
-
     public partial class SpecificationValue
     {
         [Key]

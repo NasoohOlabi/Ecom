@@ -186,6 +186,8 @@ namespace DB.Models
 
                 entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
+                entity.Property(s => s.ValueType);
+
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
@@ -568,8 +570,6 @@ namespace DB.Models
                 entity.Property(s => s.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(s => s.ModifiedAt).HasColumnType("datetime");
-
-                entity.Property(s => s.ValueType);
 
                 entity.HasOne(s => s.Attribute)
                     .WithMany(a => a.Specifications)

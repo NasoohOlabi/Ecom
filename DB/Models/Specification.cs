@@ -14,7 +14,6 @@ namespace DB.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public long ValueType { get; set; }
         public long ProductId { get; set; }
         public long AttributeId { get; set; }
         public long SpecificationValueId { get; set; }

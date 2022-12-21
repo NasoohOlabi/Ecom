@@ -5,6 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DB.Models
 {
+    public enum SpecificationValueTypes
+    {
+        String,
+        Int,
+        Bool,
+        Float,
+        Color,
+        Date
+    }
     public partial class Attribute
     {
         public Attribute()
@@ -17,6 +26,7 @@ namespace DB.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; } = null!;
+        public SpecificationValueTypes ValueType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
