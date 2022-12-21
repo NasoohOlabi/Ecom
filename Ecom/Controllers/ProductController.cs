@@ -16,8 +16,7 @@ namespace Ecom.Controllers
 {
    
 
-
-    [Area("Admin")]
+    
     public class ProductController : BaseController<ProductController>
     {
         public ProductController(ILogger<ProductController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
