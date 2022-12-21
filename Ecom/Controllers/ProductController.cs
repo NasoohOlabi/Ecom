@@ -229,7 +229,6 @@ namespace Ecom.Controllers
                     {
                         AttributeId = newSpec.Attribute!.Id,
                         ProductId = editProductSpecificationsViewModel.Id,
-                        ValueType = 0,
                         SpecificationValue = new SpecificationValue
                         {
                             Value = newSpec.SpecificationValue!.Value,
