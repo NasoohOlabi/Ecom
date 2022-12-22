@@ -49,10 +49,6 @@
       align-items: center;
   }
 
-  .flex-row-reverse{
-      flex-direction: row-reverse;
-  }
-
   .close {
       border-radius: 50%;
       margin-left: 0.5rem;
@@ -192,9 +188,13 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(Model)
-        }).then(res => res.text(), console.log)
+        })
+            .then(res => res.text(), console.log)
             .then(answer => {
                 console.log(answer)
+                const obj = JSON.parse(anwser)
+                obj.Error
+                obj.Message
                 window.location.href = `@Url.Action("Index","Category")`
             }, console.log)
 

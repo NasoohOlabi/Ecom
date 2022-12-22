@@ -77,7 +77,7 @@ namespace Ecom.Controllers
         }
 
         // GET: Product/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        public async Task<IActionResult> Edit(long id)
         {
             if (id == null || _uow.Products == null)
             {
@@ -124,7 +124,10 @@ namespace Ecom.Controllers
                     else
                         throw;
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Specifications), new
+                {
+                    id = currentProduct.Id
+                });
             }
             return View(currentProduct);
         }

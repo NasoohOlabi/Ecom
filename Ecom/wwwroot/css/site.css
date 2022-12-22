@@ -18,5 +18,13 @@ body {
 }
 
 td, th {
-    text-align: center;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
