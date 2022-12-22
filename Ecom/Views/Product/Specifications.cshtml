@@ -7,8 +7,7 @@
     ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
         {
           Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        }); ViewData["Title"] =
-"Edit";
+        }); ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
@@ -92,6 +91,7 @@
         </div>
         <div class="paramsTableColumn">
           <input type="text"
+                  id="new-item-value-input"
                  class="tableInput"
                  placeholder="Value" value="" />
         </div>
@@ -136,7 +136,7 @@
 
     function CreateRow(d) {
         return getElementFromString(
-            `<div class="paramsTableRow">
+            `<div class="paramsTableRow specification-row">
                                     <div class="paramsTableColumn"></div>
                                     <div class="paramsTableColumn">
                                       <span
@@ -195,7 +195,9 @@
         targetSelector: "#root",
         targetElementsSelector: ".specification-row",
         modelToTargetData: (x) => x.ProductSpecifications,
-        targetDataIdentity: (x) => x.Attribute.Id,
+        targetDataIdentity: (x) => {
+            console.log(x.Attribute.Id)
+          return x.Attribute.Id},
         targetElementGenerator: CreateRow,
         targetEnterSelectionCustomizer: (selection) => {
             selection.select("input").on("change", (d) => {
@@ -226,11 +228,12 @@
     render();
 
     const inputNode = document.querySelector("#new-item-input");
+    const valueInputNode = document.querySelector("#new-item-value-input");
     const newItemInfo = d3.select("#new-item-input");
     const addBtn = d3.select("#addParam");
 
-    function attr_2_spec(obj) {
-        return { Attribute: obj, SpecificationValue: { Value: "" } };
+    function attr_2_spec(obj,Value) {
+        return { Id: obj.Id,Attribute: obj, SpecificationValue: { Value } };
     }
     function spec_2_attr(obj) {
         return obj.Attribute;
@@ -239,8 +242,9 @@
     function AddItem(Name) {
         if (Model.AllAttributes.every((x) => x.Name !== Name)) return;
         const item = Model.AllAttributes.find((x) => x.Name === Name);
-        Model.ProductSpecifications.push(attr_2_spec(item));
+        Model.ProductSpecifications.push(attr_2_spec(item, valueInputNode.value));
         inputNode.value = "";
+        valueInputNode.value = "";
         render();
     }
 
