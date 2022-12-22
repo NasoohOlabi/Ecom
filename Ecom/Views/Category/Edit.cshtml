@@ -191,14 +191,8 @@
         })
             .then(res => res.text(), console.log)
             .then(answer => {
-                console.log(answer)
-                const obj = JSON.parse(answer)
-                if(!!obj.error){
-                  localStorage.setItem('error',obj.error);
-                }
-                else{
-                  localStorage.setItem('message',obj.message);
-                }
+              //FlashError(JSON.parse(answer).error);
+                AddFlashUsingLocalStorage(JSON.parse(answer))
                 window.location.href = `@Url.Action("Index","Category")`
             }, console.log)
 

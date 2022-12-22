@@ -67,3 +67,24 @@ function getRenderer({
       .exit().remove();
   }
 }
+
+
+function AddFlashUsingLocalStorage(obj) {
+  localStorage.setItem('flash',JSON.stringify(obj))
+}
+
+function FlashError(error) {
+  localStorage.setItem('flash', { error })
+}
+
+function FlashUsingLocalStorage() {
+  const flashObj = JSON.parse(localStorage.getItem('flash'))
+  if (flashObj.error) {
+    alert(flashObj.error)
+    localStorage.removeItem('flash')
+  }
+  else if (flashObj.message) {
+    alert(flashObj.message)
+    localStorage.removeItem('flash')
+  }
+}

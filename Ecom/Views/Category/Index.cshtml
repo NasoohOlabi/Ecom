@@ -46,17 +46,3 @@
     </tbody>
 </table>
 
-
-@section Scripts {
-  <script>
-    console.log(localStorage)
-    if (!!localStorage.getItem('error')){
-      alert(localStorage.getItem('error'))
-      localStorage.removeItem('error')
-    }
-    else if (!!localStorage.getItem('message')) {
-        alert(localStorage.getItem('message'))
-        localStorage.removeItem('message')
-    }
-  </script>
-}
