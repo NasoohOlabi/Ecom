@@ -192,9 +192,13 @@
             .then(res => res.text(), console.log)
             .then(answer => {
                 console.log(answer)
-                const obj = JSON.parse(anwser)
-                obj.Error
-                obj.Message
+                const obj = JSON.parse(answer)
+                if(!!obj.error){
+                  localStorage.setItem('error',obj.error);
+                }
+                else{
+                  localStorage.setItem('message',obj.message);
+                }
                 window.location.href = `@Url.Action("Index","Category")`
             }, console.log)
 
