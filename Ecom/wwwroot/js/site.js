@@ -19,12 +19,12 @@ function parseModel(str) {
   console.log(Model)
 }
 
-Array.prototype.removeValue = function (value,reducer = (x=>x.Id)) {
+Array.prototype.removeValue = function (value, reducer = (x => x.Id)) {
   for (let i = 0; i < this.length; i++) {
     if (reducer(this[i]) == value) {
       this.splice(i, 1);
       break;
-    } 
+    }
   }
 };
 
@@ -70,11 +70,14 @@ function getRenderer({
 
 
 function AddFlashUsingLocalStorage(obj) {
-  localStorage.setItem('flash',JSON.stringify(obj))
+  localStorage.setItem('flash', JSON.stringify(obj))
 }
 
 function FlashError(error) {
-  localStorage.setItem('flash', { error })
+  AddFlashUsingLocalStorage({ error })
+}
+function FlushSucces(message) {
+  AddFlashUsingLocalStorage({ message })
 }
 
 function FlashUsingLocalStorage() {
