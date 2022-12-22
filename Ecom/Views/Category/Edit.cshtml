@@ -190,7 +190,7 @@
             body: JSON.stringify(Model)
         })
             .then(res => res.json(), console.log)
-                .then(answer => handleResult(answer, '@Url.Action("Index","Category"))', console.log)
+                .then(answer => handleResult(answer, '@Url.Action("Index","Category")'), console.log)
 
     })
 
