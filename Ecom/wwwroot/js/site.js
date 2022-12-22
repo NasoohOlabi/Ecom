@@ -76,18 +76,53 @@ function AddFlashUsingLocalStorage(obj) {
 function FlashError(error) {
   AddFlashUsingLocalStorage({ error })
 }
-function FlushSucces(message) {
+function FlashSuccess(message) {
   AddFlashUsingLocalStorage({ message })
 }
 
 function FlashUsingLocalStorage() {
   const flashObj = JSON.parse(localStorage.getItem('flash'))
-  if (flashObj.error) {
+    if (!flashObj) {
+        return;
+    }
+    if (flashObj.error) {
     alert(flashObj.error)
     localStorage.removeItem('flash')
   }
   else if (flashObj.message) {
-    alert(flashObj.message)
+     
+      const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-left',
+          iconColor: 'white',
+          background: "#a5dc86",
+          color: "white",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true
+      })
+      Toast.fire({
+          icon: "success",
+          title: flashObj.message
+      })
+
     localStorage.removeItem('flash')
   }
 }
+
+function handleResult(answer, redirectDest) {
+    if (answer.error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: answer.error,
+        })
+    }
+    else {
+        FlashSuccess(answer.message)
+        window.location.href = redirectDest
+
+    }
+}
+
+FlashUsingLocalStorage();

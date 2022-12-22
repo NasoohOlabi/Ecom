@@ -142,6 +142,7 @@ namespace Ecom.Controllers
         [HttpPatch]
         public IActionResult SaveList([FromBody] EditCategoryAttributesViewModel editCategoryAttributeViewModel)
         {
+
             if (
                 string.IsNullOrEmpty(editCategoryAttributeViewModel.Name)
                 || Duplicates(from attr in editCategoryAttributeViewModel.CategoryAttributes
