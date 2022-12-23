@@ -189,12 +189,8 @@
             },
             body: JSON.stringify(Model)
         })
-            .then(res => res.text(), console.log)
-            .then(answer => {
-              //FlashError(JSON.parse(answer).error);
-                AddFlashUsingLocalStorage(JSON.parse(answer))
-                window.location.href = `@Url.Action("Index","Category")`
-            }, console.log)
+            .then(res => res.json(), console.log)
+                .then(answer => handleResult(answer, '@Url.Action("Index","Category")'), console.log)
 
     })
 
