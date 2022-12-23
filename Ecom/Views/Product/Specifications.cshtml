@@ -129,6 +129,8 @@
     parseModel(`@ModelString`);
 
     console.log(Model.ProductSpecifications[0]);
+    
+    Model.ProductSpecifications.sort((a,b) => a.Attribute.Id - b.Attribute.Id)
 
     window.Atoms = {
         FromCategory: true,
@@ -245,6 +247,7 @@
         Model.ProductSpecifications.push(attr_2_spec(item, valueInputNode.value));
         inputNode.value = "";
         valueInputNode.value = "";
+        Model.ProductSpecifications.sort((a,b) => a.Attribute.Id - b.Attribute.Id)
         render();
     }
 
