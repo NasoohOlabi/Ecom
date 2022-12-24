@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class WishListRepo : BaseRepo<WishList>, IWishListRepo
     {
-        public WishListRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public WishListRepo(EComContext db, ILogger<WishListRepo> logger) : base(db, logger) { }
 
     }
 }

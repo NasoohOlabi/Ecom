@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class RatingRepo : BaseRepo<Rating>, IRatingRepo
     {
-        public RatingRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public RatingRepo(EComContext db, ILogger<RatingRepo> logger) : base(db, logger) { }
 
     }
 }

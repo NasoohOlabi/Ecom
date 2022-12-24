@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class AttachmentTypeRepo : BaseRepo<AttachmentType>, IAttachmentTypeRepo
     {
-        public AttachmentTypeRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public AttachmentTypeRepo(EComContext db, ILogger<AttachmentTypeRepo> logger) : base(db, logger) { }
 
     }
 }

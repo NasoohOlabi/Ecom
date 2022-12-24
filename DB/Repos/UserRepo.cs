@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class UserRepo : BaseRepo<User>, IUserRepo
     {
-        public UserRepo(EComContext db, ILogger logger) : base(db, logger) {}
+        public UserRepo(EComContext db, ILogger<UserRepo> logger) : base(db, logger) {}
 
     }
 }

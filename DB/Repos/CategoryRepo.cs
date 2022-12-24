@@ -15,7 +15,7 @@ namespace DB.Repos
 {
     public class CategoryRepo : BaseRepo<Category>, ICategoryRepo
     {
-        public CategoryRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public CategoryRepo(EComContext db, ILogger<CategoryRepo> logger) : base(db, logger) { }
 
         public void UpdateAttributeList(Category category, IEnumerable<long> attributesIds)
         {

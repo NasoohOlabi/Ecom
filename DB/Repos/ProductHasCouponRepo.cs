@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class ProductHasCouponRepo : BaseRepo<ProductHasCoupon>, IProductHasCouponRepo
     {
-        public ProductHasCouponRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public ProductHasCouponRepo(EComContext db, ILogger<ProductHasCouponRepo> logger) : base(db, logger) { }
 
     }
 }

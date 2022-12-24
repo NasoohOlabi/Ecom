@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class RoleHasPermissionRepo : BaseRepo<RoleHasPermission>, IRoleHasPermissionRepo
     {
-        public RoleHasPermissionRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public RoleHasPermissionRepo(EComContext db, ILogger<RoleHasPermissionRepo> logger) : base(db, logger) { }
 
     }
 }

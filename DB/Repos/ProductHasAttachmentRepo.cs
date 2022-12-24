@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class ProductHasAttachmentRepo : BaseRepo<ProductHasAttachment>, IProductHasAttachmentRepo
     {
-        public ProductHasAttachmentRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public ProductHasAttachmentRepo(EComContext db, ILogger<ProductHasAttachmentRepo> logger) : base(db, logger) { }
 
     }
 }

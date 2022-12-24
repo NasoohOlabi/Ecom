@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class CategoryHasAttributeRepo : BaseRepo<CategoryHasAttribute>, ICategoryHasAttributeRepo
     {
-        public CategoryHasAttributeRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public CategoryHasAttributeRepo(EComContext db, ILogger<CategoryHasAttributeRepo> logger) : base(db, logger) { }
 
     }
 }

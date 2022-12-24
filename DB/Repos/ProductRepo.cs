@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class ProductRepo : BaseRepo<Product>, IProductRepo
     {
-        public ProductRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public ProductRepo(EComContext db, ILogger<ProductRepo> logger) : base(db, logger) { }
 
         public void UpdateRating(long id, long count, long sum)
         {

@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class PermissionRepo : BaseRepo<Permission>, IPermissionRepo
     {
-        public PermissionRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public PermissionRepo(EComContext db, ILogger<PermissionRepo> logger) : base(db, logger) { }
 
     }
 }

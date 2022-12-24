@@ -19,7 +19,7 @@ namespace DB.Repos
         internal DbSet<T> _dbSet;
         protected readonly ILogger _logger;
 
-        public BaseRepo(EComContext db, ILogger logger)
+        public BaseRepo(EComContext db, ILogger<IBaseRepo<T>> logger)
         {
             _db = db;
             _dbSet = db.Set<T>();
@@ -75,7 +75,7 @@ namespace DB.Repos
                 return await query.ToListAsync();
             }
         }
-        public T? GetByID(long id)
+        public virtual T? GetByID(long id)
         {
             return _dbSet.Find(id);
         }
