@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DB.Models
 {
-    public partial class EComContext : DbContext
+    public partial class EComContext : IdentityDbContext<User,Role,long>
     {
         public EComContext()
         {
@@ -80,13 +82,10 @@ namespace DB.Models
         public virtual DbSet<ProductHasAttachment> ProductHasAttachments { get; set; } = null!;
         public virtual DbSet<ProductHasCoupon> ProductHasCoupons { get; set; } = null!;
         public virtual DbSet<Rating> Ratings { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<RoleHasPermission> RoleHasPermissions { get; set; } = null!;
         public virtual DbSet<Shipping> Shippings { get; set; } = null!;
         public virtual DbSet<Specification> Specifications { get; set; } = null!;
         public virtual DbSet<SpecificationValue> SpecificationValues { get; set; } = null!;
-
-        public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -672,6 +671,7 @@ namespace DB.Models
             });
 
             OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

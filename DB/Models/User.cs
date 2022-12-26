@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace DB.Models
 {
-    public partial class User
+    public partial class User : IdentityUser<long>
     {
         public User()
         {
@@ -18,12 +19,12 @@ namespace DB.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public override long Id { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string BirthDate { get; set; } = null!;
         public string Password { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
+        public override string PhoneNumber { get; set; } = null!;
         public long RoleId { get; set; }
         public bool IsVerified { get; set; }
         public string? ProfilePicture { get; set; }
