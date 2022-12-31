@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using DB.Models;
+using DB.IRepos;
 
 namespace Ecom.Areas.Identity.Pages.Account
 {
@@ -22,9 +23,17 @@ namespace Ecom.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IUserRepo userRepo;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager,
+            IPasswordHasher<User> _passwordHasher,
+            ILogger<LoginModel> logger,
+            IUserRepo repo
+            )
         {
+            userRepo = repo;
+            this._passwordHasher = _passwordHasher;
             _signInManager = signInManager;
             _logger = logger;
         }

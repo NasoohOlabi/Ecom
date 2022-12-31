@@ -32,7 +32,8 @@ namespace Ecom.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        protected readonly IMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -40,8 +41,10 @@ namespace Ecom.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IMapper mapper,
-            IEmailSender emailSender)
+            IPasswordHasher<User> _passwordHasher,
+        IEmailSender emailSender)
         {
+            this._passwordHasher = _passwordHasher;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -88,15 +91,16 @@ namespace Ecom.Areas.Identity.Pages.Account
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
             [Required]
-            [Display(Name = "Last Name")] 
+            [Display(Name = "Last Name")]
             public string LastName { get; set; }
             [Required]
-            [Display(Name = "Date of Birth")] 
+            [Display(Name = "Date of Birth")]
             public string BirthDate { get; set; }
             [Required]
             [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            [Phone]
             public string PhoneNumber { get; set; }
-            public long RoleId { get; set; } = 1;
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -135,7 +139,6 @@ namespace Ecom.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
