@@ -11,7 +11,6 @@ namespace DB.Models
         public Role()
         {
             RoleHasPermissions = new HashSet<RoleHasPermission>();
-            Users = new HashSet<User>();
         }
 
         [Key]
@@ -22,6 +21,5 @@ namespace DB.Models
         public DateTime ModifiedAt { get; set; }
 
         public virtual ICollection<RoleHasPermission> RoleHasPermissions { get; set; }
-        public virtual ICollection<User> Users { get; set; }
     }
 }

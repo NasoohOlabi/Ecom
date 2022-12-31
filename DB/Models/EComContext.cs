@@ -345,6 +345,9 @@ namespace DB.Models
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
+                
+                entity.Property(b => b.Price)
+                   .HasPrecision(12, 6);
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderHasProducts)
@@ -613,8 +616,7 @@ namespace DB.Models
                 entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.BirthDate)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -628,23 +630,9 @@ namespace DB.Models
 
                 entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.ProfilePicture)
                     .HasMaxLength(450)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Role");
             });
 
             modelBuilder.Entity<WishList>(entity =>

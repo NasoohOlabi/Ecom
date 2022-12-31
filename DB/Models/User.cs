@@ -22,16 +22,12 @@ namespace DB.Models
         public override long Id { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
-        public string BirthDate { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public override string PhoneNumber { get; set; } = null!;
-        public long RoleId { get; set; }
+        public DateTime BirthDate { get; set; } 
         public bool IsVerified { get; set; }
         public string? ProfilePicture { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public virtual Role? Role { get; set; } = null!;
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Product> Products { get; set; }
