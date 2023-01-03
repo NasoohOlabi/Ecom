@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class AttributeRepo : BaseRepo<DB.Models.Attribute>, IAttributeRepo
     {
-        public AttributeRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public AttributeRepo(EComContext db, ILogger<AttributeRepo> logger) : base(db, logger) { }
 
     }
 }

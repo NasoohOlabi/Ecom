@@ -13,7 +13,8 @@ namespace DB.Repos
 {
     public class AddressRepo : BaseRepo<Address>, IAddressRepo
     {
-        public AddressRepo(EComContext db, ILogger logger) : base(db, logger) { }
-
+        public AddressRepo(EComContext db, ILogger<AddressRepo> logger) : base(db, logger)
+        {
+        }
     }
 }

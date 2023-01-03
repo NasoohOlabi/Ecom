@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class ShippingRepo : BaseRepo<Shipping>, IShippingRepo
     {
-        public ShippingRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public ShippingRepo(EComContext db, ILogger<ShippingRepo> logger) : base(db, logger) { }
 
     }
 }

@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class NotificationRepo : BaseRepo<Notification>, INotificationRepo
     {
-        public NotificationRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public NotificationRepo(EComContext db, ILogger<NotificationRepo> logger) : base(db, logger) { }
 
     }
 }

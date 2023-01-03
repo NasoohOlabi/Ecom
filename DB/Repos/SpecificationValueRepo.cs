@@ -13,7 +13,7 @@ namespace DB.Repos
 {
     public class SpecificationValueRepo : BaseRepo<SpecificationValue>, ISpecificationValueRepo
     {
-        public SpecificationValueRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public SpecificationValueRepo(EComContext db, ILogger<SpecificationValueRepo> logger) : base(db, logger) { }
 
     }
 }

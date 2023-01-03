@@ -13,6 +13,6 @@ namespace DB.Repos
 {
     public class OrderRepo : BaseRepo<Order>, IOrderRepo
     {
-        public OrderRepo(EComContext db, ILogger logger) : base(db, logger) { }
+        public OrderRepo(EComContext db, ILogger<OrderRepo> logger) : base(db, logger) { }
     }
 }
