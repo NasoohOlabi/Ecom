@@ -4,6 +4,7 @@ using DB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(EComContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20221231101503_remove RoleId col and fix orderhasprodcut price percision")]
+    partial class removeRoleIdcolandfixorderhasprodcutpricepercision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -836,6 +838,9 @@ namespace DB.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(450)");
 
+                    b.Property<long?>("RoleId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -855,6 +860,8 @@ namespace DB.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -1223,6 +1230,13 @@ namespace DB.Migrations
                     b.Navigation("SpecificationValue");
                 });
 
+            modelBuilder.Entity("DB.Models.User", b =>
+                {
+                    b.HasOne("DB.Models.Role", null)
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
+                });
+
             modelBuilder.Entity("DB.Models.WishList", b =>
                 {
                     b.HasOne("DB.Models.Product", "Product")
@@ -1365,6 +1379,8 @@ namespace DB.Migrations
             modelBuilder.Entity("DB.Models.Role", b =>
                 {
                     b.Navigation("RoleHasPermissions");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DB.Models.Shipping", b =>

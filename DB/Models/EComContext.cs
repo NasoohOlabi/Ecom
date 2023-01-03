@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DB.Models
 {
-    public partial class EComContext : DbContext
+    public partial class EComContext : IdentityDbContext<User,Role,long>
     {
         public EComContext()
         {
@@ -80,13 +82,10 @@ namespace DB.Models
         public virtual DbSet<ProductHasAttachment> ProductHasAttachments { get; set; } = null!;
         public virtual DbSet<ProductHasCoupon> ProductHasCoupons { get; set; } = null!;
         public virtual DbSet<Rating> Ratings { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<RoleHasPermission> RoleHasPermissions { get; set; } = null!;
         public virtual DbSet<Shipping> Shippings { get; set; } = null!;
         public virtual DbSet<Specification> Specifications { get; set; } = null!;
         public virtual DbSet<SpecificationValue> SpecificationValues { get; set; } = null!;
-
-        public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<WishList> WishLists { get; set; } = null!;
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -346,6 +345,9 @@ namespace DB.Models
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
+                
+                entity.Property(b => b.Price)
+                   .HasPrecision(12, 6);
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderHasProducts)
@@ -614,8 +616,7 @@ namespace DB.Models
                 entity.Property(e => e.Id).UseIdentityColumn(1, 1);
 
                 entity.Property(e => e.BirthDate)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
@@ -629,23 +630,9 @@ namespace DB.Models
 
                 entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.ProfilePicture)
                     .HasMaxLength(450)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Role");
             });
 
             modelBuilder.Entity<WishList>(entity =>
@@ -672,6 +659,7 @@ namespace DB.Models
             });
 
             OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -4,6 +4,7 @@ using DB.Repos;
 using DB.UOW;
 using Ecom.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,10 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddDbContext<EComContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<User>(
+    options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<EComContext>();
 builder.Services.AddSingleton<IArchiveService, ArchiveService>();
 builder.Services.AddSingleton<IRatingBuffer, RatingBuffer>();
 builder.Services.AddSingleton<ISingletonRnd, SingletonRnd>();   
@@ -37,11 +42,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

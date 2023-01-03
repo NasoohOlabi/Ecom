@@ -1,5 +1,6 @@
 ﻿using DB.Models;
 using DB.UOW;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace Ecom.Services
         .UseLazyLoadingProxies()
                 .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<EComContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }

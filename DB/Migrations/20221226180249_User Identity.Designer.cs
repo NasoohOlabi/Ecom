@@ -4,6 +4,7 @@ using DB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(EComContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20221226180249_User Identity")]
+    partial class UserIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,8 +385,7 @@ namespace DB.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(12, 6)
-                        .HasColumnType("decimal(12,6)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -773,8 +774,11 @@ namespace DB.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime");
+                    b.Property<string>("BirthDate")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -822,11 +826,20 @@ namespace DB.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -835,6 +848,9 @@ namespace DB.Migrations
                         .HasMaxLength(450)
                         .IsUnicode(false)
                         .HasColumnType("varchar(450)");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -855,6 +871,8 @@ namespace DB.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -939,12 +957,10 @@ namespace DB.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -980,12 +996,10 @@ namespace DB.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -1223,6 +1237,17 @@ namespace DB.Migrations
                     b.Navigation("SpecificationValue");
                 });
 
+            modelBuilder.Entity("DB.Models.User", b =>
+                {
+                    b.HasOne("DB.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .IsRequired()
+                        .HasConstraintName("FK_User_Role");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("DB.Models.WishList", b =>
                 {
                     b.HasOne("DB.Models.Product", "Product")
@@ -1365,6 +1390,8 @@ namespace DB.Migrations
             modelBuilder.Entity("DB.Models.Role", b =>
                 {
                     b.Navigation("RoleHasPermissions");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DB.Models.Shipping", b =>

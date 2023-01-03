@@ -11,16 +11,25 @@ using System.Xml.Linq;
 using AutoMapper;
 using DB.UOW;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 //using MVCareas.Areas.Products.Controllers;
 namespace Ecom.Controllers
 {
-   
-
-    
     public class ProductController : BaseController<ProductController>
     {
-        public ProductController(ILogger<ProductController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
+        private readonly SignInManager<User> SignInManager;
+        private readonly UserManager<User> UserManager;
+        public ProductController(
+            ILogger<ProductController> logger,
+            IUnitOfWork uow,
+            IMapper mapper,
+            SignInManager<User> SignInManager,
+            UserManager<User> UserManager
+            ) : base(logger, uow, mapper)
         {
+            this.SignInManager = SignInManager;
+            this.UserManager = UserManager;
         }
 
         // GET: Product
@@ -54,19 +63,22 @@ namespace Ecom.Controllers
         }
 
         // GET: Product/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_uow.Categories.Get(), "Id", "Name");
-            ViewData["SellerId"] = new SelectList(_uow.Users.Get(), "Id", "FirstName");
             return View();
         }
 
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(ProductEditViewModel productViewModel)
         {
             var product = _mapper.Map<Product>(productViewModel);
+            var user = await UserManager.GetUserAsync(User);
+            product.SellerId = user.Id;
             if (ModelState.IsValid)
             {
                 _uow.Products.Insert(product);
@@ -77,6 +89,7 @@ namespace Ecom.Controllers
         }
 
         // GET: Product/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(long id)
         {
             if (id == null || _uow.Products == null)
@@ -91,12 +104,12 @@ namespace Ecom.Controllers
             }
 
             ViewData["CategoryId"] = new SelectList(_uow.Categories.Get(), "Id", "Name", product.CategoryId);
-            ViewData["SellerId"] = new SelectList(_uow.Users.Get(), "Id", "FirstName", product.SellerId);
 
             return View(_mapper.Map<ProductEditViewModel>(product));
         }
 
         // POST: Product/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
@@ -106,8 +119,9 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
+            var sellerId = currentProduct.SellerId;
             _mapper.Map(model, currentProduct);
-
+            currentProduct.SellerId = sellerId;
             if (ModelState.IsValid)
             {
                 try
@@ -133,6 +147,7 @@ namespace Ecom.Controllers
         }
 
         // GET: Product/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _uow.Products == null)
@@ -151,6 +166,7 @@ namespace Ecom.Controllers
         }
 
         // POST: Product/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -176,6 +192,7 @@ namespace Ecom.Controllers
 
 
         [Route("Product/{id:int}/Specifications")]
+        [Authorize]
         public async Task<IActionResult> Specifications(long id)
         {
             var product = _uow.Products.Get(
@@ -206,6 +223,7 @@ namespace Ecom.Controllers
             return View(editProductAttributesViewModel);
         }
 
+        [Authorize]
         public IActionResult SaveList([FromBody] EditProductSpecificationsViewModel editProductSpecificationsViewModel)
         {
 

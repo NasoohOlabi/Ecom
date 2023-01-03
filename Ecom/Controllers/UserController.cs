@@ -85,7 +85,7 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", user.RoleId);
+            //ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", user.RoleId);
 
             return View(_mapper.Map<UserEditViewModel>(user));
         }
