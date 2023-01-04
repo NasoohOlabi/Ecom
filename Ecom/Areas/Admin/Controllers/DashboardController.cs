@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Data;
+using AutoMapper;
 using DB.Models;
 using DB.UOW;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,15 +18,17 @@ namespace Ecom.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
-      
 
-      
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return Unauthorized();
-            }
+            //if (!_signInManager.IsSignedIn(User))
+            //{
+            //    return Unauthorized();
+            //}
+
+            //var user = _uow.Users.GetByID(1);
+            //var result = await _userManager.GetRolesAsync(user);
             //var user = _uow.Users.Get(
             //    x => x.Id == 10003,
             //    includeProperties:

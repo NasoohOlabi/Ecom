@@ -18,6 +18,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddDefaultIdentity<User>(
     options => options.SignIn.RequireConfirmedAccount = true).AddRoles<Role>()
     .AddEntityFrameworkStores<EComContext>();
+
 builder.Services.AddSingleton<IArchiveService, ArchiveService>();
 builder.Services.AddSingleton<IRatingBuffer, RatingBuffer>();
 builder.Services.AddSingleton<ISingletonRnd, SingletonRnd>();   

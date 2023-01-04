@@ -28,6 +28,9 @@ namespace DB.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
+        //public virtual Role? Role { get; set; } = null!;
+        //public long RoleId { get; set; }
+
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Product> Products { get; set; }
