@@ -13,11 +13,14 @@ using DB.UOW;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Ecom.Controllers;
 //using MVCareas.Areas.Products.Controllers;
 namespace Ecom.Controllers
 {
+    [Area("Admin")]
     public class ProductController : BaseController<ProductController>
     {
+       
         private readonly SignInManager<User> SignInManager;
         private readonly UserManager<User> UserManager;
         public ProductController(
@@ -35,6 +38,7 @@ namespace Ecom.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
+            ViewBag.activeLink = "Product";
             IEnumerable<Product> products = await _uow.Products.GetAsync(includeProperties: "Category,Seller");
             var productsList = new List<ProductDetailsViewModel>();
             foreach (Product p in products)
@@ -47,6 +51,7 @@ namespace Ecom.Controllers
         // GET: Product/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.activeLink = "Product";
             if (id == null || _uow.Products == null)
             {
                 return NotFound();
@@ -66,6 +71,7 @@ namespace Ecom.Controllers
         [Authorize]
         public IActionResult Create()
         {
+            ViewBag.activeLink = "Product";
             ViewData["CategoryId"] = new SelectList(_uow.Categories.Get(), "Id", "Name");
             return View();
         }
@@ -76,6 +82,7 @@ namespace Ecom.Controllers
         [Authorize]
         public async Task<IActionResult> Create(ProductEditViewModel productViewModel)
         {
+            ViewBag.activeLink = "Product";
             var product = _mapper.Map<Product>(productViewModel);
             var user = await UserManager.GetUserAsync(User);
             product.SellerId = user.Id;
@@ -92,12 +99,13 @@ namespace Ecom.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(long id)
         {
-            if (id == null || _uow.Products == null)
+            ViewBag.activeLink = "Product";
+            if (_uow.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _uow.Products.GetByIDAsync((long)id);
+            var product = await _uow.Products.GetByIDAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -114,6 +122,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
         {
+            ViewBag.activeLink = "Product";
             var currentProduct = await _uow.Products.GetByIDAsync(model.Id);
             if (currentProduct == null)
             {
@@ -150,6 +159,7 @@ namespace Ecom.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.activeLink = "Product";
             if (id == null || _uow.Products == null)
             {
                 return NotFound();
@@ -171,6 +181,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.activeLink = "Product";
             if (_uow.Products == null)
             {
                 return Problem("Entity set 'EComContext.Products'  is null.");
@@ -195,6 +206,7 @@ namespace Ecom.Controllers
         [Authorize]
         public async Task<IActionResult> Specifications(long id)
         {
+            ViewBag.activeLink = "Product";
             var product = _uow.Products.Get(
                 x => x.Id == id,
                 includeProperties:
@@ -226,6 +238,7 @@ namespace Ecom.Controllers
         [Authorize]
         public IActionResult SaveList([FromBody] EditProductSpecificationsViewModel editProductSpecificationsViewModel)
         {
+            ViewBag.activeLink = "Product";
 
             var product = _uow.Products.Get(
                x => x.Id == editProductSpecificationsViewModel.Id,

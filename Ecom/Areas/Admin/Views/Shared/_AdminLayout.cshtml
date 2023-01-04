@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ecom</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Specifications.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Ecom.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/adminlte.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
+    <script src="~/js/sweetalert2.js" asp-append-version="true"></script>
+    <style>
+        tr {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row" style="height:100vh ">
+            <div class="col-2 m-0 p-0 d-lg-block d-none ">
+                <partial name="_SideBarPartial" />
+            </div>
+            <div class="col-12 m-0 px-5 pt-4 col-lg-10 ">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/sweetalert.min.js" asp-append-version="true"></script>
+    <script src="https: //unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @*
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    *@
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/d3.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

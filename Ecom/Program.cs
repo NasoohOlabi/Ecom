@@ -16,7 +16,7 @@ builder.Services.AddDbContext<EComContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<User>(
-    options => options.SignIn.RequireConfirmedAccount = true)
+    options => options.SignIn.RequireConfirmedAccount = true).AddRoles<Role>()
     .AddEntityFrameworkStores<EComContext>();
 builder.Services.AddSingleton<IArchiveService, ArchiveService>();
 builder.Services.AddSingleton<IRatingBuffer, RatingBuffer>();
@@ -44,6 +44,13 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.MapAreaControllerRoute(
+      name: "Admin",
+      areaName: "Admin",
+    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}"
+    );
 
 
 app.MapControllerRoute(

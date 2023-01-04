@@ -9,9 +9,11 @@ using DB.Models;
 using AutoMapper;
 using DB.UOW;
 using Ecom.Models;
+using Ecom.Controllers;
 
-namespace Ecom.Controllers
+namespace Ecom.sControllers
 {
+    [Area("Admin")]
     public class UserController : BaseController<UserController>
     {
         public UserController(ILogger<UserController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
@@ -40,7 +42,7 @@ namespace Ecom.Controllers
 
             var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
 
-            if(user.Count() == 0)
+            if (user.Count() == 0)
             {
                 return NotFound();
             }
@@ -101,7 +103,7 @@ namespace Ecom.Controllers
                 try
                 {
                     User? user = _uow.Users.GetByID(userEditViewModel.Id);
-                    if(user == null)
+                    if (user == null)
                     {
                         return NotFound();
                     }
@@ -158,14 +160,14 @@ namespace Ecom.Controllers
             {
                 _uow.Users.Delete(user);
             }
-            
+
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(long id)
         {
-          return _uow.Users.GetByID(id) != null;
+            return _uow.Users.GetByID(id) != null;
         }
     }
 }

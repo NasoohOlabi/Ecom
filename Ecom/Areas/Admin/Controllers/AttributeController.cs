@@ -10,9 +10,11 @@ using AutoMapper;
 using DB.UOW;
 using Ecom.Models;
 using Attribute = DB.Models.Attribute;
+using Ecom.Controllers;
 
 namespace Ecom.Controllers
 {
+    [Area("Admin")]
     public class AttributeController : BaseController<AttributeController>
     {
         public AttributeController(ILogger<AttributeController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
@@ -22,6 +24,7 @@ namespace Ecom.Controllers
         // GET: Attribute
         public async Task<IActionResult> Index()
         {
+            ViewBag.activeLink = "Attribute";
             IEnumerable<Attribute> Attributes = await _uow.Attributes.GetAsync();
             var AttributesList = new List<AttributeDetailsViewModel>();
             foreach (Attribute c in Attributes)
@@ -34,6 +37,7 @@ namespace Ecom.Controllers
         // GET: Attribute/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.activeLink = "Attribute";
             if (id == null)
             {
                 return NotFound();
@@ -54,6 +58,7 @@ namespace Ecom.Controllers
         // GET: Attribute/Create
         public IActionResult Create()
         {
+            ViewBag.activeLink = "Attribute";
             return View();
         }
 
@@ -64,6 +69,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AttributeEditViewModel AttributeViewModel)
         {
+            ViewBag.activeLink = "Attribute";
             var Attribute = _mapper.Map<Attribute>(AttributeViewModel);
             if (ModelState.IsValid)
             {
@@ -77,6 +83,7 @@ namespace Ecom.Controllers
         // GET: Attribute/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+            ViewBag.activeLink = "Attribute";
             if (id == null)
             {
                 return NotFound();
@@ -98,6 +105,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AttributeEditViewModel model)
         {
+            ViewBag.activeLink = "Attribute";
             var currentAttribute = await _uow.Attributes.GetByIDAsync(model.Id);
 
             if (currentAttribute == null)
@@ -131,6 +139,7 @@ namespace Ecom.Controllers
         // GET: Attribute/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.activeLink = "Attribute";
             if (id == null)
             {
                 return NotFound();
@@ -152,6 +161,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.activeLink = "Attribute";
             if (_uow.Attributes == null)
             {
                 return Problem("Entity set 'EComContext.Attributes'  is null.");
@@ -162,14 +172,15 @@ namespace Ecom.Controllers
             {
                 _uow.Attributes.Delete(Attribute);
             }
-            
+
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AttributeExists(long id)
         {
-          return _uow.Attributes.GetByID(id) != null;
+            ViewBag.activeLink = "Attribute";
+            return _uow.Attributes.GetByID(id) != null;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DB.IRepos;
 using DB.Models;
 using DB.UOW;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;

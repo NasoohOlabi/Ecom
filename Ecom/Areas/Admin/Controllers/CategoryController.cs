@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecom.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : BaseController<CategoryController>
     {
         //private readonly Specs specs;
@@ -16,15 +17,17 @@ namespace Ecom.Controllers
 
         // GET: Category
         public async Task<IActionResult> Index()
-        {
+        { 
             _logger.Log(LogLevel.Information, "Hello from log");
             var Model = from c in await _uow.Categories.GetAsync()
                         select _mapper.Map<CategoryDetailsViewModel>(c);
+            ViewBag.activeLink = "Category";
             return View(Model);
         }
 
         public async Task<IActionResult> Edit(long id)
         {
+            ViewBag.activeLink = "Category";
             var category = _uow.Categories.Get(
                 x => x.Id == id,
                 includeProperties:
@@ -49,6 +52,7 @@ namespace Ecom.Controllers
         // GET: Category/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.activeLink = "Category";
             if (id == null)
             {
                 return NotFound();
@@ -69,6 +73,7 @@ namespace Ecom.Controllers
         // GET: Category/Create
         public IActionResult Create()
         {
+            ViewBag.activeLink = "Category";
             return View();
         }
 
@@ -79,6 +84,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryEditViewModel categoryViewModel)
         {
+            ViewBag.activeLink = "Category";
             var category = _mapper.Map<Category>(categoryViewModel);
             if (ModelState.IsValid)
             {
@@ -93,6 +99,7 @@ namespace Ecom.Controllers
         // GET: Category/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.activeLink = "Category";
             if (id == null)
             {
                 return NotFound();
@@ -114,6 +121,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.activeLink = "Category";
             if (_uow.Categories == null)
             {
                 return Problem("Entity set 'EComContext.Categories'  is null.");
@@ -142,6 +150,7 @@ namespace Ecom.Controllers
         [HttpPatch]
         public IActionResult SaveList([FromBody] EditCategoryAttributesViewModel editCategoryAttributeViewModel)
         {
+            ViewBag.activeLink = "Category";
 
             if (
                 string.IsNullOrEmpty(editCategoryAttributeViewModel.Name)

@@ -33,7 +33,7 @@ namespace Ecom.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        //private readonly IPasswordHasher<User> _passwordHasher;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -41,10 +41,10 @@ namespace Ecom.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IMapper mapper,
-            IPasswordHasher<User> _passwordHasher,
+            //IPasswordHasher<User> _passwordHasher,
         IEmailSender emailSender)
         {
-            this._passwordHasher = _passwordHasher;
+            //this._passwordHasher = _passwordHasher;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -123,11 +123,7 @@ namespace Ecom.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
-        {
-            ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        }
+   
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -178,19 +174,7 @@ namespace Ecom.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private User CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<User>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
-        }
+      
 
         private IUserEmailStore<User> GetEmailStore()
         {

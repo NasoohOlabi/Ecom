@@ -1,0 +1,296 @@
+﻿@model Ecom.Models.EditProductSpecificationsViewModel
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using System.Text.Encodings.Web;
+@{
+  string
+    ModelString = JsonSerializer.Serialize(Model, new JsonSerializerOptions
+        {
+          Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        }); ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Product: @Model.Name</h4>
+<hr />
+<style>
+  .form-row {
+      display: flex;
+      height: 3em;
+      margin: 1rem;
+      align-content: center;
+      align-items: center;
+  }
+
+  #new-item-input {
+      margin: 5px;
+  }
+
+  .form-group {
+      display: flex;
+      flex-direction: row-reverse;
+  }
+
+  #root:last-child {
+      border-bottom: 1px solid #eaeaea;
+  }
+
+  .close {
+      border: none;
+      background-color: transparent;
+  }
+
+  #editorRows {
+      width: fit-content;
+      margin-bottom: 4rem;
+  }
+
+  .width-fit-content {
+      width: fit-content;
+  }
+  .add-btn {
+    border: none;
+    background-color: transparent;
+    font-weight: 400;
+    font-size: 1.2rem;
+  }
+  span.tableInput {
+      display: flex;
+      text-align: center;
+  }
+</style>
+<div class="row">
+  <div class="col-md-4 width-fit-content">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div id="editorRows">
+      <div id="root">
+        <div class="requestOptionsContainer">
+          <p class="smallText">Specifications</p>
+
+          <div class="paramsTableRow">
+            <div class="paramsTableColumn"></div>
+            <div class="paramsTableColumn">Attribute</div>
+            <div class="paramsTableColumn">Value</div>
+            <div class="paramsTableColumn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="paramsTableRow">
+        <div class="paramsTableColumn"></div>
+        <div class="paramsTableColumn">
+
+          <input id="new-item-input"
+                 list="attributes"
+                 name="myAttributeName"
+                 type="text"
+                 class="tableInput"
+                 placeholder="Attribute" value="" />
+          <datalist id="attributes"> </datalist>
+        </div>
+        <div class="paramsTableColumn">
+          <input type="text"
+                  id="new-item-value-input"
+                 class="tableInput"
+                 placeholder="Value" value="" />
+        </div>
+        <div class="paramsTableColumn">
+          <button id="addParam" class="Button__StyledButton-b8af3e-1 juWHIV add-btn">+</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <div class="form-check form-switch">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="flexSwitchCheckChecked"
+                   checked />
+            <label class="form-check-label" for="flexSwitchCheckChecked">Only Product's Category Attributes</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button id="save-btn" type="submit" class="btn btn-primary">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+  <script>
+    parseModel(`@ModelString`);
+
+    console.log(Model.ProductSpecifications[0]);
+    
+    Model.ProductSpecifications.sort((a,b) => a.Attribute.Id - b.Attribute.Id)
+
+    window.Atoms = {
+        FromCategory: true,
+    };
+
+    function CreateRow(d) {
+        return getElementFromString(
+            `<div class="paramsTableRow specification-row">
+                                    <div class="paramsTableColumn"></div>
+                                    <div class="paramsTableColumn">
+                                      <span
+                                             class="tableInput"
+                                            >
+                                            ${d.Attribute.Name}
+                                            </span>
+                                    </div>
+                                    <div class="paramsTableColumn">
+                                      <input type="text"
+                                             class="tableInput"
+                                             placeholder="Value" value="${d.SpecificationValue.Value}" />
+                                    </div>
+                                        <div class="paramsTableColumn">
+                                        <button
+                                                    type="tertiary"
+                                                        class="Button__StyledButton-b8af3e-1 juWHIV close"
+                                                    data-aether-id="aether-button"
+                                                    data-testid="aether-button"
+                                                    data-click=""
+                                                  >
+                                                    <i
+                                                      class="IconWrapper__IconContainer-gnjn48-0 eoJXDd aether-button__left-icon"
+                                                      title=""
+                                                      ><svg
+                                                        width="12"
+                                                        height="12"
+                                                        viewBox="0 0 12 12"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                      >
+                                                        <path
+                                                          d="M4 1V0H8V1H11V2H1V1H4Z"
+                                                          fill="#6B6B6B"
+                                                        ></path>
+                                                        <path
+                                                          d="M3 10.5V3H2V10.5C2 11.3284 2.67157 12 3.5 12H8.5C9.32843 12 10 11.3284 10 10.5V3H9V10.5C9 10.7761 8.77614 11 8.5 11H3.5C3.22386 11 3 10.7761 3 10.5Z"
+                                                          fill="#6B6B6B"
+                                                        ></path>
+                                                        <path
+                                                          d="M4.25 10V3H5.25V10H4.25Z"
+                                                          fill="#6B6B6B"
+                                                        ></path>
+                                                        <path
+                                                          d="M6.75 3V10H7.75V3H6.75Z"
+                                                          fill="#6B6B6B"
+                                                        ></path></svg
+                                                    ></i>
+                                                  </button>
+                                    </div>
+                                  </div>`
+        );
+    }
+
+    const render = getRenderer({
+        targetSelector: "#root",
+        targetElementsSelector: ".specification-row",
+        modelToTargetData: (x) => x.ProductSpecifications,
+        targetDataIdentity: (x) => {
+            console.log(x.Attribute.Id)
+          return x.Attribute.Id},
+        targetElementGenerator: CreateRow,
+        targetEnterSelectionCustomizer: (selection) => {
+            selection.select("input").on("change", (d) => {
+                const evt = d3.event;
+                console.log(d);
+                console.log(evt);
+                //FIXME:
+                d.SpecificationValue = {};
+                d.SpecificationValue.Value = evt.target.value;
+            });
+            selection.select(".close").on("click", (d) => {
+                RemoveItem(d);
+            });
+        },
+        sourceSelector: "#attributes",
+        sourceElementsSelector: "option",
+        modelToSourceData: (x) =>
+            Atoms.FromCategory ? x.CategoryAttributes : x.AllAttributes,
+        sourceDataIdentity: (x) => x.Id,
+        sourceElementGenerator: "option",
+        sourceEnterSelectionCustomizer: (selection) => {
+            selection.attr("value", function (d) {
+                console.log(d);
+                return d.Name;
+            });
+        },
+    });
+    render();
+
+    const inputNode = document.querySelector("#new-item-input");
+    const valueInputNode = document.querySelector("#new-item-value-input");
+    const newItemInfo = d3.select("#new-item-input");
+    const addBtn = d3.select("#addParam");
+
+    function attr_2_spec(obj,Value) {
+        return { Id: obj.Id,Attribute: obj, SpecificationValue: { Value } };
+    }
+    function spec_2_attr(obj) {
+        return obj.Attribute;
+    }
+
+    function AddItem(Name) {
+        if (Model.AllAttributes.every((x) => x.Name !== Name)) return;
+        const item = Model.AllAttributes.find((x) => x.Name === Name);
+        Model.ProductSpecifications.push(attr_2_spec(item, valueInputNode.value));
+        inputNode.value = "";
+        valueInputNode.value = "";
+        Model.ProductSpecifications.sort((a,b) => a.Attribute.Id - b.Attribute.Id)
+        render();
+    }
+
+    function RemoveItem(d) {
+        Model.ProductSpecifications = Model.ProductSpecifications.filter(
+            (x) => x !== d
+        );
+        render();
+    }
+
+    addBtn.on("click", () => {
+        AddItem(inputNode.value);
+    });
+    newItemInfo.on("keypress", () => {
+        const x = d3.event;
+        console.log("event");
+        console.log(x);
+        if (x.key === "Enter") {
+            AddItem(inputNode.value);
+        }
+    });
+    d3.select("#save-btn").on("click", () => {
+        fetch(`@Url.Action("SaveList","Product")`, {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(Model),
+        })
+            .then((res) => res.text(), console.log)
+            .then((answer) => {
+                console.log(answer);
+                window.location.href = `@Url.Action("Index","Product")`;
+            }, console.log);
+    });
+    d3.select("#flexSwitchCheckChecked").on("click", () => {
+        const evt = d3.event;
+        Atoms.FromCategory = evt.target.checked;
+        render();
+    });
+  </script>
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+ }

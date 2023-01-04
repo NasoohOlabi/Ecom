@@ -9,9 +9,11 @@ using DB.Models;
 using AutoMapper;
 using DB.UOW;
 using Ecom.Models;
+using Ecom.Controllers;
 
 namespace Ecom.Controllers
 {
+    [Area("Admin")]
     public class RoleController : BaseController<RoleController>
     {
         public RoleController(ILogger<RoleController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)
@@ -21,6 +23,7 @@ namespace Ecom.Controllers
         // GET: Role
         public async Task<IActionResult> Index()
         {
+            ViewBag.activeLink = "Role";
             IEnumerable<Role> roles = await _uow.Roles.GetAsync();
             var rolesList = new List<RoleDetailsViewModel>();
             foreach (Role c in roles)
@@ -33,6 +36,7 @@ namespace Ecom.Controllers
         // GET: Role/Details/5
         public async Task<IActionResult> Details(long? id)
         {
+            ViewBag.activeLink = "Role";
             if (id == null)
             {
                 return NotFound();
@@ -53,6 +57,7 @@ namespace Ecom.Controllers
         // GET: Role/Create
         public IActionResult Create()
         {
+            ViewBag.activeLink = "Role";
             return View();
         }
 
@@ -63,6 +68,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RoleEditViewModel roleViewModel)
         {
+            ViewBag.activeLink = "Role";
             var role = _mapper.Map<Role>(roleViewModel);
             if (ModelState.IsValid)
             {
@@ -76,6 +82,7 @@ namespace Ecom.Controllers
         // GET: Role/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+            ViewBag.activeLink = "Role";
             if (id == null)
             {
                 return NotFound();
@@ -97,6 +104,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(RoleEditViewModel model)
         {
+            ViewBag.activeLink = "Role";
             var currentRole = await _uow.Roles.GetByIDAsync(model.Id);
 
             if (currentRole == null)
@@ -130,6 +138,7 @@ namespace Ecom.Controllers
         // GET: Role/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
+            ViewBag.activeLink = "Role";
             if (id == null)
             {
                 return NotFound();
@@ -151,6 +160,7 @@ namespace Ecom.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            ViewBag.activeLink = "Role";
             if (_uow.Roles == null)
             {
                 return Problem("Entity set 'EComContext.Roles'  is null.");
@@ -161,14 +171,15 @@ namespace Ecom.Controllers
             {
                 _uow.Roles.Delete(role);
             }
-            
+
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RoleExists(long id)
         {
-          return _uow.Roles.GetByID(id) != null;
+            ViewBag.activeLink = "Role";
+            return _uow.Roles.GetByID(id) != null;
         }
     }
 }

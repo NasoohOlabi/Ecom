@@ -30,8 +30,6 @@
 		<ProjectReference Include="..\DB\DB.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="NewFolder\" />
-	</ItemGroup>
+
 	
 </Project>
