@@ -21,7 +21,7 @@ namespace Ecom.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            IEnumerable<User> usersList = await _uow.Users.GetAsync(includeProperties: "Role");
+            IEnumerable<User> usersList = await _uow.Users.GetAsync();
             var users = new List<UserDetailsViewModel>();
             foreach (User u in usersList)
             {
@@ -38,7 +38,7 @@ namespace Ecom.Controllers
                 return NotFound();
             }
 
-            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id);
 
             if(user.Count() == 0)
             {
@@ -51,7 +51,6 @@ namespace Ecom.Controllers
         // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name");
             return View();
         }
 
@@ -67,7 +66,6 @@ namespace Ecom.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", userEditViewModel.RoleId);
             return View(_mapper.Map<UserDetailsViewModel>(userEditViewModel));
         }
 
@@ -85,7 +83,6 @@ namespace Ecom.Controllers
             {
                 return NotFound();
             }
-            //ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", user.RoleId);
 
             return View(_mapper.Map<UserEditViewModel>(user));
         }
@@ -122,7 +119,6 @@ namespace Ecom.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_uow.Roles.Get(), "Id", "Name", userEditViewModel.RoleId);
             return View(_mapper.Map<UserDetailsViewModel>(userEditViewModel));
         }
 
@@ -134,7 +130,7 @@ namespace Ecom.Controllers
                 return NotFound();
             }
 
-            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id);
 
             if (user.Count() == 0)
             {
