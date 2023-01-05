@@ -23,7 +23,7 @@ namespace Ecom.sControllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            IEnumerable<User> usersList = await _uow.Users.GetAsync(includeProperties: "Role");
+            IEnumerable<User> usersList = await _uow.Users.GetAsync();
             var users = new List<UserDetailsViewModel>();
             foreach (User u in usersList)
             {
@@ -40,7 +40,7 @@ namespace Ecom.sControllers
                 return NotFound();
             }
 
-            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id);
 
             if (user.Count() == 0)
             {
@@ -136,7 +136,7 @@ namespace Ecom.sControllers
                 return NotFound();
             }
 
-            var user = await _uow.Users.GetAsync(filter: m => m.Id == id, includeProperties: "Role");
+            var user = await _uow.Users.GetAsync(filter: m => m.Id == id);
 
             if (user.Count() == 0)
             {
