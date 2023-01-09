@@ -10,10 +10,14 @@ using AutoMapper;
 using DB.UOW;
 using Ecom.Models;
 using Ecom.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace Ecom.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : BaseController<RoleController>
     {
         public RoleController(ILogger<RoleController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)

@@ -9,12 +9,15 @@ namespace Ecom.Models
 {
     public class AttributeDetailsViewModel : BaseDetailsViewModel<Attribute>
     {
+        [Display(Name = "Attribute Name")]
         public string Name { get; set; } = null!;
+        [Display(Name = "Value Type")]
         public SpecificationValueTypes ValueType { get; set; }
     }
 
     public class AttributeEditViewModel : BaseEditViewModel<Attribute>
     {
+        [Display(Name = "Attribute Name")]
         public string Name { get; set; } = null!;
 
     }
