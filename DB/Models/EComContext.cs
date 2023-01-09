@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DB.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -657,6 +658,14 @@ namespace DB.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WishList_User");
             });
+
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AttachmentTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserRolesConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
             base.OnModelCreating(modelBuilder);

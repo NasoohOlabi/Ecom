@@ -14,6 +14,7 @@ namespace Ecom.Models
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = null!;
+        public string FullName { get { return FirstName + " " + LastName; } }
 
         [Display(Name = "Birth Date")]
         [DataType(DataType.Date)]
