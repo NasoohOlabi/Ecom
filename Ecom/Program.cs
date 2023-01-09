@@ -15,6 +15,7 @@ builder.Logging.AddConsole();
 builder.Services.AddDbContext<EComContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
 builder.Services.AddDefaultIdentity<User>(
     options => options.SignIn.RequireConfirmedAccount = true).AddRoles<Role>()
     .AddEntityFrameworkStores<EComContext>();

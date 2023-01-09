@@ -1,0 +1,496 @@
+[
+    {
+        "Id": 1,
+        "Name": "iPhone 9",
+        "Description": "An apple mobile which is nothing like apple",
+        "Price": 549,
+        "Discount": 12.96,
+        "Rating": 4.69,
+        "Brand": "Apple",
+        "Category": "smartphones",
+        "Thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/1/1.jpg",
+            "https://i.dummyjson.com/data/products/1/2.jpg",
+            "https://i.dummyjson.com/data/products/1/3.jpg",
+            "https://i.dummyjson.com/data/products/1/4.jpg",
+            "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 2,
+        "Name": "iPhone X",
+        "Description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+        "Price": 899,
+        "Discount": 17.94,
+        "Brand": "Apple",
+        "Category": "smartphones",
+        "Thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/2/1.jpg",
+            "https://i.dummyjson.com/data/products/2/2.jpg",
+            "https://i.dummyjson.com/data/products/2/3.jpg",
+            "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 3,
+        "Name": "Samsung Universe 9",
+        "Description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+        "Price": 1249,
+        "Discount": 15.46,
+        "Brand": "Samsung",
+        "Category": "smartphones",
+        "Thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/3/1.jpg"
+        ]
+    },
+    {
+        "Id": 4,
+        "Name": "OPPOF19",
+        "Description": "OPPO F19 is officially announced on April 2021.",
+        "Price": 280,
+        "Discount": 17.91,
+        "Brand": "OPPO",
+        "Category": "smartphones",
+        "Thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/4/1.jpg",
+            "https://i.dummyjson.com/data/products/4/2.jpg",
+            "https://i.dummyjson.com/data/products/4/3.jpg",
+            "https://i.dummyjson.com/data/products/4/4.jpg",
+            "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 5,
+        "Name": "Huawei P30",
+        "Description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+        "Price": 499,
+        "Discount": 10.58,
+        "Brand": "Huawei",
+        "Category": "smartphones",
+        "Thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/5/1.jpg",
+            "https://i.dummyjson.com/data/products/5/2.jpg",
+            "https://i.dummyjson.com/data/products/5/3.jpg"
+        ]
+    },
+    {
+        "Id": 6,
+        "Name": "MacBook Pro",
+        "Description": "MacBook Pro 2021 with mini-LED display may launch between September, November",
+        "Price": 1749,
+        "Discount": 11.02,
+        "Brand": "APPle",
+        "Category": "laptops",
+        "Thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
+        "Images": [
+            "https://i.dummyjson.com/data/products/6/1.png",
+            "https://i.dummyjson.com/data/products/6/2.jpg",
+            "https://i.dummyjson.com/data/products/6/3.png",
+            "https://i.dummyjson.com/data/products/6/4.jpg"
+        ]
+    },
+    {
+        "Id": 7,
+        "Name": "Samsung Galaxy Book",
+        "Description": "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
+        "Price": 1499,
+        "Discount": 4.15,
+        "Brand": "Samsung",
+        "Category": "laptops",
+        "Thumbnail": "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/7/1.jpg",
+            "https://i.dummyjson.com/data/products/7/2.jpg",
+            "https://i.dummyjson.com/data/products/7/3.jpg",
+            "https://i.dummyjson.com/data/products/7/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 8,
+        "Name": "Microsoft Surface Laptop 4",
+        "Description": "Style and speed. Stand out on HD vIdeo calls backed by Studio Mics. Capture Ideas on the vibrant touchscreen.",
+        "Price": 1499,
+        "Discount": 10.23,
+        "Brand": "Microsoft Surface",
+        "Category": "laptops",
+        "Thumbnail": "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/8/1.jpg",
+            "https://i.dummyjson.com/data/products/8/2.jpg",
+            "https://i.dummyjson.com/data/products/8/3.jpg",
+            "https://i.dummyjson.com/data/products/8/4.jpg",
+            "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 9,
+        "Name": "Infinix INBOOK",
+        "Description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
+        "Price": 1099,
+        "Discount": 11.83,
+        "Brand": "Infinix",
+        "Category": "laptops",
+        "Thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/9/1.jpg",
+            "https://i.dummyjson.com/data/products/9/2.png",
+            "https://i.dummyjson.com/data/products/9/3.png",
+            "https://i.dummyjson.com/data/products/9/4.jpg",
+            "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 10,
+        "Name": "HP Pavilion 15-DK1056WM",
+        "Description": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10",
+        "Price": 1099,
+        "Discount": 6.18,
+        "Brand": "HP Pavilion",
+        "Category": "laptops",
+        "Thumbnail": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/10/1.jpg",
+            "https://i.dummyjson.com/data/products/10/2.jpg",
+            "https://i.dummyjson.com/data/products/10/3.jpg",
+            "https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
+        ]
+    },
+    {
+        "Id": 11,
+        "Name": "perfume Oil",
+        "Description": "Mega Discount, Impression of Acqua Di Gio by GiorgioArmani concentrated attar perfume Oil",
+        "Price": 13,
+        "Discount": 8.4,
+        "Brand": "Impression of Acqua Di Gio",
+        "Category": "fragrances",
+        "Thumbnail": "https://i.dummyjson.com/data/products/11/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/11/1.jpg",
+            "https://i.dummyjson.com/data/products/11/2.jpg",
+            "https://i.dummyjson.com/data/products/11/3.jpg",
+            "https://i.dummyjson.com/data/products/11/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 12,
+        "Name": "Brown Perfume",
+        "Description": "Royal_Mirage Sport Brown Perfume for Men & Women - 120ml",
+        "Price": 40,
+        "Discount": 15.66,
+        "Rating": 4,
+        "Brand": "Royal_Mirage",
+        "Category": "fragrances",
+        "Thumbnail": "https://i.dummyjson.com/data/products/12/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/12/1.jpg",
+            "https://i.dummyjson.com/data/products/12/2.jpg",
+            "https://i.dummyjson.com/data/products/12/3.png",
+            "https://i.dummyjson.com/data/products/12/4.jpg",
+            "https://i.dummyjson.com/data/products/12/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 13,
+        "Name": "Fog Scent Xpressio Perfume",
+        "Description": "Product details of Best Fog Scent Xpressio Perfume 100ml For Men cool long lasting perfumes for Men",
+        "Price": 13,
+        "Discount": 8.14,
+        "Brand": "Fog Scent Xpressio",
+        "Category": "fragrances",
+        "Thumbnail": "https://i.dummyjson.com/data/products/13/thumbnail.webp",
+        "Images": [
+            "https://i.dummyjson.com/data/products/13/1.jpg",
+            "https://i.dummyjson.com/data/products/13/2.png",
+            "https://i.dummyjson.com/data/products/13/3.jpg",
+            "https://i.dummyjson.com/data/products/13/4.jpg",
+            "https://i.dummyjson.com/data/products/13/thumbnail.webp"
+        ]
+    },
+    {
+        "Id": 14,
+        "Name": "Non-Alcoholic Concentrated Perfume Oil",
+        "Description": "Original Al Munakh® by Mahal Al Musk | Our Impression of Climate | 6ml Non-Alcoholic Concentrated Perfume Oil",
+        "Price": 120,
+        "Discount": 15.6,
+        "Brand": "Al Munakh",
+        "Category": "fragrances",
+        "Thumbnail": "https://i.dummyjson.com/data/products/14/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/14/1.jpg",
+            "https://i.dummyjson.com/data/products/14/2.jpg",
+            "https://i.dummyjson.com/data/products/14/3.jpg",
+            "https://i.dummyjson.com/data/products/14/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 15,
+        "Name": "Eau De Perfume Spray",
+        "Description": "Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High Quality",
+        "Price": 30,
+        "Discount": 10.99,
+        "Brand": "Lord - Al-Rehab",
+        "Category": "fragrances",
+        "Thumbnail": "https://i.dummyjson.com/data/products/15/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/15/1.jpg",
+            "https://i.dummyjson.com/data/products/15/2.jpg",
+            "https://i.dummyjson.com/data/products/15/3.jpg",
+            "https://i.dummyjson.com/data/products/15/4.jpg",
+            "https://i.dummyjson.com/data/products/15/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 16,
+        "Name": "Hyaluronic AcId Serum",
+        "Description": "L'OrÃ©al Paris introduces Hyaluron Expert Replumping Serum formulated with 1.5% Hyaluronic AcId",
+        "Price": 19,
+        "Discount": 13.31,
+        "Brand": "L'Oreal Paris",
+        "Category": "skincare",
+        "Thumbnail": "https://i.dummyjson.com/data/products/16/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/16/1.png",
+            "https://i.dummyjson.com/data/products/16/2.webp",
+            "https://i.dummyjson.com/data/products/16/3.jpg",
+            "https://i.dummyjson.com/data/products/16/4.jpg",
+            "https://i.dummyjson.com/data/products/16/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 17,
+        "Name": "Tree Oil 30ml",
+        "Description": "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
+        "Price": 12,
+        "Discount": 4.09,
+        "Brand": "Hemani Tea",
+        "Category": "skincare",
+        "Thumbnail": "https://i.dummyjson.com/data/products/17/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/17/1.jpg",
+            "https://i.dummyjson.com/data/products/17/2.jpg",
+            "https://i.dummyjson.com/data/products/17/3.jpg",
+            "https://i.dummyjson.com/data/products/17/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 18,
+        "Name": "Oil Free Moisturizer 100ml",
+        "Description": "Dermive Oil Free Moisturizer with SPF 20 is specifically formulated with ceramIdes, hyaluronic acId & sunscreen.",
+        "Price": 40,
+        "Discount": 13.1,
+        "Brand": "Dermive",
+        "Category": "skincare",
+        "Thumbnail": "https://i.dummyjson.com/data/products/18/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/18/1.jpg",
+            "https://i.dummyjson.com/data/products/18/2.jpg",
+            "https://i.dummyjson.com/data/products/18/3.jpg",
+            "https://i.dummyjson.com/data/products/18/4.jpg",
+            "https://i.dummyjson.com/data/products/18/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 19,
+        "Name": "Skin Beauty Serum.",
+        "Description": "Product name: rorec collagen hyaluronic acId white face serum riceNet weight: 15 m",
+        "Price": 46,
+        "Discount": 10.68,
+        "Brand": "ROREC White Rice",
+        "Category": "skincare",
+        "Thumbnail": "https://i.dummyjson.com/data/products/19/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/19/1.jpg",
+            "https://i.dummyjson.com/data/products/19/2.jpg",
+            "https://i.dummyjson.com/data/products/19/3.png",
+            "https://i.dummyjson.com/data/products/19/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 20,
+        "Name": "Freckle Treatment Cream- 15gm",
+        "Description": "Fair & Clear is Pakistan's only pure Freckle cream which helpsfade Freckles, Darkspots and pigments. Mercury level is 0%, so there are no sIde effects.",
+        "Price": 70,
+        "Discount": 16.99,
+        "Brand": "Fair & Clear",
+        "Category": "skincare",
+        "Thumbnail": "https://i.dummyjson.com/data/products/20/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/20/1.jpg",
+            "https://i.dummyjson.com/data/products/20/2.jpg",
+            "https://i.dummyjson.com/data/products/20/3.jpg",
+            "https://i.dummyjson.com/data/products/20/4.jpg",
+            "https://i.dummyjson.com/data/products/20/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 21,
+        "Name": "- Daal Masoor 500 grams",
+        "Description": "Fine quality Branded Product Keep in a cool and dry place",
+        "Price": 20,
+        "Discount": 4.81,
+        "Brand": "Saaf & Khaas",
+        "Category": "groceries",
+        "Thumbnail": "https://i.dummyjson.com/data/products/21/thumbnail.png",
+        "Images": [
+            "https://i.dummyjson.com/data/products/21/1.png",
+            "https://i.dummyjson.com/data/products/21/2.jpg",
+            "https://i.dummyjson.com/data/products/21/3.jpg"
+        ]
+    },
+    {
+        "Id": 22,
+        "Name": "Elbow Macaroni - 400 gm",
+        "Description": "Product details of Bake Parlor Big Elbow Macaroni - 400 gm",
+        "Price": 14,
+        "Discount": 15.58,
+        "Brand": "Bake Parlor Big",
+        "Category": "groceries",
+        "Thumbnail": "https://i.dummyjson.com/data/products/22/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/22/1.jpg",
+            "https://i.dummyjson.com/data/products/22/2.jpg",
+            "https://i.dummyjson.com/data/products/22/3.jpg"
+        ]
+    },
+    {
+        "Id": 23,
+        "Name": "Orange Essence Food Flavou",
+        "Description": "Specifications of Orange Essence Food Flavour For Cakes and Baking Food Item",
+        "Price": 14,
+        "Discount": 8.04,
+        "Brand": "Baking Food Items",
+        "Category": "groceries",
+        "Thumbnail": "https://i.dummyjson.com/data/products/23/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/23/1.jpg",
+            "https://i.dummyjson.com/data/products/23/2.jpg",
+            "https://i.dummyjson.com/data/products/23/3.jpg",
+            "https://i.dummyjson.com/data/products/23/4.jpg",
+            "https://i.dummyjson.com/data/products/23/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 24,
+        "Name": "Cereals Muesli Fruit Nuts",
+        "Description": "Original fauji cereal muesli 250gm box pack original fauji cereals muesli fruit nuts flakes breakfast cereal break fast faujicereals cerels cerel foji fouji",
+        "Price": 46,
+        "Discount": 16.8,
+        "Brand": "fauji",
+        "Category": "groceries",
+        "Thumbnail": "https://i.dummyjson.com/data/products/24/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/24/1.jpg",
+            "https://i.dummyjson.com/data/products/24/2.jpg",
+            "https://i.dummyjson.com/data/products/24/3.jpg",
+            "https://i.dummyjson.com/data/products/24/4.jpg",
+            "https://i.dummyjson.com/data/products/24/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 25,
+        "Name": "Gulab Powder 50 Gram",
+        "Description": "Dry Rose Flower Powder Gulab Powder 50 Gram • Treats Wounds",
+        "Price": 70,
+        "Discount": 13.58,
+        "Brand": "Dry Rose",
+        "Category": "groceries",
+        "Thumbnail": "https://i.dummyjson.com/data/products/25/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/25/1.png",
+            "https://i.dummyjson.com/data/products/25/2.jpg",
+            "https://i.dummyjson.com/data/products/25/3.png",
+            "https://i.dummyjson.com/data/products/25/4.jpg",
+            "https://i.dummyjson.com/data/products/25/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 26,
+        "Name": "Plant Hanger For Home",
+        "Description": "Boho Decor Plant Hanger For Home Wall Decoration Macrame Wall Hanging Shelf",
+        "Price": 41,
+        "Discount": 17.86,
+        "Brand": "Boho Decor",
+        "Category": "home-decoration",
+        "Thumbnail": "https://i.dummyjson.com/data/products/26/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/26/1.jpg",
+            "https://i.dummyjson.com/data/products/26/2.jpg",
+            "https://i.dummyjson.com/data/products/26/3.jpg",
+            "https://i.dummyjson.com/data/products/26/4.jpg",
+            "https://i.dummyjson.com/data/products/26/5.jpg",
+            "https://i.dummyjson.com/data/products/26/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 27,
+        "Name": "Flying Wooden Bird",
+        "Description": "Package Include 6 Birds with Adhesive Tape Shape: 3D Shaped Wooden Birds Material: Wooden MDF, Laminated 3.5mm",
+        "Price": 51,
+        "Discount": 15.58,
+        "Brand": "Flying Wooden",
+        "Category": "home-decoration",
+        "Thumbnail": "https://i.dummyjson.com/data/products/27/thumbnail.webp",
+        "Images": [
+            "https://i.dummyjson.com/data/products/27/1.jpg",
+            "https://i.dummyjson.com/data/products/27/2.jpg",
+            "https://i.dummyjson.com/data/products/27/3.jpg",
+            "https://i.dummyjson.com/data/products/27/4.jpg",
+            "https://i.dummyjson.com/data/products/27/thumbnail.webp"
+        ]
+    },
+    {
+        "Id": 28,
+        "Name": "3D Embellishment Art Lamp",
+        "Description": "3D led lamp sticker Wall sticker 3d wall art light on/off button  cell operated (included)",
+        "Price": 20,
+        "Discount": 16.49,
+        "Brand": "LED Lights",
+        "Category": "home-decoration",
+        "Thumbnail": "https://i.dummyjson.com/data/products/28/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/28/1.jpg",
+            "https://i.dummyjson.com/data/products/28/2.jpg",
+            "https://i.dummyjson.com/data/products/28/3.png",
+            "https://i.dummyjson.com/data/products/28/4.jpg",
+            "https://i.dummyjson.com/data/products/28/thumbnail.jpg"
+        ]
+    },
+    {
+        "Id": 29,
+        "Name": "Handcraft Chinese style",
+        "Description": "Handcraft Chinese style art luxury palace hotel villa mansion home decor ceramic vase with brass fruit plate",
+        "Price": 60,
+        "Discount": 15.34,
+        "Brand": "luxury palace",
+        "Category": "home-decoration",
+        "Thumbnail": "https://i.dummyjson.com/data/products/29/thumbnail.webp",
+        "Images": [
+            "https://i.dummyjson.com/data/products/29/1.jpg",
+            "https://i.dummyjson.com/data/products/29/2.jpg",
+            "https://i.dummyjson.com/data/products/29/3.webp",
+            "https://i.dummyjson.com/data/products/29/4.webp",
+            "https://i.dummyjson.com/data/products/29/thumbnail.webp"
+        ]
+    },
+    {
+        "Id": 30,
+        "Name": "Key Holder",
+        "Description": "Attractive DesignMetallic materialFour key hooksReliable & DurablePremium Quality",
+        "Price": 30,
+        "Discount": 2.92,
+        "Brand": "Golden",
+        "Category": "home-decoration",
+        "Thumbnail": "https://i.dummyjson.com/data/products/30/thumbnail.jpg",
+        "Images": [
+            "https://i.dummyjson.com/data/products/30/1.jpg",
+            "https://i.dummyjson.com/data/products/30/2.jpg",
+            "https://i.dummyjson.com/data/products/30/3.jpg",
+            "https://i.dummyjson.com/data/products/30/thumbnail.jpg"
+        ]
+    }
+]

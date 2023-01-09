@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(EComContext))]
-    [Migration("20230109155814_DataSeed")]
-    partial class DataSeed
+    [Migration("20230109181332_EditedProductDescriptionMaxLength")]
+    partial class EditedProductDescriptionMaxLength
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -137,22 +137,6 @@ namespace DB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AttachmentType", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7538),
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7539),
-                            Name = "Product Thumbnail"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7542),
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7543),
-                            Name = "Product Image"
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.Attribute", b =>
@@ -209,15 +193,6 @@ namespace DB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7641),
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7642),
-                            Name = "DB Category"
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.CategoryHasAttribute", b =>
@@ -497,9 +472,9 @@ namespace DB.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(12,2)");
@@ -538,23 +513,6 @@ namespace DB.Migrations
                         .IsUnique();
 
                     b.ToTable("Product", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CategoryId = 1L,
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 677, DateTimeKind.Local).AddTicks(8661),
-                            Description = "Sample DB Product",
-                            Discount = 0m,
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 677, DateTimeKind.Local).AddTicks(8662),
-                            Name = "DB Product",
-                            OrderCount = 0L,
-                            Price = 100m,
-                            RatingCount = 0L,
-                            RatingSum = 0L,
-                            SellerId = 1L
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.ProductHasAttachment", b =>
@@ -691,24 +649,6 @@ namespace DB.Migrations
                         .IsUnique();
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            ConcurrencyStamp = "b115ecb3-104e-476b-b16e-10dfbfb4dafe",
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7275),
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7286),
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            ConcurrencyStamp = "cab319d8-8615-46e0-907c-5bc6e264d7d2",
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7307),
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7308),
-                            Name = "User"
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.RoleHasPermission", b =>
@@ -919,31 +859,6 @@ namespace DB.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            AccessFailedCount = 0,
-                            BirthDate = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "7a43a7e5-6a4d-4c07-b07a-baebcab002cb",
-                            CreatedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7814),
-                            Email = "admin@mail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Site",
-                            IsVerified = false,
-                            LastName = "Owner",
-                            LockoutEnabled = false,
-                            ModifiedAt = new DateTime(2023, 1, 9, 18, 58, 13, 667, DateTimeKind.Local).AddTicks(7815),
-                            NormalizedEmail = "admin@mail.com",
-                            NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKqo6pGcun+Iom4imdik7fIraSDXlD8miSGuAxgMcA+VZJOonGtFWZRLCMB2izZqOA==",
-                            PhoneNumber = "0987654321",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "f881964d-c32f-498c-9a15-7702b9ec52a9",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@mail.com"
-                        });
                 });
 
             modelBuilder.Entity("DB.Models.WishList", b =>
@@ -1059,13 +974,6 @@ namespace DB.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1L,
-                            RoleId = 1L
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>

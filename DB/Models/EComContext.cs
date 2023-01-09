@@ -100,6 +100,7 @@ namespace DB.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("Address");
@@ -408,7 +409,7 @@ namespace DB.Models
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Discount).HasColumnType("decimal(12, 2)");
@@ -658,7 +659,6 @@ namespace DB.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WishList_User");
             });
-
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new AttachmentTypeConfiguration());
