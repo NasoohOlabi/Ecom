@@ -18,6 +18,7 @@ using Ecom.Controllers;
 namespace Ecom.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductController : BaseController<ProductController>
     {
        

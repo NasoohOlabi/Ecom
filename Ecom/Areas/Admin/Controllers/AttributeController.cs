@@ -11,10 +11,14 @@ using DB.UOW;
 using Ecom.Models;
 using Attribute = DB.Models.Attribute;
 using Ecom.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace Ecom.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AttributeController : BaseController<AttributeController>
     {
         public AttributeController(ILogger<AttributeController> logger, IUnitOfWork uow, IMapper mapper) : base(logger, uow, mapper)

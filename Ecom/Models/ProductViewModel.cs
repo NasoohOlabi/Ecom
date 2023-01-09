@@ -8,6 +8,7 @@ namespace Ecom.Models
 {
     public class ProductDetailsViewModel : BaseDetailsViewModel<Product>
     {
+        [Display(Name = "Product Name")]
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
@@ -23,6 +24,7 @@ namespace Ecom.Models
 
     public class ProductEditViewModel : BaseEditViewModel<Product>
     {
+        [Display(Name = "Product Name")]
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
@@ -40,6 +42,7 @@ namespace Ecom.Models
 
     public class EditProductSpecificationsViewModel : BaseEditViewModel<Specification>
     {
+        [Display(Name = "Product Name")]
         public string Name { get; set; } = null!;
         public IEnumerable<AttributeDetailsViewModel>? CategoryAttributes { get; set; } = null;
         public IEnumerable<AttributeDetailsViewModel>? AllAttributes { get; set; } = null;
